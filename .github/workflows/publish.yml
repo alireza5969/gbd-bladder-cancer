@@ -26,10 +26,12 @@ jobs:
           sudo apt install -y librsvg2-bin
 
       - name: Install node.js
-        run: |
-          curl -o- https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
-          brew install node@24
-          npm install -g staticrypt
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      
+      - name: Install staticrypt globally
+        run: npm install -g staticrypt
           
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
