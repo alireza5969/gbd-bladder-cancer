@@ -40,7 +40,8 @@ jobs:
             pkg-config \
             libcairo2-dev \
             libfreetype6-dev \
-            libfontconfig1-dev
+            libfontconfig1-dev \
+            libudunits2-dev
 
 
       - name: Install R
