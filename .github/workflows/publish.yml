@@ -20,6 +20,11 @@ jobs:
           version: pre-release
           tinytex: true
 
+      - name: Install librsvg (for rsvg-convert)
+        run: |
+          sudo apt update
+          ssudo apt install -y librsvg2-bin
+
 
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
@@ -27,3 +32,4 @@ jobs:
           target: gh-pages
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
