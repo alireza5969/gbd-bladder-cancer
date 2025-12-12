@@ -25,7 +25,11 @@ jobs:
           sudo apt update
           sudo apt install -y librsvg2-bin
 
-
+      - name: Install node.js
+        run: |
+          curl -o- https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh | bash
+          brew install node@24
+          
       - name: Render and Publish
         uses: quarto-dev/quarto-actions/publish@v2
         with:
