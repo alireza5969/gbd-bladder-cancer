@@ -20,10 +20,10 @@ jobs:
           version: pre-release
           tinytex: true
 
-      - name: Install librsvg (for rsvg-convert)
+      - name: Install librsvg
         run: |
           sudo apt update
-          ssudo apt install -y librsvg2-bin
+          sudo apt install -y librsvg2-bin
 
 
       - name: Render and Publish
