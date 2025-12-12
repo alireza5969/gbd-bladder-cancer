@@ -1,0 +1,114 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='1417.32pt' height='708.66pt' viewBox='0 0 1417.32 708.66'>
+<g class='svglite'>
+<defs>
+  <style type='text/css'><![CDATA[
+    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {
+      fill: none;
+      stroke: #000000;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-miterlimit: 10.00;
+    }
+    .svglite text {
+      white-space: pre;
+    }
+    .svglite g.glyphgroup path {
+      fill: inherit;
+      stroke: none;
+    }
+  ]]></style>
+</defs>
+<rect width='100%' height='100%' style='stroke: none; fill: #FFFFFF;'/>
+<defs>
+  <clipPath id='cpMC4wMHwxNDE3LjMyfDAuMDB8NzA4LjY2'>
+    <rect x='0.00' y='0.00' width='1417.32' height='708.66' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpMC4wMHwxNDE3LjMyfDAuMDB8NzA4LjY2)'>
+<rect x='0.00' y='0.00' width='1417.32' height='708.66' style='stroke-width: 1.94; stroke: #FFFFFF; fill: #FFFFFF;' />
+</g>
+<defs>
+  <clipPath id='cpODYuMjR8NzUxLjc4fDQzLjczfDU5NC4wNw=='>
+    <rect x='86.24' y='43.73' width='665.54' height='550.34' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpODYuMjR8NzUxLjc4fDQzLjczfDU5NC4wNw==)'>
+<rect x='86.24' y='43.73' width='665.54' height='550.34' style='stroke-width: 1.94; stroke: #FFFFFF; fill: #FFFFFF;' />
+<polyline points='114.36,569.03 161.23,568.99 208.10,568.69 254.97,568.49 301.84,567.91 348.71,566.72 395.58,564.01 442.45,558.83 489.31,551.13 536.18,538.25 583.05,520.76 629.92,500.22 676.79,474.99 723.66,439.18 ' style='stroke-width: 2.13; stroke: #FFFACD; stroke-opacity: 0.10; stroke-linecap: butt;' />
+<polyline points='114.36,569.03 161.23,568.96 208.10,568.72 254.97,568.19 301.84,567.22 348.71,566.13 395.58,563.96 442.45,559.95 489.31,552.06 536.18,538.65 583.05,523.35 629.92,499.51 676.79,480.27 723.66,441.84 ' style='stroke-width: 2.13; stroke: #FFC374; stroke-opacity: 0.20; stroke-linecap: butt;' />
+<polyline points='114.36,569.04 161.23,568.98 208.10,568.66 254.97,568.43 301.84,567.09 348.71,565.54 395.58,562.59 442.45,557.98 489.31,553.60 536.18,542.54 583.05,526.76 629.92,510.94 676.79,478.44 723.66,438.84 ' style='stroke-width: 2.13; stroke: #FF8C00; stroke-opacity: 0.30; stroke-linecap: butt;' />
+<polyline points='114.36,569.05 161.23,568.99 208.10,568.54 254.97,568.29 301.84,567.06 348.71,565.73 395.58,563.14 442.45,558.82 489.31,550.85 536.18,547.33 583.05,535.94 629.92,512.89 676.79,484.15 723.66,426.93 ' style='stroke-width: 3.20;' />
+</g>
+<g clip-path='url(#cpMC4wMHwxNDE3LjMyfDAuMDB8NzA4LjY2)'>
+</g>
+<defs>
+  <clipPath id='cpNzUxLjc4fDE0MTcuMzJ8NDMuNzN8NTk0LjA3'>
+    <rect x='751.78' y='43.73' width='665.54' height='550.34' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNzUxLjc4fDE0MTcuMzJ8NDMuNzN8NTk0LjA3)'>
+<rect x='751.78' y='43.73' width='665.54' height='550.34' style='stroke-width: 1.94; stroke: #FFFFFF; fill: #FFFFFF;' />
+<polyline points='779.90,569.00 826.77,568.92 873.64,568.73 920.51,567.99 967.38,566.99 1014.25,563.58 1061.12,556.54 1107.99,536.79 1154.86,508.15 1201.72,445.31 1248.59,401.23 1295.46,352.10 1342.33,239.70 1389.20,138.80 ' style='stroke-width: 2.13; stroke: #FFFACD; stroke-opacity: 0.10; stroke-linecap: butt;' />
+<polyline points='779.90,568.98 826.77,568.84 873.64,568.72 920.51,568.08 967.38,566.68 1014.25,563.09 1061.12,553.80 1107.99,540.81 1154.86,505.65 1201.72,453.20 1248.59,386.77 1295.46,318.41 1342.33,273.90 1389.20,111.29 ' style='stroke-width: 2.13; stroke: #FFC374; stroke-opacity: 0.20; stroke-linecap: butt;' />
+<polyline points='779.90,568.99 826.77,568.87 873.64,568.61 920.51,567.89 967.38,566.66 1014.25,563.54 1061.12,552.85 1107.99,531.39 1154.86,501.58 1201.72,467.73 1248.59,410.93 1295.46,331.68 1342.33,217.43 1389.20,68.75 ' style='stroke-width: 2.13; stroke: #FF8C00; stroke-opacity: 0.30; stroke-linecap: butt;' />
+<polyline points='779.90,569.00 826.77,568.88 873.64,568.54 920.51,567.63 967.38,565.81 1014.25,562.95 1061.12,555.21 1107.99,539.73 1154.86,503.93 1201.72,447.74 1248.59,432.45 1295.46,399.49 1342.33,301.67 1389.20,91.78 ' style='stroke-width: 3.20;' />
+</g>
+<g clip-path='url(#cpMC4wMHwxNDE3LjMyfDAuMDB8NzA4LjY2)'>
+</g>
+<defs>
+  <clipPath id='cpODYuMjR8NzUxLjc4fDAuMDB8NDMuNzM='>
+    <rect x='86.24' y='0.00' width='665.54' height='43.73' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpODYuMjR8NzUxLjc4fDAuMDB8NDMuNzM=)'>
+<text x='419.01' y='32.60' text-anchor='middle' style='font-size: 30.00px; font-weight: bold;fill: #1A1A1A; font-family: "Arial";' textLength='103.39px' lengthAdjust='spacingAndGlyphs'>Female</text>
+</g>
+<g clip-path='url(#cpMC4wMHwxNDE3LjMyfDAuMDB8NzA4LjY2)'>
+</g>
+<defs>
+  <clipPath id='cpNzUxLjc4fDE0MTcuMzJ8MC4wMHw0My43Mw=='>
+    <rect x='751.78' y='0.00' width='665.54' height='43.73' />
+  </clipPath>
+</defs>
+<g clip-path='url(#cpNzUxLjc4fDE0MTcuMzJ8MC4wMHw0My43Mw==)'>
+<text x='1084.55' y='32.60' text-anchor='middle' style='font-size: 30.00px; font-weight: bold;fill: #1A1A1A; font-family: "Arial";' textLength='66.69px' lengthAdjust='spacingAndGlyphs'>Male</text>
+</g>
+<g clip-path='url(#cpMC4wMHwxNDE3LjMyfDAuMDB8NzA4LjY2)'>
+<text transform='translate(128.68,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>15-19 years</text>
+<text transform='translate(175.55,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>20-24 years</text>
+<text transform='translate(222.42,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>25-29 years</text>
+<text transform='translate(269.29,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>30-34 years</text>
+<text transform='translate(316.16,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>35-39 years</text>
+<text transform='translate(363.03,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>40-44 years</text>
+<text transform='translate(409.90,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>45-49 years</text>
+<text transform='translate(456.77,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>50-54 years</text>
+<text transform='translate(503.63,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>55-59 years</text>
+<text transform='translate(550.50,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>60-64 years</text>
+<text transform='translate(597.37,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>65-69 years</text>
+<text transform='translate(644.24,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>70-74 years</text>
+<text transform='translate(691.11,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>75-79 years</text>
+<text transform='translate(737.98,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='88.41px' lengthAdjust='spacingAndGlyphs'>80+ years</text>
+<text transform='translate(794.22,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>15-19 years</text>
+<text transform='translate(841.09,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>20-24 years</text>
+<text transform='translate(887.96,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>25-29 years</text>
+<text transform='translate(934.83,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>30-34 years</text>
+<text transform='translate(981.70,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>35-39 years</text>
+<text transform='translate(1028.57,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>40-44 years</text>
+<text transform='translate(1075.44,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>45-49 years</text>
+<text transform='translate(1122.31,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>50-54 years</text>
+<text transform='translate(1169.18,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>55-59 years</text>
+<text transform='translate(1216.05,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>60-64 years</text>
+<text transform='translate(1262.91,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>65-69 years</text>
+<text transform='translate(1309.78,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>70-74 years</text>
+<text transform='translate(1356.65,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='105.62px' lengthAdjust='spacingAndGlyphs'>75-79 years</text>
+<text transform='translate(1403.52,603.04) rotate(-90)' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='88.41px' lengthAdjust='spacingAndGlyphs'>80+ years</text>
+<text x='77.27' y='576.25' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='11.12px' lengthAdjust='spacingAndGlyphs'>0</text>
+<text x='77.27' y='452.60' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='33.38px' lengthAdjust='spacingAndGlyphs'>500</text>
+<text x='77.27' y='328.95' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='44.50px' lengthAdjust='spacingAndGlyphs'>1000</text>
+<text x='77.27' y='205.29' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='44.50px' lengthAdjust='spacingAndGlyphs'>1500</text>
+<text x='77.27' y='81.64' text-anchor='end' style='font-size: 20.00px;fill: #4D4D4D; font-family: "Arial";' textLength='44.50px' lengthAdjust='spacingAndGlyphs'>2000</text>
+<text transform='translate(21.48,318.90) rotate(-90)' text-anchor='middle' style='font-size: 30.00px; font-weight: bold; font-family: "Arial";' textLength='65.03px' lengthAdjust='spacingAndGlyphs'>Rate</text>
+</g>
+</g>
+</svg>

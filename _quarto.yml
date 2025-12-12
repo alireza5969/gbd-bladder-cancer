@@ -1,17 +1,53 @@
 project:
   type: manuscript
+  post-render: encrypt.r
 
-execute:
-  freeze: auto
+manuscript:
+  article: index.qmd
+  
+  # resources:
+  #   - supplementary/
+  #   
+  # code-links:
+  #   - text: ""
+  #     icon: file-pdf
+  #     href: supplementary/
 
 format:
   html:
-    toc: true
+    include-in-header:
+      - file: popup.html
+      - text: |
+          <style type="text/css">
+          .quarto-reader-toggle .bi::before, .quarto-color-scheme-toggle .bi::before {
+          height: 5rem;
+          width: 5rem;
+          background-size: 3.5rem 3.5rem;
+          }
+          </style>
+    sidebar:
+      search: true
+      style: docked
+    theme:
+      light: flatly
+      dark: darkly
     comments:
-      hypothesis: true
-  docx: default
-  jats: default
-  agu-pdf: default
+      hypothesis: 
+        theme: clean
+        openSidebar: false
+        showHighlights: always
+  docx: 
+    reference-doc: reference_style.docx
+    filters: [authors-block]
+    notebook-links: false
+  # jats: default
+  # pdf: default
+
+
+execute:
+  freeze: auto
+  warning: false
+  message: false
 
 
 

@@ -1,111 +1,1610 @@
 ---
-title: La Palma Earthquakes
-author:
-  - name: Steve Purves
-    orcid: 0000-0002-0760-5497
+title: "Bladder Cancer in the United States: National Trends and State-Level Patterns from Global Burden of Disease (GBD), 1980-2021"
+subtitle: "Burden of Bladder Cancer in the United States"
+author: 
+  - name: Alireza Sadeghi
     corresponding: true
-    email: steve@curvenote.com
-    roles:
-      - Investigation
-      - Project administration
-      - Software
-      - Visualization
-    affiliations:
-      - Curvenote
-  - name: Rowan Cockett
-    orcid: 0000-0002-7859-8394
+    orcid: 0000-0002-7950-3270
+    email: alireza.sadeghi.md@gmail.com
+    degrees: MD
+    affiliations: 
+      - ref: shiraz
+    roles: [conceptualization, data curation, formal analysis, investigation, methodology, software, visualization, writing – review & editing, writing – original draft]
+  - name: Fatemeh Nouri
+    orcid: 0000-0002-4878-7848
     corresponding: false
-    roles: []
-    affiliations:
-      - Curvenote
-keywords:
-  - La Palma
-  - Earthquakes
-abstract: |
-  In September 2021, a significant jump in seismic activity on the island of La Palma (Canary Islands, Spain) signaled the start of a volcanic crisis that still continues at the time of writing. Earthquake data is continually collected and published by the Instituto Geográphico Nacional (IGN). ...
-plain-language-summary: |
-  Earthquake data for the island of La Palma from the September 2021 eruption is found ...
-key-points:
-  - A web scraping script was developed to pull data from the Instituto Geogràphico Nacional into a machine-readable form for analysis
-  - Earthquake events on La Palma are consistent with the presence of both mantle and crustal reservoirs.
-date: last-modified
-bibliography: references.bib
-citation:
-  container-title: Earth and Space Science
+    email: nouri.fatmh@gmail.com
+    degrees: MD
+    roles: [writing – review & editing, writing – original draft, investigation]
+    affiliations: 
+      - ref: shiraz
+  - name: Niloofar Dehdari Ebrahimi
+    orcid: 0000-0002-9866-8361
+    corresponding: false
+    email: niloofar.dehdari6021@gmail.com
+    degrees: MD
+    roles: [writing – original draft, writing – review & editing, data curation, investigation]
+    affiliations: 
+      - ref: shiraz
+  - name: Ehsan Taherifard
+    orcid: 0000-0002-8438-4990
+    corresponding: false
+    email: etaherim123@gmail.com
+    degrees: MD
+    roles: [writing – review & editing, resources, data curation, investigation]
+    affiliations: 
+      - ref: shiraz
+  - name: Wassim Kassouf
+    corresponding: true
+    orcid: 0000-0002-8350-0531
+    email: Wassim.Kassouf.med@ssss.gouv.qc.ca
+    degrees: MD
+    roles: [writing – review & editing, supervision, project administration, investigation]
+    affiliations: 
+      - ref: mcgill
+affiliations: 
+  - id: shiraz
+    name: Student Research Committee, Shiraz University of Medical Sciences, Shiraz, Iran
+  - id: mcgill
+    name: Division of Urology, McGill University Health Center, Montreal, QC
+keywords: 
+  - bladder cancer
+  - global burden of disease
+  - United States of America
+  - incidence
+  - mortality
+  - prevalence
 number-sections: true
+bibliography: bladder.bib
+csl: vancouver.csl
+# format:
+#   docx:
+#     reference-doc: reference.docx
+# filters: 
+editor_options: 
+  chunk_output_type: console
+editor:
+  markdown:
+    canonical: false
+    wrap: 100
 ---
 
-## Introduction
-
-```{r}
-eruptions <- c(1492, 1585, 1646, 1677, 1712, 1949, 1971, 2021)
-n_eruptions <- length(eruptions)
+```{css}
+#| echo: false
+.body-justified p {
+  text-align: justify
+}
 ```
 
+
+```{r setup}
+#| include: false
+#| echo: false
+#| message: false 
+#| warning: false
+
+# Setting up the quarto notebook
+
+options(
+  tidyverse.quiet = TRUE,
+  dplyr.summarise.inform = TRUE
+)
+
+library(tidyverse)
+library(scales)
+library(glue)
+library(geofacet)
+library(ggnewscale)
+library(future)
+library(furrr)
+library(gganimate)
+library(paletteer)
+library(flextable)
+
+bladder_data <- 
+  paste0("data/", list.files("data", "rds")) %>%
+  map_df(read_rds, .progress = T) %>% 
+  bind_rows()
+
+
+stateids <- 
+  bladder_data %>% 
+  filter(location_level == "United States of America") %>% 
+  distinct(location_id) %>%
+  as_vector()
+
+source("scripts/functions.r")
+
+
+```
+
+
 ```{r}
-#| label: fig-timeline
-#| fig-cap: Timeline of recent earthquakes on La Palma
-#| fig-alt: An event plot of the years of the last 8 eruptions on La Palma.
-#| fig-height: 1.5
-#| fig-width: 6
-par(mar = c(3, 1, 1, 1) + 0.1)
-plot(eruptions, rep(0, n_eruptions), 
-  pch = "|", axes = FALSE)
-axis(1)
-box()
+#| output: false
+#| results: false
+
+# Creating the geofacet plot
+
+geofac_data <- 
+  bladder_data %>% 
+  filter(location_id %in% c(stateids, 102)) %>% 
+  group_by(measure_name, cause_name, metric_name) %>% 
+  nest() %>% 
+  ungroup()
+
+
+pmap(geofac_data, geofacet_state_plot, .progress = T)
+
+```
+
+
+
+```{r}
+#| output: false
+#| results: false
+
+# Creating the plot for comparing US performance compared to competing countries
+
+
+## Line plot
+
+
+us_performance_data <- 
+  bladder_data %>% 
+  filter(
+    location_id %in% c(4743, 64, 102, 44635),
+    sex_id == 1 & cause_id %in% c(468, 438) |
+      sex_id == 3 & cause_id %in% c(474, 471)
+  ) %>% 
+  mutate(
+    sex_id = NULL,
+    sex_name = NULL,
+    stateabb = NULL,
+    location_level = NULL,
+    country_group = if_else(
+      location_id == 102, 
+      "United States of America",
+      "European Union/High-income/High SDI"
+    )
+  ) %>% 
+  group_by(cause_name, metric_name) %>% 
+  nest %>% 
+  ungroup() %>% 
+  mutate(
+    data = 
+      map(data, \(x) {
+        
+        if (27 %in% x$age_id) {
+          
+          data <- 
+            x %>% 
+            filter(age_id == 27)
+          
+          attr(data, "ageattr") <- "Age-standardized"
+          
+        } else {
+          
+          data <- 
+            x %>% 
+            filter(age_id == 22)
+          
+          attr(data, "ageattr") <- "All Ages"
+          
+        }
+        
+        return(data)
+      }, .progress = T)
+  )
+
+
+
+pmap(us_performance_data, us_performance_plt, .progress = T)
+
+```
+
+
+```{r}
+#| output: false
+#| results: false
+
+
+## Bump plot
+
+
+states <- 
+  bladder_data %>% 
+  filter(!is.na(stateabb)) %>% 
+  distinct(location_id, location_name, stateabb)
+
+bumpyears <- 
+  c(1990, 2000, 2010, 2021)
+
+bump_data <- 
+  bladder_data %>% 
+  group_by(cause_name, metric_name) %>% 
+  nest %>% 
+  ungroup %>% 
+  mutate(
+    data = map(
+      data, 
+      \(x) {
+        
+        cdata <- 
+          x %>% 
+          select(-c(upper, lower)) %>% 
+          filter(
+            year %in% bumpyears,
+            location_id %in% c(4743, 64, 102, 44635, stateids),
+            sex_id == 1 & cause_id %in% c(468, 438) |
+              sex_id == 3 & cause_id %in% c(474, 471),
+            age_id %in% c(22, 27)
+          )
+        
+        agedata <- 
+          cdata %>% 
+          group_by(location_id, .add = T) %>% 
+          count(age_id) %>% 
+          filter(age_id %in% c(22, 27)) %>%
+          arrange(age_id, n) %>%
+          group_by(age_id) %>% 
+          summarise(sum = sum(n))
+        
+        if (27 %in% agedata$age_id) {
+          
+          cdata <- 
+            cdata %>% 
+            filter(age_id == 27)
+          
+          ageattr <- "Age-standardized"
+          
+        } else {
+          
+          cdata <- 
+            cdata %>% 
+            filter(age_id == 22)
+          
+          ageattr <- "All Ages"
+          
+        }
+        
+        cdata <- 
+          cdata %>% 
+          group_by(measure_name, year) %>% 
+          arrange(val) %>% 
+          mutate(rank = row_number()) %>% 
+          arrange(measure_id, year, rank) %>% 
+          mutate(order = row_number()) %>% 
+          ungroup() %>% 
+          mutate(
+            color = if_else(
+              location_id == 102 |
+                (
+                  year == max(.$year) & 
+                    !is.na(stateabb) & 
+                    !(order %>% between(6, 50))
+                ), 
+              "yes", "no"),
+            stateabb = if_else(
+              is.na(stateabb),
+              location_name, stateabb
+            ), 
+            stateabb = if_else(
+              stateabb == "United States of America",
+              "USA", stateabb
+            ),
+            stateabb = if_else(
+              stateabb == "European Union",
+              "EU", stateabb
+            )
+          ) %>% 
+          group_by(location_name, measure_name)
+        # mutate(n = n()) %>% 
+        # filter(n != 1) %>% 
+        # mutate(n = NULL)
+        
+        attr(cdata, "ageattr") <- ageattr
+        
+        return(cdata)
+        
+      }, .progress = TRUE
+    )
+  )
+
+pmap(bump_data, bumpplot, .progress = T)
+
+```
+
+
+
+```{r}
+#| output: false
+#| results: false
+
+# Population pyramid plots
+
+## Data preparation
+
+
+pyramid_data <- 
+  bladder_data %>% 
+  filter(
+    age_id %in% c(1, 6:21),
+    sex_id != 3
+  ) %>% 
+  select(-location_level) %>% 
+  arrange(age_id) %>% 
+  mutate(age_name = fct_inorder(age_name)) %>% 
+  group_by(
+    # cause_name, 
+    measure_name, 
+    # metric_name,
+    location_name,
+  ) %>% 
+  nest() %>% 
+  filter(
+    !(location_name %in% 
+        c(
+          "Middle SDI",
+          "G20", 
+          "Low SDI",
+          "Global", 
+          "High-middle SDI",
+          "Low-middle SDI"
+          )
+      )
+  )
+
+```
+
+
+```{r}
+#| output: false
+#| results: false
+
+
+## Population pyramids for 2021
+
+plan(multisession, workers = 6)
+
+future_pmap(
+  pyramid_data, 
+  \(data, measure_name, location_name) {
+    
+    pyramid_filename <- 
+      paste0(
+        c(
+          "fig_C",
+          location_name, 
+          "Bladder cancer",
+          measure_name, 
+          "Rate.svg"
+          ), 
+        collapse = "_"
+        )
+    
+    if (
+      file.exists(
+        paste0(
+          "output/figures/Population pyramid - 2021/", 
+          pyramid_filename
+          )
+        )
+      ) {return()}
+    
+    pyramid_plot(
+      data = data,
+      measure_name = measure_name
+      ) %>% 
+      ggsave(
+        plot = .,
+        device = "svg",
+        path = "output/figures/Population pyramid - 2021/",
+        filename = pyramid_filename,
+        width = 25,
+        height = 25,
+        units = "cm",
+        dpi = 600
+        )
+    },
+  .progress = TRUE
+  )
+
+plan(sequential)
+
+```
+
+
+```{r}
+#| output: false
+#| results: false
+
+## Population pyramid - animated 1980-2021
+
+
+years <- 
+  bladder_data %>% 
+  distinct(year) %>%
+  pull
+
+
+plan(multisession, workers = 6)
+
+
+future_pmap(pyramid_data,
+  
+  \(
+    data,
+    measure_name,
+    location_name
+  ) {
+    
+    file_name <-
+      paste0(
+        c(
+          location_name,
+          "Bladder cancer",
+          measure_name,
+          "Rate"
+        ),
+        collapse = "_"
+      ) %>% 
+      paste0(
+        "output/figures/Population pyramid - animated/fig_E_",
+        ., 
+        ".gif"
+        )
+    
+    if (file.exists(file_name)) {return(NA)}
+    
+    library(gganimate)
+    
+    plot <- 
+      pyramid_plot(
+        data = data, 
+        measure_name = measure_name, 
+        year = years
+      )
+    
+    
+    iserror <- 
+      tryCatch(
+        {
+          ggplot_build(plot)
+          FALSE
+        },
+        error = function(e) {
+          TRUE
+        }
+      )
+    
+    if (iserror) {
+      beepr::beep()
+    }
+    
+    plot <-
+      plot +
+      transition_time(year) +
+      labs(title = 'Year: {as.integer(frame_time)}') 
+    
+    anim_save(
+      filename = file_name,
+      animation = plot,  
+      device = "png",
+      width = 25,
+      height = 25, 
+      units = "cm", 
+      res = 300
+    ) 
+    
+    
+  }, 
+  .progress = TRUE
+)
+
+
+plan(sequential)
+
+```
+
+
+```{r}
+#| output: false
+#| results: false
+
+
+# APC Plots
+
+
+apc_data <- 
+  bladder_data %>% 
+  filter(
+    year %in% c(1990, 2000, 2010, 2021),
+    age_id %in% c(1, 6:21),
+    location_id %in% c(stateids, 102),
+    sex_id != 3,
+    metric_id == 3
+    ) %>% 
+  arrange(age_id, year) %>% 
+  mutate(
+    age_name = fct_inorder(age_name)
+    ) %>% 
+  group_by(location_name, measure_name) %>% 
+  nest
+
+plan(multisession, workers = 4)
+
+future_map(list(apc_plot1, apc_plot2), \(x) pmap(apc_data, x), .progress = TRUE)
+
+plan(sequential)
+
+
+
 ```
 
 ```{r}
 #| output: false
-avg_years_between_eruptions <- mean(diff(eruptions[-n_eruptions]))
-avg_years_between_eruptions
+#| results: false
+
+
+# Table
+
+file_name <-
+  paste0(
+    "output/tables/Percent change since 1980 in ",
+    "Bladder cancer",
+    " measures.docx"
+  )
+
+change_data <-
+    bladder_data %>%
+    filter(
+      year %in% c(2021, 1990),
+      metric_id == 3,
+      age_id == 27,
+      sex_id != 3,
+      !(location_id %in% c(1, 44639, 44634, 44586, 44636, 44637))
+    ) %>%
+    group_by(
+      measure_name, location_name, sex_name, cause_name
+    ) %>%
+    select(1:6, 9, 10, 13:16, 18) %>%
+    # replace true value by deviations
+    mutate(upper = upper - val, lower = val - lower) %>%
+    pivot_wider(
+      id_cols = c(
+        measure_id,
+        measure_name,
+        location_id,
+        location_name,
+        sex_id,
+        sex_name,
+        cause_id,
+        cause_name,
+        stateabb
+      ),
+      names_from = year,
+      values_from = c(val, upper, lower),
+      names_glue = "{.value}_{year}"
+    ) %>%
+    mutate(
+      # Propagation of uncertainities
+      # references in
+      # https://chatgpt.com/share/68317e19-1f4c-800e-a8db-ec53c8621521
+      diffval = ((val_2021 - val_1990) / val_1990),
+      diffupper = diffval + ((sqrt((upper_2021^2) + (lower_1990^2))) / val_1990),
+      difflower = diffval - ((sqrt((lower_2021^2) + (upper_1990^2))) / val_1990)
+    ) %>%
+    select(-c(val_1990:lower_2021)) %>%
+    ungroup() %>%
+    mutate(
+      color = case_when(
+        diffupper > 0 & difflower > 0 ~ "positive",
+        diffupper < 0 & difflower < 0 ~ "negative",
+        sign(diffupper) != sign(difflower) ~ "neutral",
+      )
+    ) %>%
+    group_by(cause_name, measure_name) %>%
+    mutate(
+      upperlim = max(diffupper),
+      lowerlim = min(difflower)
+    ) %>%
+    ungroup() 
+
+if (!file.exists(file_name)) {
+  
+
+  table_ggplot_data <-
+    change_data %>%
+    mutate(
+      plot = pmap(
+        list(diffval, diffupper, difflower, upperlim, lowerlim, color),
+        ggmaker,
+        .progress = TRUE
+      )
+    ) %>% 
+    arrange(desc(is.na(stateabb)), location_name) %>%
+    mutate(
+      location_name = if_else(is.na(stateabb), location_name, stateabb)
+    ) %>%
+    select(
+      -c(diffval:lowerlim),
+      -contains("_id"),
+      -stateabb
+    ) %>%
+    rename_with(\(x) str_remove(x, "_name")) %>%
+    pivot_wider(
+      names_sep = "_",
+      id_cols = c(location, cause),
+      names_from = c(measure, sex),
+      values_from = plot
+    ) %>%
+    group_by(cause) %>%
+    nest() %>%
+    mutate(
+      data = if_else(
+        cause %in% c("Prostate cancer", "Testicular cancer"),
+        map(data, \(x) {
+          x %>%
+            select(-contains("Female"))
+        }),
+        data
+      )
+    )
+
+
+  table_ggplot_data %>%
+    mutate(
+      new = map2(
+        data,
+        cause,
+        \(x, y) fpmaker(x, y),
+        .progress = TRUE
+      )
+    )
+  
+}
+
+
+
 ```
 
-Based on data up to and including 1971, eruptions on La Palma happen every `{r} round(avg_years_between_eruptions, 1)` years on average.
+**Authors contact**
 
-Studies of the magma systems feeding the volcano, such as @marrero2019, have proposed that there are two main magma reservoirs feeding the Cumbre Vieja volcano; one in the mantle (30-40km depth) which charges and in turn feeds a shallower crustal reservoir (10-20km depth).
+```{r}
+#| label: author-contacts
+#| echo: false
+#| message: false 
+#| warning: false
+#| results: asis
 
-Eight eruptions have been recorded since the late 1400s (@fig-timeline).
 
-Data and methods are discussed in @sec-data-methods.
+authors <- rmarkdown::metadata$author
 
-Let $x$ denote the number of eruptions in a year. Then, $x$ can be modeled by a Poisson distribution
+author_data <- 
+  authors |> 
+  map(\(a) {
+    tibble(
+      name         = a$name,
+      corresponding = a$corresponding %||% NA,
+      email        = a$email %||% NA,
+      orcid        = a$orcid %||% NA,
+      degrees      = a$degrees %||% NA,
+      roles        = list(a$roles),
+      affiliations = list(map_chr(a$affiliations, "ref"))
+    )
+  }) |> 
+  list_rbind() |>       
+  unnest(c(roles, affiliations))
 
-$$
-p(x) = \frac{e^{-\lambda} \lambda^{x}}{x !}
-$$ {#eq-poisson}
 
-where $\lambda$ is the rate of eruptions per year. Using @eq-poisson, the probability of an eruption in the next $t$ years can be calculated.
+contacts_data <- 
+  author_data %>% 
+  distinct(name, email, orcid)
 
-| Name                 | Year   |
-| -------------------- | ------ |
-| Current              | 2021   |
-| Teneguía             | 1971   |
-| Nambroque            | 1949   |
-| El Charco            | 1712   |
-| Volcán San Antonio   | 1677   |
-| Volcán San Martin    | 1646   |
-| Tajuya near El Paso  | 1585   |
-| Montaña Quemada      | 1492   |
+cat(
+  glue_data(
+  contacts_data, 
+  "{name}\n\n   + Email <{email}>\n\n  +  ORCID [{orcid}](https://orcid.org/{orcid})\n\n\n", 
+  .na = ""
+  )
+)
 
-: Recent historic eruptions on La Palma {#tbl-history}
+```
 
-@tbl-history summarises the eruptions recorded since the colonization of the islands by Europeans in the late 1400s.
+{{< pagebreak >}}
 
-![Map of La Palma](images/la-palma-map.png){#fig-map}
+```{r}
+#| label: source-data
+#| echo: false
+#| message: false
+#| warning: false
+#| results: hide
 
-La Palma is one of the west most islands in the Volcanic Archipelago of the Canary Islands (@fig-map). 
 
-{{< embed notebooks/explore-earthquakes.qmd#fig-spatial-plot >}}
 
-@fig-spatial-plot shows the location of recent Earthquakes on La Palma.
+bladder_data <-
+  bladder_data %>%
+  mutate(
+    readable_name = case_when(
+      measure_name == "Deaths" ~ "mortality",
+      measure_name == "Prevalence" ~ "prevalence",
+      measure_name == "Incidence" ~ "incidence",
+      .default = measure_name
+    )
+  )
 
-## Data & Methods {#sec-data-methods}
+diff_abstract <-
+  bladder_data %>%
+  filter(
+    sex_name == "Both",
+    year %in% c(1990, 2021),
+    location_name == "United States of America",
+    age_name == "Age-standardized"
+    ) %>%
+  group_by(measure_name) %>%
+  select(measure_name, readable_name, year, val) %>%
+  pivot_wider(names_from = year, values_from = val) %>%
+  rowwise() %>%
+  mutate(
+    diff = `2021` - `1990`,
+    than = ifelse(diff > 0, "lower", "higher"),
+    diff = paste(
+      diff %>%
+        abs %>%
+        scales::number(accuracy = 0.01),
+      than
+    )
+    )
 
-## Conclusion
+glue::glue_data(
+  diff_abstract,
+  "In 2021, United States recorded age-standardized rates of {scales::number(2021, accuracy = 0.01)} for {readable_name}, which were {diff} than the 1990 records, respectively."
+)
 
-## References {.unnumbered}
 
-:::{#refs}
+items <-
+  diff_abstract %>%
+  glue::glue_data("{scales::number(`2021`, accuracy = 0.01)} for {readable_name} ({diff})")
 
+# Create the final sentence
+final_sentence <-
+  glue::glue(
+    "In 2021, United States recorded age-standardized rates of {knitr::combine_words(items, and = 'and ', sep = ', ')} compared to 1990 records."
+)
+
+```
+
+
+```{r}
+#| output: false
+#| results: false
+
+
+# State abbreviations and full names for captions
+
+state_abbs <- 
+  states %>%
+  arrange(location_name) %>% 
+  glue_data("{location_name}: {stateabb}; ") %>% 
+  paste0(collapse = "")
+
+country_abbs <- 
+  "European Union: EU; SDI: Socio-Demographic Index"
+
+measure_abbs <- 
+  "DALYs: Disability-Adjusted Life Year; YLDs: Years Lived with Disability; YLLs: Years of Life Lost"
+
+```
+
+```{r}
+#| output: false
+#| results: false
+
+
+# Supplementary file links
+
+base_url <- 
+  "https://github.com/alireza5969/bladder-cancer-gbd"
+
+figures_base_url <- 
+  paste0(
+  base_url,
+  "output/figures/",
+  list.files("output/figures")
+  )
+
+table_base_url <- 
+  paste0(
+  base_url,
+  "output/tables/"
+  )
+
+```
+
+::::: {.body-justified}
+
+# Abstract
+
+**Background:** United States is the country with most expenditure in health care. Yet, the
+statistics do not correlate with the amount of money being spent. Investigating national- and
+state-level historical trends and comparing them with other countries provides insights for policy
+makers. 
+**Aim:** We aim to explore the chronological trends in the rate of bladder cancer burden,
+including prevalence, incidence, mortality, Disability-Adjusted Life Year (DALY), Years Lived with
+Disability (YLD), and Years of Life Lost (YLL). State-level disparities and long-term effects of
+health policies were explored. 
+**Methodology:** Data from Global Burden of Disease (GBD) was
+retrieved. Age- and gender-classified historical trends visualized for each state as well as the
+country. Trends were compared with other competing health systems, including European Union,
+countries with high Socio-Demographic Index (SDI), and high income.
+**Results:** `r final_sentence`
+**Conclusion:** To reduce the significant
+and disparate burden of BC in the United States, targeted public health
+initiatives and region-specific policies are essential. 
+These must address modifiable risk factors, improve diagnostic
+equity, and expand access to early detection and care.
+
+**Keywords:** *`r rmarkdown::metadata$keywords %>% paste0(collapse = "; ")`*
+
+{{< pagebreak >}}
+
+# Introduction
+
+Bladder cancer (BC) is the sixth most common cancer in the United States [@RN1]. Among American men, it
+is the fourth most common cancer and the seventh leading cause of cancer-related mortality [@RN2].
+According to the recent Surveillance, Epidemiology, and End Results (SEER) Program estimates,
+approximately 84,870 new cases and 17,420 deaths are projected in 2025, accounting for 4.2% of all
+new cancer diagnoses and 2.8% of cancer-related mortality [@RN1]. Similar trends are observed
+outside the United States, specifically, a rising global burden despite declining age-standardized
+rates, highlighting that BC is a significant public health concern [@RN3].
+
+In addition, BC imposes a high economic burden as management typically involves lifelong
+surveillance and repeated interventions, making it the costliest cancer to treat per patient over a
+lifetime [@RN4; @RN5; @RN6]. Beyond direct healthcare costs, the disease significantly affects
+patients' quality of life as well as the emotional and practical well-being of their caregivers and
+families [@RN7].
+
+While cigarette smoking has historically been the primary risk factor for BC [@RN8], emerging
+evidence points to a widening array of carcinogenic exposures contributing to its global incidence.
+These include, but are not limited to, arsenic-contaminated drinking water, occupational and
+cosmetic chemicals (such as those in hair dyes), dietary factors, and pervasive environmental
+pollutants [@RN9]. Despite observing a decrease in the prevalence of cigarette smoking since 1998
+[@RN10] and the implementation of stricter government regulations on the use of aryl amines, there
+has not been a corresponding reduction in the incidence of BC [@RN11]. This stagnation suggests that
+other environmental and occupational exposures may be driving disease patterns, particularly in
+regions with inadequate regulatory oversight. One example is the elevated cancer incidence rates
+observed in certain New England states, which have been partly attributed to environmental
+carcinogens such as arsenic contamination in drinking water from private household wells [@RN12;
+@RN13]. The complex interplay between these exposures and persistent regional and socioeconomic
+disparities underscores a pressing public health concern; one that remains inadequately
+characterized and urgently demands targeted surveillance, research, and policy intervention.
+
+Previous studies have demonstrated substantial regional disparities in BC incidence and outcomes
+within the United States [@RN14; @RN15; @RN16; @RN17]. For example, Maine reports an
+age-standardized incidence rate (ASIR) of 26.7 between 2017 and 2021, nearly double that of Hawaii,
+which stands at 13.4 [@RN18]. Geographic variations likely stem from differences in environmental
+exposures, socioeconomic status, access to care, and healthcare infrastructure. For instance, BC
+incidence is highest in northeastern states [@RN16], while mortality tends to be greater in Southern
+states [@RN19] where there is higher proportion of older adults, African Americans, and rural
+populations, groups that often face delays in diagnosis and limited access to quality treatment
+[@RN20].
+<!-- Additionally, while men are more frequently diagnosed, women often experience worse -->
+<!-- outcomes, including higher stage at diagnosis and lower survival rates [@RN21]. -->
+
+While most BC research to date has focused on national trends or single-institution cohorts, recent,
+age-standardized comparisons at the state level are scarce. Likewise, although the Global Burden of
+Disease (GBD) project produces Disability-Adjusted Life Year (DALYs), Years Lived with Disability
+(YLDs), and Years of Life Lost (YLLs) for BC, these metrics have seen limited uptake in
+disease-specific epidemiological studies, leaving non-fatal burden and health-system impact
+underexplored. National analyses report that men have roughly three to four times the incidence of
+BC [@RN22] yet women present with more advanced disease and poorer survival [@RN23]; however, these
+sex-specific outcome gaps have not been systematically mapped across the states.
+
+To address these gaps, we utilize data from the GBD 2021 study, which provides consistent estimates
+of key burden metrics for all states. This mostly-descriptive analysis offers a comprehensive
+insight of BC burden across geographic, temporal, and age group dimensions.
+
+<!-- By incorporating [age--period--cohort]{.mark} modeling and evaluating -->
+
+<!-- sex-specific and socio-demographic patterns, our study aims to generate actionable insights for -->
+
+<!-- state-level public health planning and prioritization efforts. -->
+
+# Methodology
+
+## Study Design and Data Sources
+
+This population-based study used data from the GBD 2021 database
+<!-- , compiled by the Institute for Health Metrics and Evaluation (IHME)  --> . GBD offers
+comprehensive, modeled estimates for all states, enabling standardized comparisons across time,
+geography, and socioeconomic strata, making it well-suited for analyzing disparities in BC burden on
+a national and global scale. The study analyses BC (ICD-10: C67) burden across all the states of the
+US from 1980 to 2021, assessing incidence, prevalence, mortality, YLLs, YLDs, and DALYs.
+Age-standardized rates (/100,000) were reported unless data were explicitly stated otherwise. 
+The methodology of the GBD was consistent with previous publications and the details provided in the
+Appendix. This study complies with the Guidelines for Accurate and Transparent Health Estimates
+Reporting (GATHER) statement.
+
+## Definitions
+
+DALYs
+
+:   A measure of the gap in healthy years of life lived by a population as compared with a normative
+    standard. More formally, DALYs are a time based measure which adds together years of life lost
+    due to premature mortality with the equivalent number of years of life lived with disability or
+    illness.
+
+YLLs
+
+:   The component of the DALYs that measures years of life lost due to premature mortality.
+
+YLDs
+
+:   The component of the DALYs that measures lost years of healthy life through living in health
+    states of less than full health.
+
+Socio-Demographic Index (SDI)
+
+:   A composite average of the rankings of the incomes per capita, average educational attainment, and fertility rates of all areas in the GBD study.
+    
+Competing Countries
+:   This study defines the groups of countries that are comparable with the United States 
+    in the sense of development and income. These country groups include 
+    European Union, high-SDI countries, and high-income countries.
+
+## Statistical Analysis
+
+We reported age-standardized rates for each burden metric using the direct method with the GBD 2021
+world standard population. Age-standardized rates were not applicable for *age- and sex-specific
+rate curves*. Temporal trends were calculated since 2018 until 2021. All rates were expressed per
+100,000 population. 
+Uncertainty intervals, used by the GBD study’s Bayesian framework, were defined
+as the 2.5th and 97.5th percentiles of 500 posterior draws from the framework and account for
+multiple sources of uncertainty [@naghavi2024].
+
+We used R version 4.5.1 (2025-06-13 ucrt) for calculations. In addition, 28 R packages were employed
+to facilitate data curation, visualization, analysis, and reproducibility [@allaire2024b; @allaire2024c; @atkins2025b; @attali2021a; @bååth2024a;
+@campitelli2025a; @chang2025a; @gohel2025a; @hafen2025; @hester2024; @hughes2022; @hvitfeldt2021;
+@müller2025; @pedersen2025; @richardson2025; @RJ-2021-048; @sievert2025; @sjoberg2020; @vaughan2022;
+@wickham2016; @wickham2019; @wickham2023; @wickham2025; @wilke2022; @xie2014a; @xie2015; @xie2018;
+@xie2020; @xie2025]. 
+The full methodology, including data, code, and notebooks are
+detailed in the study's [GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd).
+
+# Results
+
+## Bladder Cancer Burden: United States Compared to Competing Countris
+
+```{r}
+
+incidence_death_us_2021 <-
+  bladder_data %>%
+  filter(
+    location_name == "United States of America", 
+    age_name == "Age-standardized",
+    year == 2021,
+    measure_name %in% c('Incidence', "Deaths"),
+    sex_name != "Both"
+    ) %>% 
+  select(measure_name, sex_name, val, upper, lower) 
+
+
+incidence_death_us_2021_txt <- 
+  glue_data(
+    incidence_death_us_2021,
+    "{number(val, .1)} [{number(lower, .1)}, {number(upper)}]"
+  )
+
+incidence_death_compete_2021 <- 
+  bladder_data %>%
+  filter(
+    is.na(stateabb), 
+    age_name == "Age-standardized",
+    year == 2021,
+    measure_name %in% c('Incidence', "Deaths"),
+    sex_name == "Both"
+    ) %>% 
+  select(measure_name, location_name, val, upper, lower)
+
+
+incidence_death_compete_2021_txt <- 
+  glue_data(
+    incidence_death_compete_2021,
+    "{number(val, .1)} [{number(lower, .1)}, {number(upper)}]"
+  )
+
+```
+
+In 2021, the incidence rates were `r incidence_death_us_2021_txt[1]`
+and `r incidence_death_us_2021_txt[2]`, resulting in 
+a mortality rate of `r incidence_death_us_2021_txt[3]` and `r incidence_death_us_2021_txt[4]`, respectively.
+In the same year, European Union, high-income, and high-SDI countries 
+reported mortality rates of `r incidence_death_compete_2021_txt[5]`, 
+`r incidence_death_compete_2021_txt[7]`, 
+and 
+`r incidence_death_compete_2021_txt[6]`, respectively
+in both genders.
+
+
+
+```{r}
+
+
+max_vals_us <- 
+  bladder_data %>%
+    filter(
+        measure_name %in% c('Incidence', "Prevalence"),
+        location_name == "United States of America",
+        age_name == "Age-standardized", 
+        sex_name == "Both"
+    ) %>% 
+    group_by(measure_name) %>% 
+    slice_max(val) %>% 
+    select(val, upper, lower, year)
+
+max_vals_us_txt <- 
+  glue_data(
+    max_vals_us,
+    "{number(val, .1)} [{number(lower, .1)}, {number(upper)}]"
+    )
+
+```
+
+With the highest age-standardized 
+rates of `r max_vals_us_txt[1]` and `r max_vals_us_txt[2]` in 2011 for 
+incidence and prevalence, respectively, United States has
+almost consistently had  
+higher incidence and prevalence of BC compared to 
+competing countries between 1980 and 2021. 
+In contrast, DALYs, YLLs, and mortality rates 
+have been lower than competing countries 2000s.
+The clear declining trend observable in competing countries 
+is absent in the trend of United States. 
+While these rates have been historically low in United States, 
+competing countries have managed to 
+approach to the statistics of United States (@fig-performance).
+
+![Age-standardized bladder cancer burden rates between 1980 and 2021 in the United States compared to high-income and high socio-demographic index countries and European Union.](output/figures/US performance plot/fig_B_Bladder cancer_Rate.svg){#fig-performance}
+
+
+```
+Abbreviations: `r measure_abbs`
+```
+
+
+```{r}
+
+
+country_change_data <- 
+  change_data %>% 
+  filter(
+    is.na(stateabb),
+    ) %>% 
+  mutate(
+    sex_name = if_else(sex_id == 2, "women", "men"),
+    across(diffval:difflower, \(x) return(abs(x) * 100))
+    )
+
+green_change_data <- 
+  country_change_data %>% 
+    filter(
+        color == "negative",
+        measure_name %in% c(
+          "DALYs", 
+          "YLLs",
+          "Deaths"
+          # "Incidence"
+          )
+    ) %>% 
+    pivot_wider(
+      values_from = diffval:difflower,
+      names_from = sex_name,
+      id_cols = c(measure_name, location_name)) %>%
+  arrange(measure_name, location_name)
+
+red_change_data <- 
+  country_change_data %>% 
+  filter(color == "positive")
+
+green_change_txt <- 
+  glue_data(
+    green_change_data,
+    "men: {number(diffval_men, .1)}% [{number(difflower_men, .1)}%, {number(diffupper_men, .1)}%]; women: {number(diffval_women, .1)}% [{number(difflower_women, .1)}%, {number(diffupper_women, .1)}%]", 
+    .na = ""
+    )
+
+incidence_green_change_data <- 
+  country_change_data %>% 
+    filter(
+        color %in% c("negative", "neutral"),
+        measure_name == "Incidence",
+        sex_name == "men"
+        )
+
+incidence_green_change_txt <- 
+  glue_data(
+    incidence_green_change_data,
+    "{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]", 
+    .na = ""
+    )
+
+red_change_txt <- 
+  glue_data(
+    red_change_data,
+    "{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"
+    )
+
+```
+
+A more abstract but quantified version of data
+in @fig-performance could be seen in
+@tbl-percentchange which shows the percentage of age-standardized
+rates changed between 1980 and 1990 for all measures and across all states.
+Similar to @fig-performance, the table visualizes decreased rates in
+DALYs (`r green_change_txt[3]`, `r green_change_txt[2]`, 
+`r green_change_txt[1]`, and `r green_change_txt[4]`)
+and 
+YLLs (`r green_change_txt[10]`, `r green_change_txt[9]`, 
+`r green_change_txt[8]`, and `r green_change_txt[11]`)
+across high-income and high-SDI countries, European Union,
+and United States, respectively.
+On the other hand, while high-income and high-SDI countries, and 
+European Union managed to significantly 
+decrease their statistics in mortality 
+(`r green_change_txt[7]`, `r green_change_txt[6]`, and 
+`r green_change_txt[5]`,
+respectively) and 
+male incidence
+(`r incidence_green_change_txt[3]`, `r incidence_green_change_txt[4]`,
+`r incidence_green_change_txt[1]`),
+United States shows insignificant changes
+(`r incidence_green_change_txt[2]`).
+
+![Percentage change of age-standardized rates between 1980 and 2021 across the United States, compared to other competing countries. Bars and error lines indicate the average percentage change and its 95% confidence interval, respectively. Green, yellow, and red indicate significant decrease, insignificant change, and significant increase in statistics, respectively.](output/tables/Percent change since 1980 in Bladder cancer measures.svg){#tbl-percentchange}
+
+```
+Abbreviations: `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`
+```
+
+
+As demonstrated in @fig-pyramid, in 2021, 
+all burden measures were 
+higher in men in all age groups. 
+Highest rates of each burden measure among the 
+age groups
+are as follows:
+
+```{r}
+#| results: asis
+
+
+pyramid_results_data <- 
+  pyramid_data %>% 
+  filter(location_name == "United States of America") %>% 
+  mutate(
+    data = map(data, \(x) {
+      x %>% 
+        group_by(sex_name) %>% 
+        slice_max(val) %>% 
+        ungroup() %>% 
+        select(sex_name, age_name, val:lower)
+    })
+  ) %>% 
+  unnest(data) %>% 
+  pivot_wider(
+    id_cols = c(measure_name, age_name),
+    names_from = sex_name,
+    values_from = val:lower
+    ) 
+# %>% mutate(tag = paste0("{#fig-pyramid-", tolower(measure_name), "}"))
+
+
+pyramid_results_txt <- 
+  pyramid_results_data %>% 
+  glue_data(
+    "* {measure_name}: {number(val_Male, .1, big.mark = ',')} [{number(lower_Male, .1, big.mark = ',')}, {number(upper_Male, .1, big.mark = ',')}] in men and {number(val_Female, .1, big.mark = ',')} [{number(lower_Female, .1, big.mark = ',')}, {number(upper_Female, .1, big.mark = ',')}] in women in {age_name} age group.\n\n\n"
+  )
+
+cat(pyramid_results_txt)
+
+```
+
+
+::: {#fig-pyramid layout-ncol=3}
+
+![Prevalence](output/figures/Population pyramid - 2021/fig_C_United States of America_Bladder cancer_Prevalence_Rate.svg){#fig-pyramid-prevalence}
+
+![Incidence](output/figures/Population pyramid - 2021/fig_C_United States of America_Bladder cancer_Incidence_Rate.svg){#fig-pyramid-incidence}
+
+![Disability-Adjusted Life Year](output/figures/Population pyramid - 2021/fig_C_United States of America_Bladder cancer_DALYs_Rate.svg){#fig-pyramid-dalys}
+
+![Years Lived with Disability](output/figures/Population pyramid - 2021/fig_C_United States of America_Bladder cancer_YLDs_Rate.svg){#fig-pyramid-ylds}
+
+![Years of Life Lost](output/figures/Population pyramid - 2021/fig_C_United States of America_Bladder cancer_YLLs_Rate.svg){#fig-pyramid-ylls}
+
+![Mortality](output/figures/Population pyramid - 2021/fig_C_United States of America_Bladder cancer_Deaths_Rate.svg){#fig-pyramid-deaths}
+
+Population pyramids visualizing age-gender distribution of 
+bladder cancer burden rates in United States. 
 :::
+
+Similar population pyramids visualizing each state's 
+burden rates across age groups in 2021
+are available
+from [Supporting Files](#sup-pyramid2021) and
+the study's
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Population%20pyramid%20-%202021).
+In addition, population pyramid plots animated based on year of 
+report are available for each each state and the country 
+from [Supporting Files](#sup-pyramidgif) and
+the study's
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Population%20pyramid%20-%20animated).
+
+@fig-apc, similar to @fig-pyramid, presents the 
+burden rates for each age group. However,
+it adds the element of time to the visualization. 
+Similar plots are available for each state
+from [Supporting Files](#sup-apc) and
+the study's
+[GitHub page](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/APC%20plot%201).
+
+
+::: {#fig-apc layout-ncol=2}
+
+![Prevalence](output/figures/APC plot 1/fig_F_United States of America_Prevalence_Bladder Cancer_Rate.svg){#fig-apc-prevalence}
+
+![Incidence](output/figures/APC plot 1/fig_F_United States of America_Incidence_Bladder Cancer_Rate.svg){#fig-apc-incidence}
+
+![Disability-Adjusted Life Year](output/figures/APC plot 1/fig_F_United States of America_DALYs_Bladder Cancer_Rate.svg){#fig-apc-dalys}
+
+![Years Lived with Disability](output/figures/APC plot 1/fig_F_United States of America_YLDs_Bladder Cancer_Rate.svg){#fig-apc-ylds}
+
+![Years of Life Lost](output/figures/APC plot 1/fig_F_United States of America_YLLs_Bladder Cancer_Rate.svg){#fig-apc-ylls}
+
+![Mortality](output/figures/APC plot 1/fig_F_United States of America_Deaths_Bladder Cancer_Rate.svg){#fig-apc-deaths}
+
+Age-gender distribution of 
+bladder cancer burden rates across decades in United States. 
+:::
+
+
+## Bladder Cancer Burden Across the United States
+
+
+```{r}
+
+
+state_change_data <- 
+  change_data %>% 
+  filter(
+    !is.na(stateabb),
+    color != "neutral"
+    ) %>% 
+  mutate(
+    sex_name = if_else(sex_id == 2, "women", "men"),
+    across(diffval:difflower, \(x) return(abs(x) * 100))
+    )
+  
+green_change_data <- 
+  state_change_data %>% 
+  filter(color == "negative")
+
+red_change_data <- 
+  state_change_data %>% 
+  filter(color == "positive")
+
+green_change_txt <- 
+  glue_data(
+    green_change_data %>%
+      arrange(-diffval) %>%
+      filter(location_name == "New York"),
+    "{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"
+    )
+
+red_change_txt <- 
+  glue_data(
+    red_change_data,
+    "{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"
+    )
+
+```
+
+As shown in @tbl-percentchange, while some states such as New York
+(YLLs: `r green_change_txt[2]` and `r green_change_txt[1]` 
+in men and women, respectively; DALYs: `r green_change_txt[6]` 
+and `r green_change_txt[4]` in men and women, respectively;
+mortality: `r green_change_txt[5]` in women), 
+with some of the highest change percentages among the states,
+have managed to decrease BC burden statistics, most of the states 
+show no significant change. The only state that has observed 
+increased burden is New Mexico, which reports an increased
+BC prevalence by `r red_change_txt` in men. 
+State-specific, gender-stratified historical trends in 
+ASIR are visualized in @fig-geofacet.
+Similar graphs for age-standardized rates of
+prevalence,
+mortality, 
+DALYs,
+YLLs,
+and YLDs
+are available from [Supporting Files](#sup-geofacet) and
+the study's
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Geofacet%20plot).
+
+![State-level historical trends in age-standardized prevalence rate across the states in men and women. States are positioned to nearly resemble their geographical location.](output/figures/Geofacet plot/fig_A_Incidence_Bladder cancer_Rate.svg){#fig-geofacet}
+
+```
+Abbreviations: `r paste0(c(state_abbs), collapse = "; ")`
+```
+
+
+# Discussion
+
+This study used GBD 2021 data to analyze trends in BC incidence, mortality, YLLs, YLDs, and DALYs in
+the United States from 1980 to 2021. Nationally, the ASIR of BC has gradually declined since the
+late 2010s, accompanied by a less steep decrease in the ASMR. 
+These improvements likely reflect
+advancements in early detection strategies, enhanced treatment modalities, and broader access to
+quality healthcare services across the nation. 
+However, these favorable national trends mask
+important state-level disparities. While many Northeastern states have experienced sharp declines in
+both incidence and mortality, especially among men, certain states such as West Virginia,
+Kentucky, Delaware, and Nevada have shown rising or plateauing ASIRs and ASMRs. 
+Among the states with notable trends, some have persistently stood out in terms of exceptionally high or low rates.
+Maine consistently exhibited the highest ASIR across the study period, with a declining trend in
+recent years, whereas Hawaii showed the lowest ASIR and ASMR [Supporting Files](@sup-geofacet).
+These differences may reflect regional
+variations in exposure to risk factors, healthcare access, and public health interventions.
+
+Despite having one of the highest per capita health expenditures globally [@RN24], the country also
+reports one of the highest ASIR of BC compared to many high-income and high-SDI regions, a
+finding that is consistent with recent research [@RN3]. This discrepancy likely reflects the United
+States' advanced diagnostic infrastructure and widespread access to healthcare services [@RN25],
+which facilitate superior case detection rather than a true increase in disease burden [@RN26;
+@RN27]. However, this also underscores a potential misalignment in healthcare priorities, where
+substantial resources may be disproportionately directed toward treatment and diagnostics rather
+than prevention and risk factor reduction [@RN28]. The persistently high incidence rates call for
+stronger public health strategies, given that recent studies indicate that approximately 80% of BC
+cases diagnosed over the past two decades are likely associated with identifiable preventable
+factors [@RN29]. In contrast, a study suggested that inherited genetic factors are estimated to
+account for only 7% of BC incidences in western populations [@RN30]. Given the substantial
+contribution of known environmental risk factors, BC represents a prime candidate for targeted
+public health policy preventive efforts, particularly in smoking cessation, occupational hazard mitigation,
+and environmental exposure reduction [@RN31].
+
+The age distribution analysis of BC incidence, DALYs, and mortality across the states from 1990 to
+2021 reveals a consistent pattern of increasing burden with advancing age, particularly
+in older age groups, consistent with previous findings [@RN3]. While age-specific trends 
+have remained relatively stable over time, 2021 data showed slightly elevated incidence and mortality in the
+oldest age groups across several states, including California, Texas, and Connecticut [Supporting Files](@sup-apc). 
+This can be partly due to the substantial aging of the overall population during this period, marked by a
+38.6% increase in the number of people aged 65 and older from 2010 to 2020 [@RN31]. In addition,
+recent trends show the oldest Americans (especially men 85+) are not experiencing the same mortality
+improvements as younger seniors. Notably, the most significant rise occurred in the 75-79 and 80+
+age groups, suggesting the cumulative impact of lifetime exposures and the biological role of aging
+[@RN32]. These findings suggest that while early detection and treatment may be improving overall
+outcomes, the burden in the elderly remains a critical public health concern [@RN19].
+
+Consistent with the broader literature, our own analysis confirms that men experience bladder burden rates
+of roughly four-fold higher than women [@RN22]. When we examined age-period curves
+across multiple states, the shapes of the age‐specific burden trajectories were
+somewhat similar for men and women in the sense that both sexes showed an exponential 
+rise after age 60, despite
+women having much lower rates and ASMR has fallen more slowly in women than men. In
+addition, studies have shown that female patients often present with more advanced disease and
+poorer outcomes [@RN33; @RN23; @RN21]. These gender disparities are not unexpected, and one
+explanation is that they may partly stem from previous studies suggesting that women with hematuria
+often experience delays in evaluation, as the symptom is frequently misattributed to urinary tract
+infections or gynecologic conditions [@RN33; @RN34]. To address these disparities, clinicians should
+implement the 2025 American Urological Association (AUA) guideline 
+updates [@RN35] in routine practice and consider the use of
+validated biomarkers for risk stratification, while primary care organizations are encouraged to
+adopt sex‑aware diagnostic protocols and systematically monitor referral patterns for hematuria in
+women.
+
+In addition, emerging research highlights key biological contributors to these disparities: men and
+women differ in immune surveillance, circulating hormone levels (and hormone receptor expression),
+and genetic/epigenetic alterations [@RN36]. For example, male hormone signaling may promote certain
+cancer pathways, while female biology (e.g. different immune responses) may influence tumor
+aggression [@RN37; @RN38]. Importantly, these intrinsic differences persist even after adjusting for
+known exposures, such as smoking and occupation [@RN8]. Ongoing studies of sex hormones, immune
+checkpoints, and genomic profiles aim to explain why men are so much more likely to develop bladder
+cancer and why women exhibit worse outcomes once diagnosed.
+
+Regarding geographic and demographic disparities in BC burden, consistent with our study,
+studies from United States
+show the highest incidence among males and in the Northeast region (e.g. Maine, New
+Hampshire, Vermont) [@RN16]. This pattern cannot be fully explained by smoking alone [@RN12]. In
+fact, researchers have linked elevated incidence in these New England states to environmental
+carcinogens, one of which is arsenic in drinking water using private domestic wells [@RN12; @RN13].
+Declines in Northeast BC rates over the past decade suggest improvements in water treatment [@RN39]
+and broader public health interventions. For example, in both Maine and New Jersey, household
+arsenic treatment systems, particularly those professionally installed and maintained, have
+achieved a substantial seven-fold reduction in arsenic exposure and associated cancer risk [@RN40].
+However, nearly 20% of these systems failed to reduce arsenic to acceptable levels, underscoring the
+importance of proper installation, routine maintenance, and ongoing monitoring to ensure sustained
+effectiveness [@RN40]. Another example is in an effort to reduce arsenic-related health risks such
+as BC, New Hampshire lowered its public drinking water arsenic standard to 5 µg/L, which is 
+half the federal Environmental Protection Agency (EPA)
+limit, through a law passed in 2019 and implemented in 2021 [@RN41]. Despite public health
+efforts, these states continue to lead in BC incidence partly due to the disease's long latency and
+lifetime cumulative arsenic exposure. Recent reductions in arsenic levels will take time to
+translate into lower rates, especially as many private wells still contain legacy contamination.
+
+By contrast, certain other regions exhibit disproportionately high mortality from BC even if
+incidence is not highest. For example, we found that Nevada and some southern states like West
+Virginia, Kentucky, and Alabama show some of the nation's highest ASMRs from BC, similar to previous
+studies [@RN42; @RN19]. The elevated BC mortality observed in the Southern states may be partly
+explained by the substantial burden of smoking-attributable cancer deaths in this region [@RN43]. In
+addition, the higher proportion of rural areas in southern states may contribute to increased
+mortality risk [@RN44; @RN45], potentially due to limited access to healthcare services and delayed
+cancer detection or treatment [@RN45]. Limited availability of healthcare providers and the need for
+long-distance travel to treatment centers can cause further delays [@RN46], while lower insurance
+coverage rates among rural residents have been reported as contributing factors to diagnostic delays
+in other cancers [@RN47]. On the contrary, Northeast's low uninsured rate [@RN48] may contribute to
+relatively lower BC mortality, despite the region's relatively high incidence rates. As a result, a
+regional "mismatch" becomes evident as states like those in New England exhibit high incidence but
+relatively low mortality, while others in the South and West experience persistently high death
+rates despite comparable or lower incidence.
+
+Hawaii stands out with one of the lowest state-level BC burden rates and trends. Several factors likely
+contribute to Hawaii's protective profile. The population is predominantly Asian/Pacific Islander,
+groups that historically have lower BC risk than non-Hispanic Whites [@RN49]. Hawaii also boasts low
+adult smoking prevalence [@RN50] and strong tobacco-control policies relative to many mainland
+states [@RN51]. Environmental exposures such as industrial chemicals, arsenic, pollutants, are generally
+less concentrated in Hawaii. In combination, these demographic and lifestyle differences along
+with relatively good access to healthcare and high rates of health insurance [@RN52] likely
+explain why Hawaii has the least BC burden despite excellent longevity. In summary, Hawaii's example
+underscores how reduced exposure to known risks (e.g. tobacco and toxins) and access to care can produce
+strikingly lower BC incidence and mortality.
+
+Strengths of our study include in the use of robust population-based data to examine
+state-level disparities and temporal trends in BC incidence and mortality across the United States.
+This study has several limitations that warrant consideration. The GBD
+analysis is constrained by the limited availability of high-quality primary data, necessitating the
+use of modeling techniques that may compromise predictive validity in settings where data are sparse
+or inconsistent. While the sophisticated data processing and statistical modeling methods employed
+by GBD collaborators help mitigate this issue, they also introduce an inherent level of uncertainty
+into the estimates. In addition, there is a lag in the availability of GBD data. As our analysis is
+based on data spanning 1990 to 2021, it may not fully capture the most recent trends in the burden
+of BC. Lastly, this study focuses primarily on the epidemiological patterns of BC and does not
+incorporate analyses of specific clinical aspects and risk factors, thereby limiting
+the ability to draw causal inferences.
+
+# Conclusions
+
+BC remains a significant public health challenge in the United States, marked by notable geographic,
+demographic, and sex-based disparities. Despite national declines in some burden measures,
+certain states continue to bear a disproportionate burden, driven by environmental exposures, aging
+populations, and limited healthcare access. Our analysis highlights the need for region-specific
+prevention policies, improved diagnostic equity, and robust surveillance systems. Addressing
+modifiable risk factors alongside expanding access to early detection and care, is crucial. Targeted
+public health initiatives and policies are essential to reduce disparities and alleviate the
+long-term burden of this costly and preventable disease.
+
+---
+
+> **Comments by Fatemeh**
+> 
+> [Delaware, and Nevada have shown rising or plateauing ASIRs and ASMRs. The trends shown in CDC
+except for NV ASMR are declining, probably because it's not age-adjusted. Anyway, focus on NV
+ASMR]
+> 
+> [States like the District of Columbia exhibited higher incidence and DALY rates in middle-aged males
+(50--69), potentially indicating early-life exposure to carcinogens or disparities in early
+diagnosis. This is not age adjusted, it can be just an increase in population]
+> 
+> [Among northeastern states, New York shows to have a shaper decline in ASIR and ASMR. (this may not
+be a good comparison, because of the rural population has more incidence and NYers don't use high
+domestic wells probably)]
+> 
+> [Health Economics Research: Conduct health economic analyses to assess the cost-effectiveness of
+shifting healthcare resources towards primary prevention and early detection, compared to the
+current disproportionate investment in late-stage treatment. Such research would provide crucial
+evidence for policy decisions aimed at optimizing public health spending and improving long-term
+outcomes for BC patients nationwide.]
+
+---
+
+
+# Supporting Files {.unnumbered}
+
+Supporting Files are available as appendices to the manuscript and 
+from the following URLs.
+
+1. Plots for historical trends (geographically faceted by states) 
+are available from the project's
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Geofacet%20plot).[](){#sup-geofacet}
+
+2. Population pyramid plots of each state's age- and gender-stratified
+burdens in 2021 are available from the project's
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Population%20pyramid%20-%202021).[](){#sup-pyramid2021} 
+
+3. Animated historical population pyramid plots of each state's
+age- and gender-stratified
+burdens are available from the project's
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Population%20pyramid%20-%20animated).[](){#sup-pyramidgif} 
+
+4. Bump plots ranking states based on their 
+burden statistics in 1990, 2000, 2010, and 2021 are available 
+from the project's 
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/Bump%20plot).[](){#sup-bump} 
+
+5. Line plots visualizing each state's age- and gender-stratified burdens
+across decades are available from the project's 
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd/tree/main/output/figures/APC%20plot%201).[](){#sup-apc}
+
+
+# Statements {.appendix}
+
+## Contributions {.appendix}
+
+```{r}
+#| label: contrib
+#| echo: false
+#| message: false
+#| warning: false
+#| results: asis
+
+
+authors <- rmarkdown::metadata$author
+
+df <- 
+  purrr::map_dfr(authors, function(a) {
+    tibble::tibble(
+      name = a$name,
+      role = unlist(a$roles)
+      )
+    })
+
+role_order <- df |>
+  dplyr::distinct(role) |>
+  dplyr::pull(role)
+
+for (r in role_order) {
+  people <- df |>
+    dplyr::filter(role == r) |>
+    dplyr::pull(name)
+
+  role_label <- stringr::str_to_sentence(r)
+
+  cat(
+    "**", role_label, ":** ",
+    paste(people, collapse = ", "),
+    "; ",
+    sep = ""
+  )
+}
+```
+
+## Acknowledgments {.appendix}
+
+The authors declare no conflicts of interest.
+
+## Transparency Statement {.appendix}
+
+The lead author, Alireza Sadeghi, affirms that this manuscript is an honest, accurate, and
+transparent account of the study being reported; that no important aspects of the study have been
+omitted; and that any discrepancies from the study as planned (and, if relevant, registered) have
+been explained.
+
+## Data Availability Statement {.appendix}
+
+The data utilized in this study are publicly available through the [Global Burden of Disease (GBD) Study 2021 repository](http://ghdx.healthdata.org/gbd-results-tool). 
+The data and code used to produce this manuscript 
+are available from the study's 
+[GitHub repository](https://github.com/alireza5969/bladder-cancer-gbd). 
+Data is available in R's native binary file format (RDS).
+To reproduce the manuscript and the results, 
+clone the project repository and render *index.qmd* file.
+
+## Conflicts of Interest {.appendix}
+
+The authors declare no conflicts of interest.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
+:::::
