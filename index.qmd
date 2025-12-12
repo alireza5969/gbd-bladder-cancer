@@ -7,7 +7,7 @@ author:
     orcid: 0000-0002-7950-3270
     email: alireza.sadeghi.md@gmail.com
     degrees: MD
-    affiliations: 
+    affiliations:
       - ref: shiraz
     roles: [conceptualization, data curation, formal analysis, investigation, methodology, software, visualization, writing – review & editing, writing – original draft]
   - name: Fatemeh Nouri
@@ -16,7 +16,7 @@ author:
     email: nouri.fatmh@gmail.com
     degrees: MD
     roles: [writing – review & editing, writing – original draft, investigation]
-    affiliations: 
+    affiliations:
       - ref: shiraz
   - name: Niloofar Dehdari Ebrahimi
     orcid: 0000-0002-9866-8361
@@ -24,7 +24,7 @@ author:
     email: niloofar.dehdari6021@gmail.com
     degrees: MD
     roles: [writing – original draft, writing – review & editing, data curation, investigation]
-    affiliations: 
+    affiliations:
       - ref: shiraz
   - name: Ehsan Taherifard
     orcid: 0000-0002-8438-4990
@@ -32,7 +32,7 @@ author:
     email: etaherim123@gmail.com
     degrees: MD
     roles: [writing – review & editing, resources, data curation, investigation]
-    affiliations: 
+    affiliations:
       - ref: shiraz
   - name: Wassim Kassouf
     corresponding: true
@@ -40,9 +40,9 @@ author:
     email: Wassim.Kassouf.med@ssss.gouv.qc.ca
     degrees: MD
     roles: [writing – review & editing, supervision, project administration, investigation]
-    affiliations: 
+    affiliations:
       - ref: mcgill
-affiliations: 
+affiliations:
   - id: shiraz
     name: Student Research Committee, Shiraz University of Medical Sciences, Shiraz, Iran
   - id: mcgill
@@ -1255,23 +1255,23 @@ Future research should integrate health economic analyses to evaluate the cost-e
 
 Supporting Files are provided as appendices to the manuscript and are also publicly accessible at the links below:
 
-1.  **Geographically faceted state-level trend plots:**  
+1.  **Geographically faceted state-level trend plots**  
     Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).[](){#sup-geofacet}
 
-2.  **State-level population pyramids (2021):**  
+2.  **State-level population pyramids (2021)**  
     Population pyramid plots depicting age- and sex-stratified bladder cancer burden for each U.S. state in 2021 are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021).[](){#sup-pyramid2021}
 
-3.  **Animated population pyramids:**  
+3.  **Animated population pyramids**  
     Animated population pyramid plots visualizing temporal changes in age- and sex-stratified bladder cancer burden for each U.S. state are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%20animated).[](){#sup-pyramidgif}
 
-4.  **State ranking bump plots:**  
+4.  **State ranking bump plots**  
     Bump plots ranking U.S. states according to bladder cancer burden metrics in 1990, 2000, 2010, and 2021 are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Bump%20plot).[](){#sup-bump}
 
-5.  **Age–period trend plots:**  
+5.  **Age–period trend plots**  
     Line plots illustrating age- and sex-stratified bladder cancer burden across calendar years for each U.S. state are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201).[](){#sup-apc}
 
