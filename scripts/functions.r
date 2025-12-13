@@ -724,6 +724,7 @@ apc_plot1 <-
       c("output/figures/APC plot 2/", file_name)
     
     if (file.exists(paste0(file_path, collapse = ""))) {return(NA)}
+    # if (!str_detect(location_name, "United")) {return(NA)}
     
     colpal <- 
       c(
@@ -745,7 +746,7 @@ apc_plot1 <-
       geom_line(linewidth = 2, alpha = .8) + 
       facet_wrap(~ sex_name) +
       theme_minimal(base_size = 20) + 
-      ylab("Rate") +
+      ylab(paste(measure_name, "(Rate)")) +
       scale_color_manual(values = colpal, name = "Year") + 
       theme(
         axis.text.x = element_text(
@@ -765,7 +766,7 @@ apc_plot1 <-
         axis.text.y = element_text(size = 20), 
         panel.spacing.x = unit(0, "cm"), 
         plot.background = element_rect(fill = "white", colour = "white"),
-        panel.background = element_rect(fill = "white", colour = "white"), 
+        panel.background = element_rect(fill = "gray98", colour = "white"), 
         plot.margin = margin(0, 0, 0, 0, "cm")
       )
     
@@ -781,6 +782,38 @@ apc_plot1 <-
       units = "cm", 
       dpi = 600
     )
+    
+    if (str_detect(location_name, "United")) {
+      patch_plots[[measure_name]] <<- plot
+    }
+    
+    
+  }
+
+
+layout_maker <- 
+  function(n) {
+    
+    layout <- vector("list", 3)
+    
+    for (i in 1:6) {
+      
+      item <- ceiling(i / 2)
+      subitem <- (i %% 2) + 1
+      
+      layout[[item]][subitem] <-
+        rep(LETTERS[i], n) %>% 
+        paste0(collapse = "")
+      
+    }
+    
+    
+    layout <- 
+      layout %>% 
+      map(\(x) paste0(x, collapse = "#")) %>% 
+      paste0(collapse = "\n")
+    
+    return(layout)
     
   }
 
