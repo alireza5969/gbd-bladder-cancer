@@ -1,5 +1,5 @@
 ---
-# commit message: minor text editions + US plots combined (#fig-pyramid and #fig-apc)
+# commit message: apc plots improved
 
 title: "Bladder Cancer in the United States: National Trends and State-Level Patterns from Global Burden of Disease (GBD), 1980-2021"
 subtitle: "Burden of Bladder Cancer in the United States"
@@ -360,9 +360,7 @@ pyramid_data <-
 
 patch_plots <- list()
 
-plan(multisession, workers = 6)
-
-future_pmap(
+pmap(
   pyramid_data, 
   \(data, measure_name, location_name) {
     
@@ -411,7 +409,6 @@ future_pmap(
   .progress = TRUE
   )
 
-plan(sequential)
 
 if (!is_empty(patch_plots)) {
   
@@ -554,9 +551,7 @@ apc_data <-
 
 patch_plots <- list()
 
-plan(multisession, workers = 4)
-
-future_map(
+map(
   list(
     apc_plot1, 
     apc_plot2
@@ -568,8 +563,6 @@ future_map(
   .progress = TRUE
   )
 
-plan(sequential)
-
 
 if (!is_empty(patch_plots)) {
   
@@ -578,8 +571,21 @@ if (!is_empty(patch_plots)) {
   patch_plot <- 
     wrap_plots(
       patch_plots,
-      design = layout_maker(25)
-    )
+      design = layout_maker(25),
+      guides = "collect"
+    ) &
+    theme(
+      legend.position = "top",
+      legend.text = element_text(size = 30),
+      # legend.key.size = unit(6, "cm"),
+      legend.key.width = unit(6, "cm"), 
+      legend.key.height = unit(3, "cm"),
+      legend.title = element_text(size = 30, face = "bold")
+      ) & 
+    guides(
+        color = guide_legend(
+          override.aes = list(linewidth = 6)
+      ))
 
   ggsave(
     plot= patch_plot,
@@ -592,8 +598,6 @@ if (!is_empty(patch_plots)) {
     )
   
 }
-
-
 
 
 ```

@@ -721,10 +721,10 @@ apc_plot1 <-
       paste0(".svg")
     
     file_path <- 
-      c("output/figures/APC plot 2/", file_name)
+      c("output/figures/APC plot 1/", file_name)
     
-    if (file.exists(paste0(file_path, collapse = ""))) {return(NA)}
-    # if (!str_detect(location_name, "United")) {return(NA)}
+    # if (file.exists(paste0(file_path, collapse = ""))) {return(NA)}
+    if (!str_detect(location_name, "United")) {return(NA)}
     
     colpal <- 
       c(
@@ -767,8 +767,13 @@ apc_plot1 <-
         panel.spacing.x = unit(0, "cm"), 
         plot.background = element_rect(fill = "white", colour = "white"),
         panel.background = element_rect(fill = "gray98", colour = "white"), 
-        plot.margin = margin(0, 0, 0, 0, "cm")
-      )
+        plot.margin = margin(0, 0, 0, 0, "cm"),
+        legend.text = element_text(size = 25)
+      ) + 
+      guides(
+        color = guide_legend(
+          override.aes = list(linewidth = 4)
+      ))
     
     
     
