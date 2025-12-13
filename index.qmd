@@ -1,4 +1,6 @@
 ---
+# commit message: apc plots improved
+
 title: "Bladder Cancer in the United States: National Trends and State-Level Patterns from Global Burden of Disease (GBD), 1980-2021"
 subtitle: "Burden of Bladder Cancer in the United States"
 author: 
@@ -101,7 +103,7 @@ library(paletteer)
 library(flextable)
 
 bladder_data <- 
-  paste0("data/", list.files("data", "rds")) %>%
+  list.files("data", "rds", full.names = TRUE) %>%
   map_df(read_rds, .progress = T) %>% 
   bind_rows()
 
@@ -356,9 +358,9 @@ pyramid_data <-
 
 ## Population pyramids for 2021
 
-plan(multisession, workers = 6)
+patch_plots <- list()
 
-future_pmap(
+pmap(
   pyramid_data, 
   \(data, measure_name, location_name) {
     
@@ -377,18 +379,20 @@ future_pmap(
     if (
       file.exists(
         paste0(
-          "output/figures/Population pyramid - 2021/", 
+          "output/figures/Population pyramid - 2021/",
           pyramid_filename
           )
         )
       ) {return()}
     
-    pyramid_plot(
-      data = data,
-      measure_name = measure_name
-      ) %>% 
+    plot <- 
+      pyramid_plot(
+        data = data,
+        measure_name = measure_name
+        )
+    
       ggsave(
-        plot = .,
+        plot = plot,
         device = "svg",
         path = "output/figures/Population pyramid - 2021/",
         filename = pyramid_filename,
@@ -397,11 +401,35 @@ future_pmap(
         units = "cm",
         dpi = 600
         )
+      
+      if (str_detect(pyramid_filename, "United")) {
+        patch_plots[[measure_name]] <<- plot
+      }
     },
   .progress = TRUE
   )
 
-plan(sequential)
+
+if (!is_empty(patch_plots)) {
+  
+  library(patchwork)
+  
+  patch_plot <- 
+    wrap_plots(patch_plots, ncol = 3, nrow = 2)
+  
+  ggsave(
+    plot= patch_plot,
+    filename = "US_combined_pyramic.svg", 
+    path =  "output/figures/",
+    device = "svg",
+    width = 30, 
+    height = 15 
+    )
+  
+  }
+
+
+
 
 ```
 
@@ -521,12 +549,55 @@ apc_data <-
   group_by(location_name, measure_name) %>% 
   nest
 
-plan(multisession, workers = 4)
+patch_plots <- list()
 
-future_map(list(apc_plot1, apc_plot2), \(x) pmap(apc_data, x), .progress = TRUE)
+map(
+  list(
+    apc_plot1, 
+    apc_plot2
+    ),
+  \(x) pmap(
+    apc_data, 
+    x
+    ),
+  .progress = TRUE
+  )
 
-plan(sequential)
 
+if (!is_empty(patch_plots)) {
+  
+  library(patchwork)
+  
+  patch_plot <- 
+    wrap_plots(
+      patch_plots,
+      design = layout_maker(25),
+      guides = "collect"
+    ) &
+    theme(
+      legend.position = "top",
+      legend.text = element_text(size = 30),
+      # legend.key.size = unit(6, "cm"),
+      legend.key.width = unit(6, "cm"), 
+      legend.key.height = unit(3, "cm"),
+      legend.title = element_text(size = 30, face = "bold")
+      ) & 
+    guides(
+        color = guide_legend(
+          override.aes = list(linewidth = 6)
+      ))
+
+  ggsave(
+    plot= patch_plot,
+    filename = "US_combined_apc.svg", 
+    path =  "output/figures/",
+    device = "svg",
+    width = 50, 
+    height = 37.5,
+    limitsize = FALSE
+    )
+  
+}
 
 
 ```
@@ -748,7 +819,7 @@ diff_abstract <-
 
 glue::glue_data(
   diff_abstract,
-  "In 2021, United States recorded age-standardized rates of {scales::number(2021, accuracy = 0.01)} for {readable_name}, which were {diff} than the 1990 records, respectively."
+  "In 2021, The U.S. recorded age-standardized rates of {scales::number(2021, accuracy = 0.01)} for {readable_name}, which were {diff} than the 1990 records, respectively."
 )
 
 
@@ -759,7 +830,7 @@ items <-
 # Create the final sentence
 final_sentence <-
   glue::glue(
-    "In 2021, United States recorded age-standardized rates of {knitr::combine_words(items, and = 'and ', sep = ', ')} compared to 1990 records."
+    "In 2021, The U.S. recorded age-standardized rates of {knitr::combine_words(items, and = 'and ', sep = ', ')} compared to 1990 records."
 )
 
 ```
@@ -815,8 +886,8 @@ table_base_url <-
 # Abstract
 
 **Background:** The U.S. has the highest health care expenditure globally; however, population health outcomes do not consistently reflect this level of investment. Examining long-term national and state-level trends, and benchmarking them against other health systems, can provide important insights for public health planning and policy development.  
-**Aim:** This study aimed to characterize temporal trends in the burden of bladder cancer, including prevalence, incidence, mortality, disability-adjusted life years, years lived with disability, and years of life lost, and to evaluate state-level disparities and potential long-term effects of health policies.  
-**Methodology:** Data were obtained from the Global Burden of Disease study. Age- and sex-stratified trends were analyzed and visualized at both national and state levels across the study period. Burden estimates were additionally compared with those of other major health systems, including the European Union, countries with high Socio-Demographic Index, and high-income settings.  
+**Aim:** This study aimed to characterize temporal trends in the burden of bladder cancer, including prevalence, incidence, mortality, disability-adjusted life years (DALYs), years lived with disability (YLDs), and years of life lost (YLLs), and to evaluate state-level disparities and potential long-term effects of health policies.  
+**Methodology:** Data were obtained from the Global Burden of Disease (GBD) 2021 study. Age- and sex-stratified trends were analyzed and visualized at both national and state levels across the study period. Burden estimates were additionally compared with those of other major health systems, including the European Union, countries with high socio-demographic index, and high-income settings.  
 **Results:** `r final_sentence`  
 **Conclusion:** Bladder cancer continues to impose a substantial and uneven burden across the U.S.. Reducing these disparities will require targeted public health strategies and region-specific policies that address modifiable risk factors, enhance diagnostic equity, and expand access to timely detection and appropriate care.
 
@@ -836,34 +907,34 @@ Substantial geographic heterogeneity in BC incidence and outcomes has been docum
 <!-- Additionally, while men are more frequently diagnosed, women often experience worse -->
 <!-- outcomes, including higher stage at diagnosis and lower survival rates [@RN21]. -->
 
-Despite these observations, most prior BC research has focused on national trends or single-institution cohorts, and contemporary age-standardized, state-level comparisons remain limited. Furthermore, although the Global Burden of Disease project produces comprehensive estimates of disability-adjusted life years, years lived with disability, and years of life lost for BC, these measures have been infrequently incorporated into disease-specific epidemiological analyses. As a result, non-fatal burden and broader health-system impacts remain underexplored. National studies indicate that men experience approximately three to four times higher BC incidence than women [@RN22], whereas women often present with more advanced disease and have poorer survival [@RN23]; however, the geographic distribution of these sex-specific disparities has not been systematically evaluated at the state level.
+Despite these observations, most prior BC research has focused on national trends or single-institution cohorts, and contemporary age-standardized, state-level comparisons remain limited. Furthermore, although the Global Burden of Disease (GBD) project produces comprehensive estimates of disability-adjusted life years (DALYs), years lived with disability (YLDs), and years of life lost (YLLs) for BC, these measures have been infrequently incorporated into disease-specific epidemiological analyses. As a result, non-fatal burden and broader health-system impacts remain underexplored. National studies indicate that men experience approximately three to four times higher BC incidence than women [@RN22], whereas women often present with more advanced disease and have poorer survival [@RN23]; however, the geographic distribution of these sex-specific disparities has not been systematically evaluated at the state level.
 
-To address these gaps, we use data from the Global Burden of Disease 2021 study, which provides internally consistent estimates of key BC burden metrics across all U.S. states. This predominantly descriptive analysis offers a comprehensive assessment of BC burden across geographic regions, time, and age groups, with the aim of informing state-level public health planning and prioritization.
+To address these gaps, we use data from the GBD 2021 study, which provides internally consistent estimates of key BC burden metrics across all U.S. states. This predominantly descriptive analysis offers a comprehensive assessment of BC burden across geographic regions, time, and age groups, with the aim of informing state-level public health planning and prioritization.
 
 
 # Methodology
 
 ## Study Design and Data Sources
 
-This population-based study used data from the Global Burden of Disease (GBD) 2021 database. The GBD provides comprehensive, internally consistent, and modeled estimates for diseases and injuries across all U.S. states, enabling standardized comparisons over time, geography, age, sex, and socioeconomic strata. These features make the GBD particularly well suited for examining disparities in bladder cancer (BC) burden at national and subnational levels [@ferrari2024; @naghavi2024]. All data are publicly available through the GBD Results Tool and GBD Exchange.
+This population-based study used data from the GBD 2021 database. The GBD provides comprehensive, internally consistent, and modeled estimates for diseases and injuries across all U.S. states, enabling standardized comparisons over time, geography, age, sex, and socioeconomic strata. These features make the GBD particularly well suited for examining disparities in BC burden at national and subnational levels [@ferrari2024; @naghavi2024]. All data are publicly available through the [Global Health Data Exchange (GHDx)](https://ghdx.healthdata.org/).
 
-We analyzed BC burden across all U.S. states from 1980 to 2021. Estimates for incidence, prevalence, mortality, years of life lost, years lived with disability, and disability-adjusted life years were extracted for males, females, both sexes combined, and all age groups. For international benchmarking, corresponding data were also retrieved for the European Union, high-income countries, and high Socio-Demographic Index regions. Both age-specific and age-standardized estimates were obtained for each metric. Results are reported as rates per 100,000 population with accompanying 95% uncertainty intervals, as generated by the GBD framework. This study adheres to the Guidelines for Accurate and Transparent Health Estimates Reporting statement.
+We analyzed BC burden across all U.S. states from 1980 to 2021. Estimates for incidence, prevalence, mortality, YLLs, YLDs, and DALYs were extracted for males, females, both sexes combined, and all age groups. For international benchmarking, corresponding data were also retrieved for the European Union, high-income countries, and high Socio-Demographic Index (SDI) regions. Both age-specific and age-standardized estimates were obtained for each metric. Results are reported as rates per 100,000 population with accompanying 95% uncertainty intervals, as generated by the GBD framework. This study adheres to the Guidelines for Accurate and Transparent Health Estimates Reporting statement.
 
 ## Definitions
 
 Bladder cancer  
-:   Defined in GBD 2021 using the International Classification of Diseases coding system: ICD-10 codes C67–C67.9 and ICD-9 codes 188–188.9, V10.51, V16.52, and V76.3 [@feigin2021; @ferrari2024].
+:   Defined in GBD 2021 using the International Classification of Diseases (ICD) coding system: ICD-10 codes C67–C67.9 and ICD-9 codes 188–188.9, V10.51, V16.52, and V76.3 [@feigin2021; @ferrari2024].
 
-Disability-adjusted life years  
-:   A summary measure of population health that quantifies the gap between current health status and an ideal standard in which the entire population lives to advanced age in full health. This metric combines years lived with disability and years of life lost due to premature mortality.
+Disability-adjusted life years (DALYs)  
+:   A summary measure of population health that quantifies the gap between current health status and an ideal standard in which the entire population lives to advanced age in full health. This metric combines YLDs and YLLs due to premature mortality.
 
-Years of life lost  
-:   The fatal component of disability-adjusted life years, reflecting the number of years lost due to death occurring before the reference life expectancy.
+Years of life lost (YLLs)  
+:   The fatal component of DALYs, reflecting the number of years lost due to death occurring before the reference life expectancy.
 
-Years lived with disability  
-:   The non-fatal component of disability-adjusted life years, representing time lived in health states less than full health, weighted by severity.
+Years lived with disability (YLDs)  
+:   The non-fatal component of DALYs, representing time lived in health states less than full health, weighted by severity.
 
-Socio-Demographic Index  
+Socio-Demographic Index (SDI)  
 :   A composite measure developed within the GBD framework that reflects levels of development based on income per capita, average educational attainment among individuals aged 15 years or older, and fertility rates among those younger than 25 years [@instituteforhealthmetricsandevaluation2024]. The index ranges from 0 to 1 and is used to classify countries or regions into five categories: low, low-middle, middle, high-middle, and high. High-SDI countries were included as one of the comparator groups in this study.
 
 Competing countries  
@@ -884,7 +955,7 @@ Age-standardized rates were calculated for each burden metric using the GBD 2021
 
 Uncertainty intervals reflect the GBD Bayesian modeling framework and are defined by the 2.5th and 97.5th percentiles of 500 posterior draws. These intervals account for multiple sources of uncertainty, including data sparsity, measurement error, and model specification [@naghavi2024].
 
-All analyses were conducted using R version 4.5.1 (2025-06-13 ucrt). A total of 28 R packages were used to support data acquisition, processing, visualization, analysis, and reproducibility [@allaire2024b; @allaire2024c; @atkins2025b; @attali2021a; @bååth2024a; @campitelli2025a; @chang2025a; @gohel2025a; @hafen2025; @hester2024; @hughes2022; @hvitfeldt2021; @müller2025; @pedersen2025; @richardson2025; @RJ-2021-048; @sievert2025; @sjoberg2020; @vaughan2022; @wickham2016; @wickham2019; @wickham2023; @wickham2025; @wilke2022; @xie2014a; @xie2015; @xie2018; @xie2020; @xie2025]. Complete analytic code, data-processing workflows, and supplementary materials are available in the study’s GitHub repository (https://github.com/alireza5969/gbd-bladder-cancer).
+All analyses were conducted using R version 4.5.1 (2025-06-13 ucrt). A total of 28 R packages were used to support data acquisition, processing, visualization, analysis, and reproducibility [@allaire2024b; @allaire2024c; @atkins2025b; @attali2021a; @bååth2024a; @campitelli2025a; @chang2025a; @gohel2025a; @hafen2025; @hester2024; @hughes2022; @hvitfeldt2021; @müller2025; @pedersen2025; @richardson2025; @RJ-2021-048; @sievert2025; @sjoberg2020; @vaughan2022; @wickham2016; @wickham2019; @wickham2023; @wickham2025; @wilke2022; @xie2014a; @xie2015; @xie2018; @xie2020; @xie2025]. To enable full reproducibility, complete analytic code, data-processing workflows, and supporting files are available in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer). 
 
 
 # Results
@@ -963,10 +1034,12 @@ max_vals_us_txt <-
 
 ```
 
+
+
 With peak age-standardized incidence and prevalence rates of `r max_vals_us_txt[1]` and
 `r max_vals_us_txt[2]` observed in 2011, the U.S. has exhibited persistently higher incidence and
 prevalence of BC compared with competing countries throughout most of the 1980–2021 period. In
-contrast, age-standardized rates of disability-adjusted life years, years of life lost, and
+contrast, age-standardized rates of DALYs, YLLs, and
 mortality in the U.S. have remained lower than those of comparator regions since the early 2000s.
 Notably, the pronounced and consistent declining trends observed in competing countries are largely
 absent in the U.S. Although these burden metrics have historically been lower in the U.S., competing
@@ -1046,8 +1119,8 @@ red_change_txt <-
 A complementary quantitative summary of the trends shown in @fig-performance is provided in
 @tbl-percentchange, which presents the percentage change in age-standardized rates between 1980 and
 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant
-reductions in disability-adjusted life years (`r green_change_txt[3]`, `r green_change_txt[2]`,
-`r green_change_txt[1]`, and `r green_change_txt[4]`) and years of life lost
+reductions in DALYs (`r green_change_txt[3]`, `r green_change_txt[2]`,
+`r green_change_txt[1]`, and `r green_change_txt[4]`) and YLLs
 (`r green_change_txt[10]`, `r green_change_txt[9]`, `r green_change_txt[8]`, and
 `r green_change_txt[11]`) across high-income and high-SDI countries, the European Union, and the U.S.,
 respectively. By contrast, while high-income and high-SDI countries and the European Union achieved
@@ -1103,25 +1176,31 @@ cat(pyramid_results_txt)
 
 ```
 
-::: {#fig-pyramid layout-ncol="3"}
-![Prevalence](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Prevalence_Rate.svg){#fig-pyramid-prevalence}
+<!-- ::: {#fig-pyramid layout-ncol="3"} -->
+<!-- ![Prevalence](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Prevalence_Rate.svg){#fig-pyramid-prevalence} -->
 
-![Incidence](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Incidence_Rate.svg){#fig-pyramid-incidence}
+<!-- ![Incidence](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Incidence_Rate.svg){#fig-pyramid-incidence} -->
 
-![Disability-Adjusted Life
-Year](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_DALYs_Rate.svg){#fig-pyramid-dalys}
+<!-- ![Disability-Adjusted Life -->
+<!-- Year](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_DALYs_Rate.svg){#fig-pyramid-dalys} -->
 
-![Years Lived with
-Disability](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLDs_Rate.svg){#fig-pyramid-ylds}
+<!-- ![Years Lived with -->
+<!-- Disability](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLDs_Rate.svg){#fig-pyramid-ylds} -->
 
-![Years of Life
-Lost](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLLs_Rate.svg){#fig-pyramid-ylls}
+<!-- ![Years of Life -->
+<!-- Lost](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLLs_Rate.svg){#fig-pyramid-ylls} -->
 
-![Mortality](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Deaths_Rate.svg){#fig-pyramid-deaths}
+<!-- ![Mortality](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Deaths_Rate.svg){#fig-pyramid-deaths} -->
 
-Population pyramids visualizing age-gender distribution of bladder cancer burden rates in United
-States.
-:::
+<!-- Population pyramids visualizing age-gender distribution of bladder cancer burden rates in United -->
+<!-- States. -->
+<!-- ::: -->
+
+![Population pyramids visualizing age-gender distribution of bladder cancer burden rates in the U.S.](output/figures/US_combined_pyramid.svg){#fig-pyramid}
+
+```         
+Abbreviations: `r measure_abbs`
+```
 
 State-level population pyramids depicting age-specific burden rates in 2021 are provided in
 [Supporting Files](#sup-pyramid2021) and in the study’s
@@ -1135,21 +1214,29 @@ burden rates across age groups over time. Comparable age–period visualizations
 available in [Supporting Files](#sup-apc) and on the study’s
 [GitHub page](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201).
 
-::: {#fig-apc layout-ncol="2"}
-![Prevalence](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Prevalence_Bladder%20Cancer_Rate.svg){#fig-apc-prevalence}
+<!-- ::: {#fig-apc layout-ncol="2"} -->
+<!-- ![Prevalence](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Prevalence_Bladder%20Cancer_Rate.svg){#fig-apc-prevalence} -->
 
-![Incidence](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Incidence_Bladder%20Cancer_Rate.svg){#fig-apc-incidence}
+<!-- ![Incidence](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Incidence_Bladder%20Cancer_Rate.svg){#fig-apc-incidence} -->
 
-![Disability-Adjusted Life Year](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_DALYs_Bladder%20Cancer_Rate.svg){#fig-apc-dalys}
+<!-- ![Disability-Adjusted Life Year](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_DALYs_Bladder%20Cancer_Rate.svg){#fig-apc-dalys} -->
 
-![Years Lived with Disability](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLDs_Bladder%20Cancer_Rate.svg){#fig-apc-ylds}
+<!-- ![Years Lived with Disability](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLDs_Bladder%20Cancer_Rate.svg){#fig-apc-ylds} -->
 
-![Years of Life Lost](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLLs_Bladder%20Cancer_Rate.svg){#fig-apc-ylls}
+<!-- ![Years of Life Lost](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLLs_Bladder%20Cancer_Rate.svg){#fig-apc-ylls} -->
 
-![Mortality](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Deaths_Bladder%20Cancer_Rate.svg){#fig-apc-deaths}
+<!-- ![Mortality](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Deaths_Bladder%20Cancer_Rate.svg){#fig-apc-deaths} -->
 
-Age-gender distribution of bladder cancer burden rates across decades in U.S.
-:::
+<!-- Age-gender distribution of bladder cancer burden rates across decades in U.S. -->
+<!-- ::: -->
+
+![Age-gender distribution of bladder cancer burden rates across decades in U.S.](output/figures/US_combined_apc.svg){#fig-apc}
+
+```         
+Abbreviations: `r measure_abbs`
+```
+
+
 
 ## Bladder Cancer Burden Across the U.S.
 
@@ -1193,8 +1280,8 @@ red_change_txt <-
 
 As shown in @tbl-percentchange, a limited number of states demonstrated meaningful reductions in BC
 burden over the study period. For example, New York exhibited some of the largest declines, including
-reductions in years of life lost (`r green_change_txt[2]` and `r green_change_txt[1]` in men and
-women, respectively), disability-adjusted life years (`r green_change_txt[6]` and
+reductions in YLLs (`r green_change_txt[2]` and `r green_change_txt[1]` in men and
+women, respectively), DALYs (`r green_change_txt[6]` and
 `r green_change_txt[4]` in men and women, respectively), and mortality among women
 (`r green_change_txt[5]`). In contrast, most states experienced no statistically significant change
 across key burden measures. New Mexico was the only state showing a significant increase, reporting
@@ -1202,7 +1289,7 @@ an elevated prevalence of BC by `r red_change_txt` among men.
 
 State-specific, sex-stratified temporal trends in age-standardized incidence rates are displayed in
 @fig-geofacet. Analogous geofaceted plots for age-standardized prevalence, mortality,
-disability-adjusted life years, years of life lost, and years lived with disability are provided in
+DALYs, YLLs, and YLDs are provided in
 [Supporting Files](#sup-geofacet) and in the study’s
 [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).
 
@@ -1214,32 +1301,32 @@ Abbreviations: `r paste0(c(state_abbs), collapse = "; ")`
 
 # Discussion
 
-This study used GBD 2021 data to characterize long-term trends in bladder cancer incidence, mortality, years of life lost, years lived with disability, and disability-adjusted life years in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in early detection, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates [Supporting Files](@sup-geofacet). These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.
+This study used GBD 2021 data to characterize long-term trends in BC incidence, mortality, YLLs, YLDs, and DALYs in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in early detection, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates [Supporting Files](@sup-geofacet). These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.
 
-Despite having one of the highest per-capita healthcare expenditures globally [@RN24], the U.S. continues to report comparatively high age-standardized incidence rates of bladder cancer relative to many high-income and high-SDI regions, consistent with prior reports [@RN3]. This pattern likely reflects the country’s advanced diagnostic capacity and widespread use of cystoscopy and imaging, which facilitate more complete case ascertainment rather than a true excess in underlying disease risk [@RN25; @RN26; @RN27]. At the same time, this discrepancy highlights a potential imbalance in healthcare priorities, with disproportionate emphasis on diagnosis and treatment relative to prevention and risk reduction [@RN28]. The persistently high incidence is particularly concerning given evidence that up to 80% of bladder cancer cases diagnosed over the past two decades may be attributable to preventable exposures [@RN29], whereas inherited genetic factors account for only a small proportion of cases in Western populations [@RN30]. Together, these findings underscore the importance of strengthening prevention-oriented public health strategies, including smoking cessation, occupational safety, and mitigation of environmental carcinogen exposure [@RN31].
+Despite having one of the highest per-capita healthcare expenditures globally [@RN24], the U.S. continues to report comparatively high age-standardized incidence rates of BC relative to many high-income and high-SDI regions, consistent with prior reports [@RN3]. This pattern likely reflects the country’s advanced diagnostic capacity and widespread use of cystoscopy and imaging, which facilitate more complete case ascertainment rather than a true excess in underlying disease risk [@RN25; @RN26; @RN27]. At the same time, this discrepancy highlights a potential imbalance in healthcare priorities, with disproportionate emphasis on diagnosis and treatment relative to prevention and risk reduction [@RN28]. The persistently high incidence is particularly concerning given evidence that up to 80% of BC cases diagnosed over the past two decades may be attributable to preventable exposures [@RN29], whereas inherited genetic factors account for only a small proportion of cases in Western populations [@RN30]. Together, these findings underscore the importance of strengthening prevention-oriented public health strategies, including smoking cessation, occupational safety, and mitigation of environmental carcinogen exposure [@RN31].
 
-Age-specific analyses revealed a consistent increase in bladder cancer incidence, mortality, and disability-adjusted life years with advancing age across all states, in line with prior literature [@RN3]. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the oldest age groups in several populous states, including California, Texas, and Connecticut [Supporting Files](@sup-apc). This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 [@RN31]. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older [@RN32]. These findings indicate that, despite overall progress, the burden of bladder cancer among older adults remains a critical public health challenge.
+Age-specific analyses revealed a consistent increase in BC incidence, mortality, and DALYs with advancing age across all states, in line with prior literature [@RN3]. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the oldest age groups in several populous states, including California, Texas, and Connecticut [Supporting Files](@sup-apc). This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 [@RN31]. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older [@RN32]. These findings indicate that, despite overall progress, the burden of BC among older adults remains a critical public health challenge.
 
-Consistent with prior studies, our analysis confirms that men experience bladder cancer burden rates approximately four times higher than women [@RN22]. Age–period analyses across states revealed broadly similar age-related trajectories in both sexes, characterized by a sharp rise after age 60; however, women consistently exhibited lower absolute rates and a slower decline in mortality over time. Previous studies have shown that women are more likely to present with advanced disease and have poorer survival outcomes [@RN33; @RN23; @RN21]. One contributing factor may be delayed evaluation of hematuria in women, as symptoms are more frequently attributed to urinary tract infections or gynecologic conditions [@RN33; @RN34]. Addressing these disparities will require improved adherence to updated clinical guidelines, including the 2025 American Urological Association recommendations [@RN35], alongside the incorporation of validated biomarkers for risk stratification and the adoption of sex-aware diagnostic pathways in primary care settings.
+Consistent with prior studies, our analysis confirms that men experience BC burden rates approximately four times higher than women [@RN22]. Age–period analyses across states revealed broadly similar age-related trajectories in both sexes, characterized by a sharp rise after age 60; however, women consistently exhibited lower absolute rates and a slower decline in mortality over time. Previous studies have shown that women are more likely to present with advanced disease and have poorer survival outcomes [@RN33; @RN23; @RN21]. One contributing factor may be delayed evaluation of hematuria in women, as symptoms are more frequently attributed to urinary tract infections or gynecologic conditions [@RN33; @RN34]. Addressing these disparities will require improved adherence to updated clinical guidelines, including the 2025 American Urological Association recommendations [@RN35], alongside the incorporation of validated biomarkers for risk stratification and the adoption of sex-aware diagnostic pathways in primary care settings.
 
-Beyond healthcare delivery factors, emerging evidence points to biological mechanisms underlying sex-based disparities in bladder cancer. Differences in immune surveillance, hormonal milieu, hormone receptor signaling, and genetic or epigenetic alterations have been implicated [@RN36]. For example, androgen signaling may promote oncogenic pathways in men, whereas sex-specific immune responses may influence tumor behavior and progression in women [@RN37; @RN38]. Importantly, these differences persist even after adjustment for known exposures such as smoking and occupational hazards [@RN8]. Ongoing research into sex hormones, immune checkpoints, and tumor genomics may help clarify why men are disproportionately affected by bladder cancer and why women experience worse outcomes once diagnosed.
+Beyond healthcare delivery factors, emerging evidence points to biological mechanisms underlying sex-based disparities in BC. Differences in immune surveillance, hormonal milieu, hormone receptor signaling, and genetic or epigenetic alterations have been implicated [@RN36]. For example, androgen signaling may promote oncogenic pathways in men, whereas sex-specific immune responses may influence tumor behavior and progression in women [@RN37; @RN38]. Importantly, these differences persist even after adjustment for known exposures such as smoking and occupational hazards [@RN8]. Ongoing research into sex hormones, immune checkpoints, and tumor genomics may help clarify why men are disproportionately affected by BC and why women experience worse outcomes once diagnosed.
 
-Geographic disparities observed in this study align with previous reports demonstrating the highest bladder cancer incidence among men and in Northeastern states, including Maine, New Hampshire, and Vermont [@RN16]. These patterns cannot be explained by smoking alone [@RN12]. Environmental carcinogens, particularly arsenic contamination of drinking water from private domestic wells, have been implicated in elevated incidence in New England [@RN12; @RN13]. 
-Recent declines in incidence in some Northeastern states may reflect improvements in water treatment and broader public health interventions [@RN39]. For example, professionally installed and maintained household arsenic treatment systems in Maine and New Jersey have achieved substantial reductions in exposure and associated cancer risk [@RN40], although incomplete effectiveness in a subset of systems highlights the need for continued monitoring and maintenance. Regulatory actions, such as New Hampshire’s adoption of a stricter arsenic standard for public drinking water in 2021 [@RN41], represent important steps toward long-term risk reduction, although the long latency of bladder cancer means that benefits may take decades to fully emerge.
+Geographic disparities observed in this study align with previous reports demonstrating the highest BC incidence among men and in Northeastern states, including Maine, New Hampshire, and Vermont [@RN16]. These patterns cannot be explained by smoking alone [@RN12]. Environmental carcinogens, particularly arsenic contamination of drinking water from private domestic wells, have been implicated in elevated incidence in New England [@RN12; @RN13]. 
+Recent declines in incidence in some Northeastern states may reflect improvements in water treatment and broader public health interventions [@RN39]. For example, professionally installed and maintained household arsenic treatment systems in Maine and New Jersey have achieved substantial reductions in exposure and associated cancer risk [@RN40], although incomplete effectiveness in a subset of systems highlights the need for continued monitoring and maintenance. Regulatory actions, such as New Hampshire’s adoption of a stricter arsenic standard for public drinking water in 2021 [@RN41], represent important steps toward long-term risk reduction, although the long latency of BC means that benefits may take decades to fully emerge.
 However, interstate comparisons within the Northeast should be interpreted cautiously. States such as New York differ substantially from more rural neighboring states in terms of population density, reliance on private domestic wells, and patterns of environmental exposure, which may partially explain observed differences in temporal trends independent of policy effectiveness.
 
 
-In contrast, several states in the South and West exhibit disproportionately high bladder cancer mortality despite more moderate incidence. Nevada and Southern states such as West Virginia, Kentucky, and Alabama demonstrated some of the highest age-standardized mortality rates, consistent with prior studies [@RN42; @RN19]. Elevated mortality in these regions may reflect higher smoking-attributable cancer burdens [@RN43], greater rurality [@RN44; @RN45], and reduced access to timely diagnostic and treatment services [@RN45; @RN46]. Lower insurance coverage and longer travel distances to specialized care centers may further contribute to delayed diagnosis and worse outcomes [@RN47]. By contrast, the Northeast’s relatively low uninsured rates [@RN48] may partially explain why states in this region experience high incidence but comparatively lower mortality, resulting in a clear regional mismatch between disease occurrence and survival.
+In contrast, several states in the South and West exhibit disproportionately high BC mortality despite more moderate incidence. Nevada and Southern states such as West Virginia, Kentucky, and Alabama demonstrated some of the highest age-standardized mortality rates, consistent with prior studies [@RN42; @RN19]. Elevated mortality in these regions may reflect higher smoking-attributable cancer burdens [@RN43], greater rurality [@RN44; @RN45], and reduced access to timely diagnostic and treatment services [@RN45; @RN46]. Lower insurance coverage and longer travel distances to specialized care centers may further contribute to delayed diagnosis and worse outcomes [@RN47]. By contrast, the Northeast’s relatively low uninsured rates [@RN48] may partially explain why states in this region experience high incidence but comparatively lower mortality, resulting in a clear regional mismatch between disease occurrence and survival.
 
-Hawaii represents a notable outlier, with consistently low bladder cancer incidence and mortality. Several factors likely contribute to this favorable profile, including a predominantly Asian and Pacific Islander population, which has historically lower bladder cancer risk compared with non-Hispanic White populations [@RN49], low adult smoking prevalence [@RN50], and strong tobacco control policies [@RN51]. In addition, industrial and environmental carcinogen exposures are generally less prevalent, and access to healthcare and insurance coverage is relatively high [@RN52]. Together, these demographic, behavioral, and structural factors likely explain Hawaii’s consistently low bladder cancer burden, underscoring the potential impact of comprehensive prevention and access-to-care strategies.
+Hawaii represents a notable outlier, with consistently low BC incidence and mortality. Several factors likely contribute to this favorable profile, including a predominantly Asian and Pacific Islander population, which has historically lower BC risk compared with non-Hispanic White populations [@RN49], low adult smoking prevalence [@RN50], and strong tobacco control policies [@RN51]. In addition, industrial and environmental carcinogen exposures are generally less prevalent, and access to healthcare and insurance coverage is relatively high [@RN52]. Together, these demographic, behavioral, and structural factors likely explain Hawaii’s consistently low BC burden, underscoring the potential impact of comprehensive prevention and access-to-care strategies.
 
-The strengths of this study include the use of robust, population-based estimates to examine long-term temporal trends and state-level disparities in bladder cancer burden across the U.S. Nevertheless, several limitations merit consideration. GBD estimates rely on modeled data due to incomplete or heterogeneous primary data sources, which may introduce uncertainty, particularly in states with sparse reporting. Although advanced statistical methods are used to mitigate these limitations, some degree of imprecision is unavoidable. Additionally, the inherent lag in GBD data availability means that trends beyond 2021 are not captured. Finally, this analysis is primarily descriptive and does not directly evaluate individual-level risk factors or clinical characteristics, limiting causal inference regarding the drivers of observed patterns.
+The strengths of this study include the use of robust, population-based estimates to examine long-term temporal trends and state-level disparities in BC burden across the U.S. Nevertheless, several limitations merit consideration. GBD estimates rely on modeled data due to incomplete or heterogeneous primary data sources, which may introduce uncertainty, particularly in states with sparse reporting. Although advanced statistical methods are used to mitigate these limitations, some degree of imprecision is unavoidable. Additionally, the inherent lag in GBD data availability means that trends beyond 2021 are not captured. Finally, this analysis is primarily descriptive and does not directly evaluate individual-level risk factors or clinical characteristics, limiting causal inference regarding the drivers of observed patterns.
 Most of the trends reported in this study are age-standardized; therefore, discrepancies with surveillance systems that report crude or partially adjusted rates, such as some Centers for Disease Control and Prevention (CDC) summaries, likely reflect methodological differences rather than true epidemiological disagreement. Notably, Nevada remained among the states with persistently elevated mortality trends even after age standardization.
 
 
 # Conclusions
 
-Bladder cancer remains a major public health challenge in the U.S., characterized by pronounced
+BC remains a major public health challenge in the U.S., characterized by pronounced
 geographic, demographic, and sex-based disparities. Although national trends indicate modest
 improvements in several burden measures, substantial heterogeneity persists across states, with
 disproportionate burden in regions affected by environmental exposures, population aging, and
@@ -1248,7 +1335,7 @@ strategies, improved diagnostic equity, and strengthened surveillance systems. P
 modifiable risk factor reduction alongside expanded access to timely detection and high-quality
 care will be essential to reducing disparities and mitigating the long-term burden of this costly
 and largely preventable disease.
-Future research should integrate health economic analyses to evaluate the cost-effectiveness of reallocating healthcare resources toward primary prevention and early detection, relative to the current emphasis on late-stage treatment. Such work could provide critical evidence to inform policy decisions aimed at optimizing healthcare spending while reducing the long-term burden of bladder cancer in the U.S.
+Future research should integrate health economic analyses to evaluate the cost-effectiveness of reallocating healthcare resources toward primary prevention and early detection, relative to the current emphasis on late-stage treatment. Such work could provide critical evidence to inform policy decisions aimed at optimizing healthcare spending while reducing the long-term burden of BC in the U.S.
 
 
 # Supporting Files {.unnumbered}
@@ -1330,7 +1417,7 @@ been explained.
 
 ## Data Availability Statement {.appendix}
 
-All data used in this study are publicly available from the Global Burden of Disease (GBD) Study 2021 through the [GBD Results Tool](http://ghdx.healthdata.org/gbd-results-tool). The complete analytic workflow, including cleaned datasets and all code required to reproduce the analyses, figures, and tables presented in this manuscript, is available in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer). Data are provided in R’s native binary format (RDS). Full reproducibility can be achieved by cloning the repository and rendering the project using the supplied scripts and documentation.
+All data are publicly available through the [Global Health Data Exchange (GHDx)](https://ghdx.healthdata.org/). The complete analytic workflow, including cleaned datasets and all code required to reproduce the analyses, figures, and tables presented in this manuscript, is available in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer). Data are provided in R’s native binary format (RDS). Full reproducibility can be achieved by cloning the repository and rendering the project using the supplied scripts and documentation.
 
 ## Conflicts of Interest {.appendix}
 

@@ -704,7 +704,7 @@ Attaching package: 'flextable'</code></pre>
     compose</code></pre>
 </div>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>bladder_data <span class="ot">&lt;-</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">paste0</span>(<span class="st">"data/"</span>, <span class="fu">list.files</span>(<span class="st">"data"</span>, <span class="st">"rds"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list.files</span>(<span class="st">"data"</span>, <span class="st">"rds"</span>, <span class="at">full.names =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_df</span>(read_rds, <span class="at">.progress =</span> T) <span class="sc">%&gt;%</span> </span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bind_rows</span>()</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
@@ -931,72 +931,87 @@ Attaching package: 'flextable'</code></pre>
 <div class="cell-container"><div class="cell-decorator"><pre>In [7]:</pre></div><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Population pyramids for 2021</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning in checkNumberOfLocalWorkers(workers): Careful, you are setting up 6
-localhost parallel workers with only 4 CPU cores available for this R process
-(per 'system'), which could result in a 150% load. The soft limit is set to
-100%. Overusing the CPUs has negative impact on the current R process, but also
-on all other processes of yours and others running on the same machine. See
-help("parallelly.maxWorkers.localhost", package = "parallelly") for further
-explanations and how to override the soft limit that triggered this warning</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">future_pmap</span>(</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  pyramid_data, </span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  \(data, measure_name, location_name) {</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    pyramid_filename <span class="ot">&lt;-</span> </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(</span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>          <span class="st">"fig_C"</span>,</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>          location_name, </span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Bladder cancer"</span>,</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>          measure_name, </span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Rate.svg"</span></span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>          ), </span>
-<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="at">collapse =</span> <span class="st">"_"</span></span>
-<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (</span>
-<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>      <span class="fu">file.exists</span>(</span>
-<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(</span>
-<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>          <span class="st">"output/figures/Population pyramid - 2021/"</span>, </span>
-<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>          pyramid_filename</span>
-<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>          )</span>
-<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>      ) {<span class="fu">return</span>()}</span>
-<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">pyramid_plot</span>(</span>
-<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">data =</span> data,</span>
-<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">measure_name =</span> measure_name</span>
-<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
-<span id="cb18-30"><a href="#cb18-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggsave</span>(</span>
-<span id="cb18-31"><a href="#cb18-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot =</span> .,</span>
-<span id="cb18-32"><a href="#cb18-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">device =</span> <span class="st">"svg"</span>,</span>
-<span id="cb18-33"><a href="#cb18-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">path =</span> <span class="st">"output/figures/Population pyramid - 2021/"</span>,</span>
-<span id="cb18-34"><a href="#cb18-34" aria-hidden="true" tabindex="-1"></a>        <span class="at">filename =</span> pyramid_filename,</span>
-<span id="cb18-35"><a href="#cb18-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">width =</span> <span class="dv">25</span>,</span>
-<span id="cb18-36"><a href="#cb18-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">height =</span> <span class="dv">25</span>,</span>
-<span id="cb18-37"><a href="#cb18-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">units =</span> <span class="st">"cm"</span>,</span>
-<span id="cb18-38"><a href="#cb18-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">dpi =</span> <span class="dv">600</span></span>
-<span id="cb18-39"><a href="#cb18-39" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb18-40"><a href="#cb18-40" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb18-41"><a href="#cb18-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
-<span id="cb18-42"><a href="#cb18-42" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb18-43"><a href="#cb18-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-44"><a href="#cb18-44" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>patch_plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">pmap</span>(</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  pyramid_data, </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  \(data, measure_name, location_name) {</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    pyramid_filename <span class="ot">&lt;-</span> </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>          <span class="st">"fig_C"</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>          location_name, </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Bladder cancer"</span>,</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>          measure_name, </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Rate.svg"</span></span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>          ), </span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        <span class="at">collapse =</span> <span class="st">"_"</span></span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>      <span class="fu">file.exists</span>(</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>        <span class="fu">paste0</span>(</span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>          <span class="st">"output/figures/Population pyramid - 2021/"</span>,</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>          pyramid_filename</span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a>          )</span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>      ) {<span class="fu">return</span>()}</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    plot <span class="ot">&lt;-</span> </span>
+<span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pyramid_plot</span>(</span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> data,</span>
+<span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">measure_name =</span> measure_name</span>
+<span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>      <span class="fu">ggsave</span>(</span>
+<span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot =</span> plot,</span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">device =</span> <span class="st">"svg"</span>,</span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>        <span class="at">path =</span> <span class="st">"output/figures/Population pyramid - 2021/"</span>,</span>
+<span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>        <span class="at">filename =</span> pyramid_filename,</span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>        <span class="at">width =</span> <span class="dv">25</span>,</span>
+<span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a>        <span class="at">height =</span> <span class="dv">25</span>,</span>
+<span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">units =</span> <span class="st">"cm"</span>,</span>
+<span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>        <span class="at">dpi =</span> <span class="dv">600</span></span>
+<span id="cb16-45"><a href="#cb16-45" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb16-46"><a href="#cb16-46" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb16-47"><a href="#cb16-47" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="fu">str_detect</span>(pyramid_filename, <span class="st">"United"</span>)) {</span>
+<span id="cb16-48"><a href="#cb16-48" aria-hidden="true" tabindex="-1"></a>        patch_plots[[measure_name]] <span class="ot">&lt;&lt;-</span> plot</span>
+<span id="cb16-49"><a href="#cb16-49" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb16-50"><a href="#cb16-50" aria-hidden="true" tabindex="-1"></a>    },</span>
+<span id="cb16-51"><a href="#cb16-51" aria-hidden="true" tabindex="-1"></a>  <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
+<span id="cb16-52"><a href="#cb16-52" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-54"><a href="#cb16-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-55"><a href="#cb16-55" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is_empty</span>(patch_plots)) {</span>
+<span id="cb16-56"><a href="#cb16-56" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-57"><a href="#cb16-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(patchwork)</span>
+<span id="cb16-58"><a href="#cb16-58" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-59"><a href="#cb16-59" aria-hidden="true" tabindex="-1"></a>  patch_plot <span class="ot">&lt;-</span> </span>
+<span id="cb16-60"><a href="#cb16-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wrap_plots</span>(patch_plots, <span class="at">ncol =</span> <span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb16-61"><a href="#cb16-61" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-62"><a href="#cb16-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(</span>
+<span id="cb16-63"><a href="#cb16-63" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot=</span> patch_plot,</span>
+<span id="cb16-64"><a href="#cb16-64" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="st">"US_combined_pyramic.svg"</span>, </span>
+<span id="cb16-65"><a href="#cb16-65" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span>  <span class="st">"output/figures/"</span>,</span>
+<span id="cb16-66"><a href="#cb16-66" aria-hidden="true" tabindex="-1"></a>    <span class="at">device =</span> <span class="st">"svg"</span>,</span>
+<span id="cb16-67"><a href="#cb16-67" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">30</span>, </span>
+<span id="cb16-68"><a href="#cb16-68" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="dv">15</span> </span>
+<span id="cb16-69"><a href="#cb16-69" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-70"><a href="#cb16-70" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb16-71"><a href="#cb16-71" aria-hidden="true" tabindex="-1"></a>  }</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [8]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Population pyramid - animated 1980-2021</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> </span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  bladder_data <span class="sc">%&gt;%</span> </span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(year) <span class="sc">%&gt;%</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  pull</span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Population pyramid - animated 1980-2021</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>years <span class="ot">&lt;-</span> </span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  bladder_data <span class="sc">%&gt;%</span> </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  pull</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">6</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in checkNumberOfLocalWorkers(workers): Careful, you are setting up 6
 localhost parallel workers with only 4 CPU cores available for this R process
@@ -1006,105 +1021,192 @@ on all other processes of yours and others running on the same machine. See
 help("parallelly.maxWorkers.localhost", package = "parallelly") for further
 explanations and how to override the soft limit that triggered this warning</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">future_pmap</span>(pyramid_data,</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  \(</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    data,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    measure_name,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    location_name</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  ) {</span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    file_name <span class="ot">&lt;-</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(</span>
-<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>          location_name,</span>
-<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Bladder cancer"</span>,</span>
-<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>          measure_name,</span>
-<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Rate"</span></span>
-<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">collapse =</span> <span class="st">"_"</span></span>
-<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
-<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output/figures/Population pyramid - animated/fig_E_"</span>,</span>
-<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>        ., </span>
-<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">".gif"</span></span>
-<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">file.exists</span>(file_name)) {<span class="fu">return</span>(<span class="cn">NA</span>)}</span>
-<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">library</span>(gganimate)</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    plot <span class="ot">&lt;-</span> </span>
-<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pyramid_plot</span>(</span>
-<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> data, </span>
-<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">measure_name =</span> measure_name, </span>
-<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">year =</span> years</span>
-<span id="cb21-34"><a href="#cb21-34" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb21-35"><a href="#cb21-35" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-36"><a href="#cb21-36" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-37"><a href="#cb21-37" aria-hidden="true" tabindex="-1"></a>    iserror <span class="ot">&lt;-</span> </span>
-<span id="cb21-38"><a href="#cb21-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tryCatch</span>(</span>
-<span id="cb21-39"><a href="#cb21-39" aria-hidden="true" tabindex="-1"></a>        {</span>
-<span id="cb21-40"><a href="#cb21-40" aria-hidden="true" tabindex="-1"></a>          <span class="fu">ggplot_build</span>(plot)</span>
-<span id="cb21-41"><a href="#cb21-41" aria-hidden="true" tabindex="-1"></a>          <span class="cn">FALSE</span></span>
-<span id="cb21-42"><a href="#cb21-42" aria-hidden="true" tabindex="-1"></a>        },</span>
-<span id="cb21-43"><a href="#cb21-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb21-44"><a href="#cb21-44" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span></span>
-<span id="cb21-45"><a href="#cb21-45" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb21-46"><a href="#cb21-46" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb21-47"><a href="#cb21-47" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-48"><a href="#cb21-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (iserror) {</span>
-<span id="cb21-49"><a href="#cb21-49" aria-hidden="true" tabindex="-1"></a>      beepr<span class="sc">::</span><span class="fu">beep</span>()</span>
-<span id="cb21-50"><a href="#cb21-50" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb21-51"><a href="#cb21-51" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-52"><a href="#cb21-52" aria-hidden="true" tabindex="-1"></a>    plot <span class="ot">&lt;-</span></span>
-<span id="cb21-53"><a href="#cb21-53" aria-hidden="true" tabindex="-1"></a>      plot <span class="sc">+</span></span>
-<span id="cb21-54"><a href="#cb21-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">transition_time</span>(year) <span class="sc">+</span></span>
-<span id="cb21-55"><a href="#cb21-55" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Year: {as.integer(frame_time)}'</span>) </span>
-<span id="cb21-56"><a href="#cb21-56" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-57"><a href="#cb21-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">anim_save</span>(</span>
-<span id="cb21-58"><a href="#cb21-58" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> file_name,</span>
-<span id="cb21-59"><a href="#cb21-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">animation =</span> plot,  </span>
-<span id="cb21-60"><a href="#cb21-60" aria-hidden="true" tabindex="-1"></a>      <span class="at">device =</span> <span class="st">"png"</span>,</span>
-<span id="cb21-61"><a href="#cb21-61" aria-hidden="true" tabindex="-1"></a>      <span class="at">width =</span> <span class="dv">25</span>,</span>
-<span id="cb21-62"><a href="#cb21-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">height =</span> <span class="dv">25</span>, </span>
-<span id="cb21-63"><a href="#cb21-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">units =</span> <span class="st">"cm"</span>, </span>
-<span id="cb21-64"><a href="#cb21-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">res =</span> <span class="dv">300</span></span>
-<span id="cb21-65"><a href="#cb21-65" aria-hidden="true" tabindex="-1"></a>    ) </span>
-<span id="cb21-66"><a href="#cb21-66" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-67"><a href="#cb21-67" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb21-68"><a href="#cb21-68" aria-hidden="true" tabindex="-1"></a>  }, </span>
-<span id="cb21-69"><a href="#cb21-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
-<span id="cb21-70"><a href="#cb21-70" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb21-71"><a href="#cb21-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-72"><a href="#cb21-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-73"><a href="#cb21-73" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">future_pmap</span>(pyramid_data,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  \(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    data,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    measure_name,</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    location_name</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  ) {</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    file_name <span class="ot">&lt;-</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>          location_name,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Bladder cancer"</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>          measure_name,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>          <span class="st">"Rate"</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>        <span class="at">collapse =</span> <span class="st">"_"</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">paste0</span>(</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>        <span class="st">"output/figures/Population pyramid - animated/fig_E_"</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>        ., </span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>        <span class="st">".gif"</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">file.exists</span>(file_name)) {<span class="fu">return</span>(<span class="cn">NA</span>)}</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">library</span>(gganimate)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    plot <span class="ot">&lt;-</span> </span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>      <span class="fu">pyramid_plot</span>(</span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>        <span class="at">data =</span> data, </span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>        <span class="at">measure_name =</span> measure_name, </span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>        <span class="at">year =</span> years</span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a>    iserror <span class="ot">&lt;-</span> </span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>      <span class="fu">tryCatch</span>(</span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>          <span class="fu">ggplot_build</span>(plot)</span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>          <span class="cn">FALSE</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>        <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>          <span class="cn">TRUE</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (iserror) {</span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>      beepr<span class="sc">::</span><span class="fu">beep</span>()</span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>    plot <span class="ot">&lt;-</span></span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a>      plot <span class="sc">+</span></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>      <span class="fu">transition_time</span>(year) <span class="sc">+</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>      <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Year: {as.integer(frame_time)}'</span>) </span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>    <span class="fu">anim_save</span>(</span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>      <span class="at">filename =</span> file_name,</span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>      <span class="at">animation =</span> plot,  </span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>      <span class="at">device =</span> <span class="st">"png"</span>,</span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>      <span class="at">width =</span> <span class="dv">25</span>,</span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>      <span class="at">height =</span> <span class="dv">25</span>, </span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>      <span class="at">units =</span> <span class="st">"cm"</span>, </span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a>      <span class="at">res =</span> <span class="dv">300</span></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>    ) </span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>  }, </span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a>  <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [9]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># APC Plots</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>apc_data <span class="ot">&lt;-</span> </span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  bladder_data <span class="sc">%&gt;%</span> </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1990</span>, <span class="dv">2000</span>, <span class="dv">2010</span>, <span class="dv">2021</span>),</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    age_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">21</span>),</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    location_id <span class="sc">%in%</span> <span class="fu">c</span>(stateids, <span class="dv">102</span>),</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    sex_id <span class="sc">!=</span> <span class="dv">3</span>,</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    metric_id <span class="sc">==</span> <span class="dv">3</span></span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age_id, year) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_name =</span> <span class="fu">fct_inorder</span>(age_name)</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(location_name, measure_name) <span class="sc">%&gt;%</span> </span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  nest</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(multisession, <span class="at">workers =</span> <span class="dv">4</span>)</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="fu">future_map</span>(<span class="fu">list</span>(apc_plot1, apc_plot2), \(x) <span class="fu">pmap</span>(apc_data, x), <span class="at">.progress =</span> <span class="cn">TRUE</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># APC Plots</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>apc_data <span class="ot">&lt;-</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  bladder_data <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>    year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1990</span>, <span class="dv">2000</span>, <span class="dv">2010</span>, <span class="dv">2021</span>),</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    age_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">6</span><span class="sc">:</span><span class="dv">21</span>),</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    location_id <span class="sc">%in%</span> <span class="fu">c</span>(stateids, <span class="dv">102</span>),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    sex_id <span class="sc">!=</span> <span class="dv">3</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    metric_id <span class="sc">==</span> <span class="dv">3</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(age_id, year) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_name =</span> <span class="fu">fct_inorder</span>(age_name)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(location_name, measure_name) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  nest</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>patch_plots <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a><span class="fu">map</span>(</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">list</span>(</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>    apc_plot1, </span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>    apc_plot2</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  \(x) <span class="fu">pmap</span>(</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    apc_data, </span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    x</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true" tabindex="-1"></a>  <span class="at">.progress =</span> <span class="cn">TRUE</span></span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code> ■■■■■■■■■■■■■■■■                  50% |  ETA:  2s</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/unnamed-chunk-8-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="index_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/unnamed-chunk-8-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="index_files/figure-html/unnamed-chunk-8-3.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/unnamed-chunk-8-4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="index_files/figure-html/unnamed-chunk-8-4.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/unnamed-chunk-8-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="index_files/figure-html/unnamed-chunk-8-5.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><a href="index_files/figure-html/unnamed-chunk-8-6.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="index_files/figure-html/unnamed-chunk-8-6.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">is_empty</span>(patch_plots)) {</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">library</span>(patchwork)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  patch_plot <span class="ot">&lt;-</span> </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">wrap_plots</span>(</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>      patch_plots,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">design =</span> <span class="fu">layout_maker</span>(<span class="dv">25</span>),</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">guides =</span> <span class="st">"collect"</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">&amp;</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme</span>(</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.position =</span> <span class="st">"top"</span>,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">30</span>),</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>      <span class="co"># legend.key.size = unit(6, "cm"),</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.key.width =</span> <span class="fu">unit</span>(<span class="dv">6</span>, <span class="st">"cm"</span>), </span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.key.height =</span> <span class="fu">unit</span>(<span class="dv">3</span>, <span class="st">"cm"</span>),</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">30</span>, <span class="at">face =</span> <span class="st">"bold"</span>)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>      ) <span class="sc">&amp;</span> </span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">guides</span>(</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">color =</span> <span class="fu">guide_legend</span>(</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>          <span class="at">override.aes =</span> <span class="fu">list</span>(<span class="at">linewidth =</span> <span class="dv">6</span>)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>      ))</span>
 <span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plan</span>(sequential)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggsave</span>(</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot=</span> patch_plot,</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">filename =</span> <span class="st">"US_combined_apc.svg"</span>, </span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">path =</span>  <span class="st">"output/figures/"</span>,</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">device =</span> <span class="st">"svg"</span>,</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">width =</span> <span class="dv">50</span>, </span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">height =</span> <span class="fl">37.5</span>,</span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">limitsize =</span> <span class="cn">FALSE</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [10]:</pre></div><div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Table</span></span>
@@ -1319,7 +1421,7 @@ explanations and how to override the soft limit that triggered this warning</cod
 <span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>glue<span class="sc">::</span><span class="fu">glue_data</span>(</span>
 <span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  diff_abstract,</span>
-<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"In 2021, United States recorded age-standardized rates of {scales::number(2021, accuracy = 0.01)} for {readable_name}, which were {diff} than the 1990 records, respectively."</span></span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>  <span class="st">"In 2021, The U.S. recorded age-standardized rates of {scales::number(2021, accuracy = 0.01)} for {readable_name}, which were {diff} than the 1990 records, respectively."</span></span>
 <span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a></span>
@@ -1330,7 +1432,7 @@ explanations and how to override the soft limit that triggered this warning</cod
 <span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the final sentence</span></span>
 <span id="cb25-46"><a href="#cb25-46" aria-hidden="true" tabindex="-1"></a>final_sentence <span class="ot">&lt;-</span></span>
 <span id="cb25-47"><a href="#cb25-47" aria-hidden="true" tabindex="-1"></a>  glue<span class="sc">::</span><span class="fu">glue</span>(</span>
-<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"In 2021, United States recorded age-standardized rates of {knitr::combine_words(items, and = 'and ', sep = ', ')} compared to 1990 records."</span></span>
+<span id="cb25-48"><a href="#cb25-48" aria-hidden="true" tabindex="-1"></a>    <span class="st">"In 2021, The U.S. recorded age-standardized rates of {knitr::combine_words(items, and = 'and ', sep = ', ')} compared to 1990 records."</span></span>
 <span id="cb25-49"><a href="#cb25-49" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
 <div class="cell-container"><div class="cell-decorator"><pre>In [12]:</pre></div><div class="cell">
@@ -1371,9 +1473,9 @@ explanations and how to override the soft limit that triggered this warning</cod
 <section id="abstract" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Abstract</h1>
 <p><strong>Background:</strong> The U.S. has the highest health care expenditure globally; however, population health outcomes do not consistently reflect this level of investment. Examining long-term national and state-level trends, and benchmarking them against other health systems, can provide important insights for public health planning and policy development.<br>
-<strong>Aim:</strong> This study aimed to characterize temporal trends in the burden of bladder cancer, including prevalence, incidence, mortality, disability-adjusted life years, years lived with disability, and years of life lost, and to evaluate state-level disparities and potential long-term effects of health policies.<br>
-<strong>Methodology:</strong> Data were obtained from the Global Burden of Disease study. Age- and sex-stratified trends were analyzed and visualized at both national and state levels across the study period. Burden estimates were additionally compared with those of other major health systems, including the European Union, countries with high Socio-Demographic Index, and high-income settings.<br>
-<strong>Results:</strong> In 2021, United States recorded age-standardized rates of 8.35 for YLDs (0.33 lower), 3.41 for mortality (0.11 higher), 59.80 for YLLs (6.75 higher), 100.63 for prevalence (6.61 lower), 14.69 for incidence (0.51 lower), and 68.15 for DALYs (6.42 higher) compared to 1990 records.<br>
+<strong>Aim:</strong> This study aimed to characterize temporal trends in the burden of bladder cancer, including prevalence, incidence, mortality, disability-adjusted life years (DALYs), years lived with disability (YLDs), and years of life lost (YLLs), and to evaluate state-level disparities and potential long-term effects of health policies.<br>
+<strong>Methodology:</strong> Data were obtained from the Global Burden of Disease (GBD) 2021 study. Age- and sex-stratified trends were analyzed and visualized at both national and state levels across the study period. Burden estimates were additionally compared with those of other major health systems, including the European Union, countries with high socio-demographic index, and high-income settings.<br>
+<strong>Results:</strong> In 2021, The U.S. recorded age-standardized rates of 8.35 for YLDs (0.33 lower), 3.41 for mortality (0.11 higher), 59.80 for YLLs (6.75 higher), 100.63 for prevalence (6.61 lower), 14.69 for incidence (0.51 lower), and 68.15 for DALYs (6.42 higher) compared to 1990 records.<br>
 <strong>Conclusion:</strong> Bladder cancer continues to impose a substantial and uneven burden across the U.S.. Reducing these disparities will require targeted public health strategies and region-specific policies that address modifiable risk factors, enhance diagnostic equity, and expand access to timely detection and appropriate care.</p>
 <p><strong>Keywords:</strong> <em>bladder cancer; global burden of disease; United States of America; incidence; mortality; prevalence</em></p>
 <div style="page-break-after: always;"></div>
@@ -1384,36 +1486,36 @@ explanations and how to override the soft limit that triggered this warning</cod
 <p>Beyond its epidemiological impact, BC imposes a substantial economic burden. Its management commonly requires lifelong surveillance and repeated therapeutic interventions, rendering it the most costly cancer to treat on a per-patient lifetime basis <span class="citation" data-cites="RN4 RN5 RN6">(<a href="#ref-RN4" role="doc-biblioref">4</a>–<a href="#ref-RN6" role="doc-biblioref">6</a>)</span>. In addition to direct healthcare expenditures, BC exerts profound effects on patients’ quality of life and significantly impacts the emotional, social, and practical well-being of caregivers and families <span class="citation" data-cites="RN7">(<a href="#ref-RN7" role="doc-biblioref">7</a>)</span>.</p>
 <p>Although cigarette smoking has historically been the predominant risk factor for BC <span class="citation" data-cites="RN8">(<a href="#ref-RN8" role="doc-biblioref">8</a>)</span>, accumulating evidence indicates that a broader spectrum of carcinogenic exposures contributes to its incidence. These include arsenic-contaminated drinking water, occupational and cosmetic chemicals (such as those found in hair dyes), dietary factors, and widespread environmental pollutants <span class="citation" data-cites="RN9">(<a href="#ref-RN9" role="doc-biblioref">9</a>)</span>. Notably, despite a sustained decline in cigarette smoking prevalence since 1998 <span class="citation" data-cites="RN10">(<a href="#ref-RN10" role="doc-biblioref">10</a>)</span> and the introduction of stricter regulations on aryl amines, BC incidence has not declined in parallel <span class="citation" data-cites="RN11">(<a href="#ref-RN11" role="doc-biblioref">11</a>)</span>. This lack of concordance suggests that other environmental and occupational exposures may be driving contemporary disease patterns, particularly in regions with limited regulatory oversight. Elevated BC incidence in certain New England states, for example, has been partially attributed to environmental carcinogens such as arsenic contamination from private household wells <span class="citation" data-cites="RN12 RN13">(<a href="#ref-RN12" role="doc-biblioref">12</a>,<a href="#ref-RN13" role="doc-biblioref">13</a>)</span>. The interaction of these exposures with persistent regional and socioeconomic disparities represents a critical yet incompletely characterized public health concern, warranting focused surveillance, research, and policy attention.</p>
 <p>Substantial geographic heterogeneity in BC incidence and outcomes has been documented across the U.S. <span class="citation" data-cites="RN14 RN15 RN16 RN17">(<a href="#ref-RN14" role="doc-biblioref">14</a>–<a href="#ref-RN17" role="doc-biblioref">17</a>)</span>. For instance, Maine reported an age-standardized incidence rate of 26.7 during 2017–2021, nearly double that observed in Hawaii (13.4) <span class="citation" data-cites="RN18">(<a href="#ref-RN18" role="doc-biblioref">18</a>)</span>. Such variation likely reflects differences in environmental exposures, socioeconomic conditions, access to care, and healthcare infrastructure. Incidence rates tend to be highest in northeastern states <span class="citation" data-cites="RN16">(<a href="#ref-RN16" role="doc-biblioref">16</a>)</span>, whereas mortality is disproportionately greater in Southern states <span class="citation" data-cites="RN19">(<a href="#ref-RN19" role="doc-biblioref">19</a>)</span>, where higher proportions of older adults, African Americans, and rural residents may experience delayed diagnosis and reduced access to high-quality treatment <span class="citation" data-cites="RN20">(<a href="#ref-RN20" role="doc-biblioref">20</a>)</span>. <!-- Additionally, while men are more frequently diagnosed, women often experience worse --> <!-- outcomes, including higher stage at diagnosis and lower survival rates [@RN21]. --></p>
-<p>Despite these observations, most prior BC research has focused on national trends or single-institution cohorts, and contemporary age-standardized, state-level comparisons remain limited. Furthermore, although the Global Burden of Disease project produces comprehensive estimates of disability-adjusted life years, years lived with disability, and years of life lost for BC, these measures have been infrequently incorporated into disease-specific epidemiological analyses. As a result, non-fatal burden and broader health-system impacts remain underexplored. National studies indicate that men experience approximately three to four times higher BC incidence than women <span class="citation" data-cites="RN22">(<a href="#ref-RN22" role="doc-biblioref">21</a>)</span>, whereas women often present with more advanced disease and have poorer survival <span class="citation" data-cites="RN23">(<a href="#ref-RN23" role="doc-biblioref">22</a>)</span>; however, the geographic distribution of these sex-specific disparities has not been systematically evaluated at the state level.</p>
-<p>To address these gaps, we use data from the Global Burden of Disease 2021 study, which provides internally consistent estimates of key BC burden metrics across all U.S. states. This predominantly descriptive analysis offers a comprehensive assessment of BC burden across geographic regions, time, and age groups, with the aim of informing state-level public health planning and prioritization.</p>
+<p>Despite these observations, most prior BC research has focused on national trends or single-institution cohorts, and contemporary age-standardized, state-level comparisons remain limited. Furthermore, although the Global Burden of Disease (GBD) project produces comprehensive estimates of disability-adjusted life years (DALYs), years lived with disability (YLDs), and years of life lost (YLLs) for BC, these measures have been infrequently incorporated into disease-specific epidemiological analyses. As a result, non-fatal burden and broader health-system impacts remain underexplored. National studies indicate that men experience approximately three to four times higher BC incidence than women <span class="citation" data-cites="RN22">(<a href="#ref-RN22" role="doc-biblioref">21</a>)</span>, whereas women often present with more advanced disease and have poorer survival <span class="citation" data-cites="RN23">(<a href="#ref-RN23" role="doc-biblioref">22</a>)</span>; however, the geographic distribution of these sex-specific disparities has not been systematically evaluated at the state level.</p>
+<p>To address these gaps, we use data from the GBD 2021 study, which provides internally consistent estimates of key BC burden metrics across all U.S. states. This predominantly descriptive analysis offers a comprehensive assessment of BC burden across geographic regions, time, and age groups, with the aim of informing state-level public health planning and prioritization.</p>
 </section>
 <section id="methodology" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Methodology</h1>
 <section id="study-design-and-data-sources" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="study-design-and-data-sources"><span class="header-section-number">3.1</span> Study Design and Data Sources</h2>
-<p>This population-based study used data from the Global Burden of Disease (GBD) 2021 database. The GBD provides comprehensive, internally consistent, and modeled estimates for diseases and injuries across all U.S. states, enabling standardized comparisons over time, geography, age, sex, and socioeconomic strata. These features make the GBD particularly well suited for examining disparities in bladder cancer (BC) burden at national and subnational levels <span class="citation" data-cites="ferrari2024 naghavi2024">(<a href="#ref-ferrari2024" role="doc-biblioref">23</a>,<a href="#ref-naghavi2024" role="doc-biblioref">24</a>)</span>. All data are publicly available through the GBD Results Tool and GBD Exchange.</p>
-<p>We analyzed BC burden across all U.S. states from 1980 to 2021. Estimates for incidence, prevalence, mortality, years of life lost, years lived with disability, and disability-adjusted life years were extracted for males, females, both sexes combined, and all age groups. For international benchmarking, corresponding data were also retrieved for the European Union, high-income countries, and high Socio-Demographic Index regions. Both age-specific and age-standardized estimates were obtained for each metric. Results are reported as rates per 100,000 population with accompanying 95% uncertainty intervals, as generated by the GBD framework. This study adheres to the Guidelines for Accurate and Transparent Health Estimates Reporting statement.</p>
+<p>This population-based study used data from the GBD 2021 database. The GBD provides comprehensive, internally consistent, and modeled estimates for diseases and injuries across all U.S. states, enabling standardized comparisons over time, geography, age, sex, and socioeconomic strata. These features make the GBD particularly well suited for examining disparities in BC burden at national and subnational levels <span class="citation" data-cites="ferrari2024 naghavi2024">(<a href="#ref-ferrari2024" role="doc-biblioref">23</a>,<a href="#ref-naghavi2024" role="doc-biblioref">24</a>)</span>. All data are publicly available through the <a href="https://ghdx.healthdata.org/">Global Health Data Exchange (GHDx)</a>.</p>
+<p>We analyzed BC burden across all U.S. states from 1980 to 2021. Estimates for incidence, prevalence, mortality, YLLs, YLDs, and DALYs were extracted for males, females, both sexes combined, and all age groups. For international benchmarking, corresponding data were also retrieved for the European Union, high-income countries, and high Socio-Demographic Index (SDI) regions. Both age-specific and age-standardized estimates were obtained for each metric. Results are reported as rates per 100,000 population with accompanying 95% uncertainty intervals, as generated by the GBD framework. This study adheres to the Guidelines for Accurate and Transparent Health Estimates Reporting statement.</p>
 </section>
 <section id="definitions" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="definitions"><span class="header-section-number">3.2</span> Definitions</h2>
 <dl>
 <dt>Bladder cancer</dt>
 <dd>
-Defined in GBD 2021 using the International Classification of Diseases coding system: ICD-10 codes C67–C67.9 and ICD-9 codes 188–188.9, V10.51, V16.52, and V76.3 <span class="citation" data-cites="feigin2021 ferrari2024">(<a href="#ref-ferrari2024" role="doc-biblioref">23</a>,<a href="#ref-feigin2021" role="doc-biblioref">25</a>)</span>.
+Defined in GBD 2021 using the International Classification of Diseases (ICD) coding system: ICD-10 codes C67–C67.9 and ICD-9 codes 188–188.9, V10.51, V16.52, and V76.3 <span class="citation" data-cites="feigin2021 ferrari2024">(<a href="#ref-ferrari2024" role="doc-biblioref">23</a>,<a href="#ref-feigin2021" role="doc-biblioref">25</a>)</span>.
 </dd>
-<dt>Disability-adjusted life years</dt>
+<dt>Disability-adjusted life years (DALYs)</dt>
 <dd>
-A summary measure of population health that quantifies the gap between current health status and an ideal standard in which the entire population lives to advanced age in full health. This metric combines years lived with disability and years of life lost due to premature mortality.
+A summary measure of population health that quantifies the gap between current health status and an ideal standard in which the entire population lives to advanced age in full health. This metric combines YLDs and YLLs due to premature mortality.
 </dd>
-<dt>Years of life lost</dt>
+<dt>Years of life lost (YLLs)</dt>
 <dd>
-The fatal component of disability-adjusted life years, reflecting the number of years lost due to death occurring before the reference life expectancy.
+The fatal component of DALYs, reflecting the number of years lost due to death occurring before the reference life expectancy.
 </dd>
-<dt>Years lived with disability</dt>
+<dt>Years lived with disability (YLDs)</dt>
 <dd>
-The non-fatal component of disability-adjusted life years, representing time lived in health states less than full health, weighted by severity.
+The non-fatal component of DALYs, representing time lived in health states less than full health, weighted by severity.
 </dd>
-<dt>Socio-Demographic Index</dt>
+<dt>Socio-Demographic Index (SDI)</dt>
 <dd>
 A composite measure developed within the GBD framework that reflects levels of development based on income per capita, average educational attainment among individuals aged 15 years or older, and fertility rates among those younger than 25 years <span class="citation" data-cites="instituteforhealthmetricsandevaluation2024">(<a href="#ref-instituteforhealthmetricsandevaluation2024" role="doc-biblioref">26</a>)</span>. The index ranges from 0 to 1 and is used to classify countries or regions into five categories: low, low-middle, middle, high-middle, and high. High-SDI countries were included as one of the comparator groups in this study.
 </dd>
@@ -1435,7 +1537,7 @@ Country groupings considered broadly comparable to the U.S. in terms of economic
 <h2 data-number="3.3" class="anchored" data-anchor-id="statistical-analysis"><span class="header-section-number">3.3</span> Statistical Analysis</h2>
 <p>Age-standardized rates were calculated for each burden metric using the GBD 2021 world standard population. Temporal trends were evaluated across the full study period from 1980 to 2021 at both national and state levels. All rates are presented per 100,000 population with corresponding 95% uncertainty intervals.</p>
 <p>Uncertainty intervals reflect the GBD Bayesian modeling framework and are defined by the 2.5th and 97.5th percentiles of 500 posterior draws. These intervals account for multiple sources of uncertainty, including data sparsity, measurement error, and model specification <span class="citation" data-cites="naghavi2024">(<a href="#ref-naghavi2024" role="doc-biblioref">24</a>)</span>.</p>
-<p>All analyses were conducted using R version 4.5.1 (2025-06-13 ucrt). A total of 28 R packages were used to support data acquisition, processing, visualization, analysis, and reproducibility <span class="citation" data-cites="allaire2024b allaire2024c atkins2025b attali2021a bååth2024a campitelli2025a chang2025a gohel2025a hafen2025 hester2024 hughes2022 hvitfeldt2021 müller2025 pedersen2025 richardson2025 RJ-2021-048 sievert2025 sjoberg2020 vaughan2022 wickham2016 wickham2019 wickham2023 wickham2025 wilke2022 xie2014a xie2015 xie2018 xie2020 xie2025">(<a href="#ref-allaire2024b" role="doc-biblioref">27</a>–<a href="#ref-xie2025" role="doc-biblioref">55</a>)</span>. Complete analytic code, data-processing workflows, and supplementary materials are available in the study’s GitHub repository (https://github.com/alireza5969/gbd-bladder-cancer).</p>
+<p>All analyses were conducted using R version 4.5.1 (2025-06-13 ucrt). A total of 28 R packages were used to support data acquisition, processing, visualization, analysis, and reproducibility <span class="citation" data-cites="allaire2024b allaire2024c atkins2025b attali2021a bååth2024a campitelli2025a chang2025a gohel2025a hafen2025 hester2024 hughes2022 hvitfeldt2021 müller2025 pedersen2025 richardson2025 RJ-2021-048 sievert2025 sjoberg2020 vaughan2022 wickham2016 wickham2019 wickham2023 wickham2025 wilke2022 xie2014a xie2015 xie2018 xie2020 xie2025">(<a href="#ref-allaire2024b" role="doc-biblioref">27</a>–<a href="#ref-xie2025" role="doc-biblioref">55</a>)</span>. To enable full reproducibility, complete analytic code, data-processing workflows, and supporting files are available in the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer">GitHub repository</a>.</p>
 </section>
 </section>
 <section id="results" class="level1" data-number="4">
@@ -1501,11 +1603,11 @@ Country groupings considered broadly comparable to the U.S. in terms of economic
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{number(val, .1)} [{number(lower, .1)}, {number(upper)}]"</span></span>
 <span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<p>With peak age-standardized incidence and prevalence rates of 16.5 [15.4, 17] and 113.9 [108.3, 117] observed in 2011, the U.S. has exhibited persistently higher incidence and prevalence of BC compared with competing countries throughout most of the 1980–2021 period. In contrast, age-standardized rates of disability-adjusted life years, years of life lost, and mortality in the U.S. have remained lower than those of comparator regions since the early 2000s. Notably, the pronounced and consistent declining trends observed in competing countries are largely absent in the U.S. Although these burden metrics have historically been lower in the U.S., competing countries have progressively converged toward U.S. levels over time (<a href="#fig-performance" class="quarto-xref">Figure&nbsp;1</a>).</p>
+<p>With peak age-standardized incidence and prevalence rates of 16.5 [15.4, 17] and 113.9 [108.3, 117] observed in 2011, the U.S. has exhibited persistently higher incidence and prevalence of BC compared with competing countries throughout most of the 1980–2021 period. In contrast, age-standardized rates of DALYs, YLLs, and mortality in the U.S. have remained lower than those of comparator regions since the early 2000s. Notably, the pronounced and consistent declining trends observed in competing countries are largely absent in the U.S. Although these burden metrics have historically been lower in the U.S., competing countries have progressively converged toward U.S. levels over time (<a href="#fig-performance" class="quarto-xref">Figure&nbsp;1</a>).</p>
 <div id="fig-performance" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/US%20performance%20plot/fig_B_Bladder%20cancer_Rate.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Figure&nbsp;1: Age-standardized bladder cancer burden rates between 1980 and 2021 in the U.S. compared with high-income and high Socio-Demographic Index countries and the European Union."><img src="output/figures/US%20performance%20plot/fig_B_Bladder%20cancer_Rate.svg" class="img-fluid figure-img"></a>
+<a href="output/figures/US%20performance%20plot/fig_B_Bladder%20cancer_Rate.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Figure&nbsp;1: Age-standardized bladder cancer burden rates between 1980 and 2021 in the U.S. compared with high-income and high Socio-Demographic Index countries and the European Union."><img src="output/figures/US%20performance%20plot/fig_B_Bladder%20cancer_Rate.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-performance-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;1: Age-standardized bladder cancer burden rates between 1980 and 2021 in the U.S. compared with high-income and high Socio-Demographic Index countries and the European Union.
@@ -1573,14 +1675,14 @@ Figure&nbsp;1: Age-standardized bladder cancer burden rates between 1980 and 202
 <span id="cb33-57"><a href="#cb33-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"</span></span>
 <span id="cb33-58"><a href="#cb33-58" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<p>A complementary quantitative summary of the trends shown in <a href="#fig-performance" class="quarto-xref">Figure&nbsp;1</a> is provided in <a href="#tbl-percentchange" class="quarto-xref">Table&nbsp;1</a>, which presents the percentage change in age-standardized rates between 1980 and 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant reductions in disability-adjusted life years (men: 34.6% [40.3%, 29.2%]; women: 26.6% [36.2%, 17.6%], men: 30.9% [36.8%, 25.4%]; women: 24.5% [34.4%, 15.5%], men: 30.2% [36.0%, 24.2%]; women: 19.4% [29.4%, 10.8%], and men: 11.8% [20.1%, 4.6%]; women: 12.4% [23.1%, 2.1%]) and years of life lost (men: 36.4% [41.7%, 31.4%]; women: 28.4% [37.4%, 19.9%], men: 32.6% [38.2%, 27.5%]; women: 26.2% [35.5%, 17.4%], men: 31.9% [37.4%, 26.3%]; women: 21.3% [31.3%, 12.9%], and men: 13.3% [20.3%, 7.3%]; women: 13.9% [24.2%, 4.6%]) across high-income and high-SDI countries, the European Union, and the U.S., respectively. By contrast, while high-income and high-SDI countries and the European Union achieved significant declines in mortality (men: 30.7% [37.8%, 23.8%]; women: 26.2% [38.8%, 14.0%], men: 27.3% [34.9%, 20.4%]; women: 23.3% [36.5%, 11.0%], and men: 26.6% [33.9%, 19.5%]; women: 21.3% [33.8%, 10.1%], respectively) and male incidence (15.3% [22.0%, 9.4%], 11.8% [18.5%, 5.9%], 10.0% [17.6%, 3.2%]), changes in the U.S. were comparatively modest and statistically non-significant (0.4% [7.9%, 5.7%]).</p>
+<p>A complementary quantitative summary of the trends shown in <a href="#fig-performance" class="quarto-xref">Figure&nbsp;1</a> is provided in <a href="#tbl-percentchange" class="quarto-xref">Table&nbsp;1</a>, which presents the percentage change in age-standardized rates between 1980 and 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant reductions in DALYs (men: 34.6% [40.3%, 29.2%]; women: 26.6% [36.2%, 17.6%], men: 30.9% [36.8%, 25.4%]; women: 24.5% [34.4%, 15.5%], men: 30.2% [36.0%, 24.2%]; women: 19.4% [29.4%, 10.8%], and men: 11.8% [20.1%, 4.6%]; women: 12.4% [23.1%, 2.1%]) and YLLs (men: 36.4% [41.7%, 31.4%]; women: 28.4% [37.4%, 19.9%], men: 32.6% [38.2%, 27.5%]; women: 26.2% [35.5%, 17.4%], men: 31.9% [37.4%, 26.3%]; women: 21.3% [31.3%, 12.9%], and men: 13.3% [20.3%, 7.3%]; women: 13.9% [24.2%, 4.6%]) across high-income and high-SDI countries, the European Union, and the U.S., respectively. By contrast, while high-income and high-SDI countries and the European Union achieved significant declines in mortality (men: 30.7% [37.8%, 23.8%]; women: 26.2% [38.8%, 14.0%], men: 27.3% [34.9%, 20.4%]; women: 23.3% [36.5%, 11.0%], and men: 26.6% [33.9%, 19.5%]; women: 21.3% [33.8%, 10.1%], respectively) and male incidence (15.3% [22.0%, 9.4%], 11.8% [18.5%, 5.9%], 10.0% [17.6%, 3.2%]), changes in the U.S. were comparatively modest and statistically non-significant (0.4% [7.9%, 5.7%]).</p>
 <div id="tbl-percentchange" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-percentchange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1: Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively.
 </figcaption>
 <div aria-describedby="tbl-percentchange-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Table&nbsp;1: Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively."><img src="output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.svg" class="img-fluid figure-img"></a>
+<a href="output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="Table&nbsp;1: Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively."><img src="output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.svg" class="img-fluid figure-img"></a>
 </div>
 </figure>
 </div>
@@ -1622,223 +1724,95 @@ Table&nbsp;1: Percentage change in age-standardized rates between 1980 and 2021 
 <li><p>Deaths: 149.2 [125.3, 160.9] in men and 43.8 [33.8, 49.2] in women in 80+ years age group.</p></li>
 <li><p>YLLs: 1,551.6 [1,310.0, 1,669.7] in men and 441.6 [361.3, 483.3] in women in 80+ years age group.</p></li>
 </ul>
-<div id="fig-pyramid" class="quarto-layout-panel">
+<!-- ::: {#fig-pyramid layout-ncol="3"} -->
+<!-- ![Prevalence](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Prevalence_Rate.svg){#fig-pyramid-prevalence} -->
+<!-- ![Incidence](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Incidence_Rate.svg){#fig-pyramid-incidence} -->
+<!-- ![Disability-Adjusted Life -->
+<!-- Year](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_DALYs_Rate.svg){#fig-pyramid-dalys} -->
+<!-- ![Years Lived with -->
+<!-- Disability](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLDs_Rate.svg){#fig-pyramid-ylds} -->
+<!-- ![Years of Life -->
+<!-- Lost](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLLs_Rate.svg){#fig-pyramid-ylls} -->
+<!-- ![Mortality](output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Deaths_Rate.svg){#fig-pyramid-deaths} -->
+<!-- Population pyramids visualizing age-gender distribution of bladder cancer burden rates in United -->
+<!-- States. -->
+<!-- ::: -->
+<div id="fig-pyramid" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pyramid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-pyramid" style="flex-basis: 33.3%;justify-content: flex-start;">
-<div id="fig-pyramid-prevalence" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-pyramid-prevalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Prevalence_Rate.svg" class="lightbox" data-gallery="fig-pyramid" title="Figure&nbsp;2&nbsp;(a): Prevalence"><img src="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Prevalence_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-pyramid"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-pyramid-prevalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Prevalence
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-pyramid" style="flex-basis: 33.3%;justify-content: flex-start;">
-<div id="fig-pyramid-incidence" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-pyramid-incidence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Incidence_Rate.svg" class="lightbox" data-gallery="fig-pyramid" title="Figure&nbsp;2&nbsp;(b): Incidence"><img src="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Incidence_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-pyramid"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-pyramid-incidence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Incidence
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-pyramid" style="flex-basis: 33.3%;justify-content: flex-start;">
-<div id="fig-pyramid-dalys" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-pyramid-dalys-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_DALYs_Rate.svg" class="lightbox" data-gallery="fig-pyramid" title="Figure&nbsp;2&nbsp;(c): Disability-Adjusted Life Year"><img src="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_DALYs_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-pyramid"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-pyramid-dalys-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(c) Disability-Adjusted Life Year
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-pyramid" style="flex-basis: 33.3%;justify-content: flex-start;">
-<div id="fig-pyramid-ylds" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-pyramid-ylds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLDs_Rate.svg" class="lightbox" data-gallery="fig-pyramid" title="Figure&nbsp;2&nbsp;(d): Years Lived with Disability"><img src="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLDs_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-pyramid"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-pyramid-ylds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(d) Years Lived with Disability
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-pyramid" style="flex-basis: 33.3%;justify-content: flex-start;">
-<div id="fig-pyramid-ylls" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-pyramid-ylls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLLs_Rate.svg" class="lightbox" data-gallery="fig-pyramid" title="Figure&nbsp;2&nbsp;(e): Years of Life Lost"><img src="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_YLLs_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-pyramid"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-pyramid-ylls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(e) Years of Life Lost
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-pyramid" style="flex-basis: 33.3%;justify-content: flex-start;">
-<div id="fig-pyramid-deaths" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-pyramid-deaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Deaths_Rate.svg" class="lightbox" data-gallery="fig-pyramid" title="Figure&nbsp;2&nbsp;(f): Mortality"><img src="output/figures/Population%20pyramid%20-%202021/fig_C_United%20States%20of%20America_Bladder%20cancer_Deaths_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-pyramid"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-pyramid-deaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(f) Mortality
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<a href="output/figures/US_combined_pyramid.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="Figure&nbsp;2: Population pyramids visualizing age-gender distribution of bladder cancer burden rates in the U.S."><img src="output/figures/US_combined_pyramid.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pyramid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2: Population pyramids visualizing age-gender distribution of bladder cancer burden rates in United States.
+Figure&nbsp;2: Population pyramids visualizing age-gender distribution of bladder cancer burden rates in the U.S.
 </figcaption>
 </figure>
 </div>
+<pre><code>Abbreviations: DALYs: Disability-Adjusted Life Year; YLDs: Years Lived with Disability; YLLs: Years of Life Lost</code></pre>
 <p>State-level population pyramids depicting age-specific burden rates in 2021 are provided in <a href="#sup-pyramid2021">Supporting Files</a> and in the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021">GitHub repository</a>. Animated population pyramids illustrating temporal changes by year are also available for each state and for the U.S. overall in <a href="#sup-pyramidgif">Supporting Files</a> and the <a href="https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%20animated">GitHub repository</a>.</p>
 <p>In addition to age-specific snapshots, <a href="#fig-apc" class="quarto-xref">Figure&nbsp;3</a> incorporates the temporal dimension by presenting burden rates across age groups over time. Comparable age–period visualizations for each state are available in <a href="#sup-apc">Supporting Files</a> and on the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201">GitHub page</a>.</p>
-<div id="fig-apc" class="quarto-layout-panel">
+<!-- ::: {#fig-apc layout-ncol="2"} -->
+<!-- ![Prevalence](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Prevalence_Bladder%20Cancer_Rate.svg){#fig-apc-prevalence} -->
+<!-- ![Incidence](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Incidence_Bladder%20Cancer_Rate.svg){#fig-apc-incidence} -->
+<!-- ![Disability-Adjusted Life Year](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_DALYs_Bladder%20Cancer_Rate.svg){#fig-apc-dalys} -->
+<!-- ![Years Lived with Disability](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLDs_Bladder%20Cancer_Rate.svg){#fig-apc-ylds} -->
+<!-- ![Years of Life Lost](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLLs_Bladder%20Cancer_Rate.svg){#fig-apc-ylls} -->
+<!-- ![Mortality](output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Deaths_Bladder%20Cancer_Rate.svg){#fig-apc-deaths} -->
+<!-- Age-gender distribution of bladder cancer burden rates across decades in U.S. -->
+<!-- ::: -->
+<div id="fig-apc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-apc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-apc" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-apc-prevalence" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-apc-prevalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Prevalence_Bladder%20Cancer_Rate.svg" class="lightbox" data-gallery="fig-apc" title="Figure&nbsp;3&nbsp;(a): Prevalence"><img src="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Prevalence_Bladder%20Cancer_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-apc"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-apc-prevalence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Prevalence
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-apc" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-apc-incidence" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-apc-incidence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Incidence_Bladder%20Cancer_Rate.svg" class="lightbox" data-gallery="fig-apc" title="Figure&nbsp;3&nbsp;(b): Incidence"><img src="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Incidence_Bladder%20Cancer_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-apc"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-apc-incidence-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Incidence
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-apc" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-apc-dalys" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-apc-dalys-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_DALYs_Bladder%20Cancer_Rate.svg" class="lightbox" data-gallery="fig-apc" title="Figure&nbsp;3&nbsp;(c): Disability-Adjusted Life Year"><img src="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_DALYs_Bladder%20Cancer_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-apc"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-apc-dalys-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(c) Disability-Adjusted Life Year
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-apc" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-apc-ylds" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-apc-ylds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLDs_Bladder%20Cancer_Rate.svg" class="lightbox" data-gallery="fig-apc" title="Figure&nbsp;3&nbsp;(d): Years Lived with Disability"><img src="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLDs_Bladder%20Cancer_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-apc"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-apc-ylds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(d) Years Lived with Disability
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<div class="quarto-layout-row">
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-apc" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-apc-ylls" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-apc-ylls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLLs_Bladder%20Cancer_Rate.svg" class="lightbox" data-gallery="fig-apc" title="Figure&nbsp;3&nbsp;(e): Years of Life Lost"><img src="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_YLLs_Bladder%20Cancer_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-apc"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-apc-ylls-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(e) Years of Life Lost
-</figcaption>
-</figure>
-</div>
-</div>
-<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-apc" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="fig-apc-deaths" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-subfloat-fig figure">
-<div aria-describedby="fig-apc-deaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Deaths_Bladder%20Cancer_Rate.svg" class="lightbox" data-gallery="fig-apc" title="Figure&nbsp;3&nbsp;(f): Mortality"><img src="output/figures/APC%20plot%201/fig_F_United%20States%20of%20America_Deaths_Bladder%20Cancer_Rate.svg" class="img-fluid figure-img" data-ref-parent="fig-apc"></a>
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-apc-deaths-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(f) Mortality
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
+<a href="output/figures/US_combined_apc.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Figure&nbsp;3: Age-gender distribution of bladder cancer burden rates across decades in U.S."><img src="output/figures/US_combined_apc.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-apc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;3: Age-gender distribution of bladder cancer burden rates across decades in U.S.
 </figcaption>
 </figure>
 </div>
+<pre><code>Abbreviations: DALYs: Disability-Adjusted Life Year; YLDs: Years Lived with Disability; YLLs: Years of Life Lost</code></pre>
 </section>
 <section id="bladder-cancer-burden-across-the-u.s." class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="bladder-cancer-burden-across-the-u.s."><span class="header-section-number">4.2</span> Bladder Cancer Burden Across the U.S.</h2>
 <div class="cell-container"><div class="cell-decorator"><pre>In [17]:</pre></div><div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>state_change_data <span class="ot">&lt;-</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  change_data <span class="sc">%&gt;%</span> </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(stateabb),</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    color <span class="sc">!=</span> <span class="st">"neutral"</span></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex_name =</span> <span class="fu">if_else</span>(sex_id <span class="sc">==</span> <span class="dv">2</span>, <span class="st">"women"</span>, <span class="st">"men"</span>),</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(diffval<span class="sc">:</span>difflower, \(x) <span class="fu">return</span>(<span class="fu">abs</span>(x) <span class="sc">*</span> <span class="dv">100</span>))</span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>green_change_data <span class="ot">&lt;-</span> </span>
-<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a>  state_change_data <span class="sc">%&gt;%</span> </span>
-<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(color <span class="sc">==</span> <span class="st">"negative"</span>)</span>
-<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>red_change_data <span class="ot">&lt;-</span> </span>
-<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  state_change_data <span class="sc">%&gt;%</span> </span>
-<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(color <span class="sc">==</span> <span class="st">"positive"</span>)</span>
-<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>green_change_txt <span class="ot">&lt;-</span> </span>
-<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue_data</span>(</span>
-<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>    green_change_data <span class="sc">%&gt;%</span></span>
-<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arrange</span>(<span class="sc">-</span>diffval) <span class="sc">%&gt;%</span></span>
-<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(location_name <span class="sc">==</span> <span class="st">"New York"</span>),</span>
-<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"</span></span>
-<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>red_change_txt <span class="ot">&lt;-</span> </span>
-<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue_data</span>(</span>
-<span id="cb36-30"><a href="#cb36-30" aria-hidden="true" tabindex="-1"></a>    red_change_data,</span>
-<span id="cb36-31"><a href="#cb36-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"</span></span>
-<span id="cb36-32"><a href="#cb36-32" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>state_change_data <span class="ot">&lt;-</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  change_data <span class="sc">%&gt;%</span> </span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(stateabb),</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    color <span class="sc">!=</span> <span class="st">"neutral"</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span> </span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">sex_name =</span> <span class="fu">if_else</span>(sex_id <span class="sc">==</span> <span class="dv">2</span>, <span class="st">"women"</span>, <span class="st">"men"</span>),</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">across</span>(diffval<span class="sc">:</span>difflower, \(x) <span class="fu">return</span>(<span class="fu">abs</span>(x) <span class="sc">*</span> <span class="dv">100</span>))</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>green_change_data <span class="ot">&lt;-</span> </span>
+<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  state_change_data <span class="sc">%&gt;%</span> </span>
+<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(color <span class="sc">==</span> <span class="st">"negative"</span>)</span>
+<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>red_change_data <span class="ot">&lt;-</span> </span>
+<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>  state_change_data <span class="sc">%&gt;%</span> </span>
+<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(color <span class="sc">==</span> <span class="st">"positive"</span>)</span>
+<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>green_change_txt <span class="ot">&lt;-</span> </span>
+<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue_data</span>(</span>
+<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>    green_change_data <span class="sc">%&gt;%</span></span>
+<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>      <span class="fu">arrange</span>(<span class="sc">-</span>diffval) <span class="sc">%&gt;%</span></span>
+<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(location_name <span class="sc">==</span> <span class="st">"New York"</span>),</span>
+<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"</span></span>
+<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>red_change_txt <span class="ot">&lt;-</span> </span>
+<span id="cb38-29"><a href="#cb38-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glue_data</span>(</span>
+<span id="cb38-30"><a href="#cb38-30" aria-hidden="true" tabindex="-1"></a>    red_change_data,</span>
+<span id="cb38-31"><a href="#cb38-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">"{number(diffval, .1)}% [{number(difflower, .1)}%, {number(diffupper, .1)}%]"</span></span>
+<span id="cb38-32"><a href="#cb38-32" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div></div>
-<p>As shown in <a href="#tbl-percentchange" class="quarto-xref">Table&nbsp;1</a>, a limited number of states demonstrated meaningful reductions in BC burden over the study period. For example, New York exhibited some of the largest declines, including reductions in years of life lost (33.4% [48.8%, 16.7%] and 34.9% [50.7%, 18.4%] in men and women, respectively), disability-adjusted life years (26.2% [43.1%, 8.1%] and 31.8% [49.4%, 13.0%] in men and women, respectively), and mortality among women (31.5% [47.4%, 14.7%]). In contrast, most states experienced no statistically significant change across key burden measures. New Mexico was the only state showing a significant increase, reporting an elevated prevalence of BC by 30.2% [3.2%, 62.6%] among men.</p>
-<p>State-specific, sex-stratified temporal trends in age-standardized incidence rates are displayed in <a href="#fig-geofacet" class="quarto-xref">Figure&nbsp;4</a>. Analogous geofaceted plots for age-standardized prevalence, mortality, disability-adjusted life years, years of life lost, and years lived with disability are provided in <a href="#sup-geofacet">Supporting Files</a> and in the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot">GitHub repository</a>.</p>
+<p>As shown in <a href="#tbl-percentchange" class="quarto-xref">Table&nbsp;1</a>, a limited number of states demonstrated meaningful reductions in BC burden over the study period. For example, New York exhibited some of the largest declines, including reductions in YLLs (33.4% [48.8%, 16.7%] and 34.9% [50.7%, 18.4%] in men and women, respectively), DALYs (26.2% [43.1%, 8.1%] and 31.8% [49.4%, 13.0%] in men and women, respectively), and mortality among women (31.5% [47.4%, 14.7%]). In contrast, most states experienced no statistically significant change across key burden measures. New Mexico was the only state showing a significant increase, reporting an elevated prevalence of BC by 30.2% [3.2%, 62.6%] among men.</p>
+<p>State-specific, sex-stratified temporal trends in age-standardized incidence rates are displayed in <a href="#fig-geofacet" class="quarto-xref">Figure&nbsp;4</a>. Analogous geofaceted plots for age-standardized prevalence, mortality, DALYs, YLLs, and YLDs are provided in <a href="#sup-geofacet">Supporting Files</a> and in the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot">GitHub repository</a>.</p>
 <div id="fig-geofacet" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-geofacet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="output/figures/Geofacet%20plot/fig_A_Incidence_Bladder%20cancer_Rate.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Figure&nbsp;4: State-level historical trends in age-standardized prevalence rates across the U.S., stratified by sex. States are arranged to approximate their geographic location."><img src="output/figures/Geofacet%20plot/fig_A_Incidence_Bladder%20cancer_Rate.svg" class="img-fluid figure-img"></a>
+<a href="output/figures/Geofacet%20plot/fig_A_Incidence_Bladder%20cancer_Rate.svg" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="Figure&nbsp;4: State-level historical trends in age-standardized prevalence rates across the U.S., stratified by sex. States are arranged to approximate their geographic location."><img src="output/figures/Geofacet%20plot/fig_A_Incidence_Bladder%20cancer_Rate.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-geofacet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;4: State-level historical trends in age-standardized prevalence rates across the U.S., stratified by sex. States are arranged to approximate their geographic location.
@@ -1850,19 +1824,19 @@ Figure&nbsp;4: State-level historical trends in age-standardized prevalence rate
 </section>
 <section id="discussion" class="level1" data-number="5">
 <h1 data-number="5"><span class="header-section-number">5</span> Discussion</h1>
-<p>This study used GBD 2021 data to characterize long-term trends in bladder cancer incidence, mortality, years of life lost, years lived with disability, and disability-adjusted life years in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in early detection, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates <a href="@sup-geofacet">Supporting Files</a>. These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.</p>
-<p>Despite having one of the highest per-capita healthcare expenditures globally <span class="citation" data-cites="RN24">(<a href="#ref-RN24" role="doc-biblioref">56</a>)</span>, the U.S. continues to report comparatively high age-standardized incidence rates of bladder cancer relative to many high-income and high-SDI regions, consistent with prior reports <span class="citation" data-cites="RN3">(<a href="#ref-RN3" role="doc-biblioref">3</a>)</span>. This pattern likely reflects the country’s advanced diagnostic capacity and widespread use of cystoscopy and imaging, which facilitate more complete case ascertainment rather than a true excess in underlying disease risk <span class="citation" data-cites="RN25 RN26 RN27">(<a href="#ref-RN25" role="doc-biblioref">57</a>–<a href="#ref-RN27" role="doc-biblioref">59</a>)</span>. At the same time, this discrepancy highlights a potential imbalance in healthcare priorities, with disproportionate emphasis on diagnosis and treatment relative to prevention and risk reduction <span class="citation" data-cites="RN28">(<a href="#ref-RN28" role="doc-biblioref">60</a>)</span>. The persistently high incidence is particularly concerning given evidence that up to 80% of bladder cancer cases diagnosed over the past two decades may be attributable to preventable exposures <span class="citation" data-cites="RN29">(<a href="#ref-RN29" role="doc-biblioref">61</a>)</span>, whereas inherited genetic factors account for only a small proportion of cases in Western populations <span class="citation" data-cites="RN30">(<a href="#ref-RN30" role="doc-biblioref">62</a>)</span>. Together, these findings underscore the importance of strengthening prevention-oriented public health strategies, including smoking cessation, occupational safety, and mitigation of environmental carcinogen exposure <span class="citation" data-cites="RN31">(<a href="#ref-RN31" role="doc-biblioref">63</a>)</span>.</p>
-<p>Age-specific analyses revealed a consistent increase in bladder cancer incidence, mortality, and disability-adjusted life years with advancing age across all states, in line with prior literature <span class="citation" data-cites="RN3">(<a href="#ref-RN3" role="doc-biblioref">3</a>)</span>. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the oldest age groups in several populous states, including California, Texas, and Connecticut <a href="@sup-apc">Supporting Files</a>. This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 <span class="citation" data-cites="RN31">(<a href="#ref-RN31" role="doc-biblioref">63</a>)</span>. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older <span class="citation" data-cites="RN32">(<a href="#ref-RN32" role="doc-biblioref">64</a>)</span>. These findings indicate that, despite overall progress, the burden of bladder cancer among older adults remains a critical public health challenge.</p>
-<p>Consistent with prior studies, our analysis confirms that men experience bladder cancer burden rates approximately four times higher than women <span class="citation" data-cites="RN22">(<a href="#ref-RN22" role="doc-biblioref">21</a>)</span>. Age–period analyses across states revealed broadly similar age-related trajectories in both sexes, characterized by a sharp rise after age 60; however, women consistently exhibited lower absolute rates and a slower decline in mortality over time. Previous studies have shown that women are more likely to present with advanced disease and have poorer survival outcomes <span class="citation" data-cites="RN33 RN23 RN21">(<a href="#ref-RN23" role="doc-biblioref">22</a>,<a href="#ref-RN33" role="doc-biblioref">65</a>,<a href="#ref-RN21" role="doc-biblioref">66</a>)</span>. One contributing factor may be delayed evaluation of hematuria in women, as symptoms are more frequently attributed to urinary tract infections or gynecologic conditions <span class="citation" data-cites="RN33 RN34">(<a href="#ref-RN33" role="doc-biblioref">65</a>,<a href="#ref-RN34" role="doc-biblioref">67</a>)</span>. Addressing these disparities will require improved adherence to updated clinical guidelines, including the 2025 American Urological Association recommendations <span class="citation" data-cites="RN35">(<a href="#ref-RN35" role="doc-biblioref">68</a>)</span>, alongside the incorporation of validated biomarkers for risk stratification and the adoption of sex-aware diagnostic pathways in primary care settings.</p>
-<p>Beyond healthcare delivery factors, emerging evidence points to biological mechanisms underlying sex-based disparities in bladder cancer. Differences in immune surveillance, hormonal milieu, hormone receptor signaling, and genetic or epigenetic alterations have been implicated <span class="citation" data-cites="RN36">(<a href="#ref-RN36" role="doc-biblioref">69</a>)</span>. For example, androgen signaling may promote oncogenic pathways in men, whereas sex-specific immune responses may influence tumor behavior and progression in women <span class="citation" data-cites="RN37 RN38">(<a href="#ref-RN37" role="doc-biblioref">70</a>,<a href="#ref-RN38" role="doc-biblioref">71</a>)</span>. Importantly, these differences persist even after adjustment for known exposures such as smoking and occupational hazards <span class="citation" data-cites="RN8">(<a href="#ref-RN8" role="doc-biblioref">8</a>)</span>. Ongoing research into sex hormones, immune checkpoints, and tumor genomics may help clarify why men are disproportionately affected by bladder cancer and why women experience worse outcomes once diagnosed.</p>
-<p>Geographic disparities observed in this study align with previous reports demonstrating the highest bladder cancer incidence among men and in Northeastern states, including Maine, New Hampshire, and Vermont <span class="citation" data-cites="RN16">(<a href="#ref-RN16" role="doc-biblioref">16</a>)</span>. These patterns cannot be explained by smoking alone <span class="citation" data-cites="RN12">(<a href="#ref-RN12" role="doc-biblioref">12</a>)</span>. Environmental carcinogens, particularly arsenic contamination of drinking water from private domestic wells, have been implicated in elevated incidence in New England <span class="citation" data-cites="RN12 RN13">(<a href="#ref-RN12" role="doc-biblioref">12</a>,<a href="#ref-RN13" role="doc-biblioref">13</a>)</span>. Recent declines in incidence in some Northeastern states may reflect improvements in water treatment and broader public health interventions <span class="citation" data-cites="RN39">(<a href="#ref-RN39" role="doc-biblioref">72</a>)</span>. For example, professionally installed and maintained household arsenic treatment systems in Maine and New Jersey have achieved substantial reductions in exposure and associated cancer risk <span class="citation" data-cites="RN40">(<a href="#ref-RN40" role="doc-biblioref">73</a>)</span>, although incomplete effectiveness in a subset of systems highlights the need for continued monitoring and maintenance. Regulatory actions, such as New Hampshire’s adoption of a stricter arsenic standard for public drinking water in 2021 <span class="citation" data-cites="RN41">(<a href="#ref-RN41" role="doc-biblioref">74</a>)</span>, represent important steps toward long-term risk reduction, although the long latency of bladder cancer means that benefits may take decades to fully emerge. However, interstate comparisons within the Northeast should be interpreted cautiously. States such as New York differ substantially from more rural neighboring states in terms of population density, reliance on private domestic wells, and patterns of environmental exposure, which may partially explain observed differences in temporal trends independent of policy effectiveness.</p>
-<p>In contrast, several states in the South and West exhibit disproportionately high bladder cancer mortality despite more moderate incidence. Nevada and Southern states such as West Virginia, Kentucky, and Alabama demonstrated some of the highest age-standardized mortality rates, consistent with prior studies <span class="citation" data-cites="RN42 RN19">(<a href="#ref-RN19" role="doc-biblioref">19</a>,<a href="#ref-RN42" role="doc-biblioref">75</a>)</span>. Elevated mortality in these regions may reflect higher smoking-attributable cancer burdens <span class="citation" data-cites="RN43">(<a href="#ref-RN43" role="doc-biblioref">76</a>)</span>, greater rurality <span class="citation" data-cites="RN44 RN45">(<a href="#ref-RN44" role="doc-biblioref">77</a>,<a href="#ref-RN45" role="doc-biblioref">78</a>)</span>, and reduced access to timely diagnostic and treatment services <span class="citation" data-cites="RN45 RN46">(<a href="#ref-RN45" role="doc-biblioref">78</a>,<a href="#ref-RN46" role="doc-biblioref">79</a>)</span>. Lower insurance coverage and longer travel distances to specialized care centers may further contribute to delayed diagnosis and worse outcomes <span class="citation" data-cites="RN47">(<a href="#ref-RN47" role="doc-biblioref">80</a>)</span>. By contrast, the Northeast’s relatively low uninsured rates <span class="citation" data-cites="RN48">(<a href="#ref-RN48" role="doc-biblioref">81</a>)</span> may partially explain why states in this region experience high incidence but comparatively lower mortality, resulting in a clear regional mismatch between disease occurrence and survival.</p>
-<p>Hawaii represents a notable outlier, with consistently low bladder cancer incidence and mortality. Several factors likely contribute to this favorable profile, including a predominantly Asian and Pacific Islander population, which has historically lower bladder cancer risk compared with non-Hispanic White populations <span class="citation" data-cites="RN49">(<a href="#ref-RN49" role="doc-biblioref">82</a>)</span>, low adult smoking prevalence <span class="citation" data-cites="RN50">(<a href="#ref-RN50" role="doc-biblioref">83</a>)</span>, and strong tobacco control policies <span class="citation" data-cites="RN51">(<a href="#ref-RN51" role="doc-biblioref">84</a>)</span>. In addition, industrial and environmental carcinogen exposures are generally less prevalent, and access to healthcare and insurance coverage is relatively high <span class="citation" data-cites="RN52">(<a href="#ref-RN52" role="doc-biblioref">85</a>)</span>. Together, these demographic, behavioral, and structural factors likely explain Hawaii’s consistently low bladder cancer burden, underscoring the potential impact of comprehensive prevention and access-to-care strategies.</p>
-<p>The strengths of this study include the use of robust, population-based estimates to examine long-term temporal trends and state-level disparities in bladder cancer burden across the U.S. Nevertheless, several limitations merit consideration. GBD estimates rely on modeled data due to incomplete or heterogeneous primary data sources, which may introduce uncertainty, particularly in states with sparse reporting. Although advanced statistical methods are used to mitigate these limitations, some degree of imprecision is unavoidable. Additionally, the inherent lag in GBD data availability means that trends beyond 2021 are not captured. Finally, this analysis is primarily descriptive and does not directly evaluate individual-level risk factors or clinical characteristics, limiting causal inference regarding the drivers of observed patterns. Most of the trends reported in this study are age-standardized; therefore, discrepancies with surveillance systems that report crude or partially adjusted rates, such as some Centers for Disease Control and Prevention (CDC) summaries, likely reflect methodological differences rather than true epidemiological disagreement. Notably, Nevada remained among the states with persistently elevated mortality trends even after age standardization.</p>
+<p>This study used GBD 2021 data to characterize long-term trends in BC incidence, mortality, YLLs, YLDs, and DALYs in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in early detection, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates <a href="@sup-geofacet">Supporting Files</a>. These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.</p>
+<p>Despite having one of the highest per-capita healthcare expenditures globally <span class="citation" data-cites="RN24">(<a href="#ref-RN24" role="doc-biblioref">56</a>)</span>, the U.S. continues to report comparatively high age-standardized incidence rates of BC relative to many high-income and high-SDI regions, consistent with prior reports <span class="citation" data-cites="RN3">(<a href="#ref-RN3" role="doc-biblioref">3</a>)</span>. This pattern likely reflects the country’s advanced diagnostic capacity and widespread use of cystoscopy and imaging, which facilitate more complete case ascertainment rather than a true excess in underlying disease risk <span class="citation" data-cites="RN25 RN26 RN27">(<a href="#ref-RN25" role="doc-biblioref">57</a>–<a href="#ref-RN27" role="doc-biblioref">59</a>)</span>. At the same time, this discrepancy highlights a potential imbalance in healthcare priorities, with disproportionate emphasis on diagnosis and treatment relative to prevention and risk reduction <span class="citation" data-cites="RN28">(<a href="#ref-RN28" role="doc-biblioref">60</a>)</span>. The persistently high incidence is particularly concerning given evidence that up to 80% of BC cases diagnosed over the past two decades may be attributable to preventable exposures <span class="citation" data-cites="RN29">(<a href="#ref-RN29" role="doc-biblioref">61</a>)</span>, whereas inherited genetic factors account for only a small proportion of cases in Western populations <span class="citation" data-cites="RN30">(<a href="#ref-RN30" role="doc-biblioref">62</a>)</span>. Together, these findings underscore the importance of strengthening prevention-oriented public health strategies, including smoking cessation, occupational safety, and mitigation of environmental carcinogen exposure <span class="citation" data-cites="RN31">(<a href="#ref-RN31" role="doc-biblioref">63</a>)</span>.</p>
+<p>Age-specific analyses revealed a consistent increase in BC incidence, mortality, and DALYs with advancing age across all states, in line with prior literature <span class="citation" data-cites="RN3">(<a href="#ref-RN3" role="doc-biblioref">3</a>)</span>. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the oldest age groups in several populous states, including California, Texas, and Connecticut <a href="@sup-apc">Supporting Files</a>. This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 <span class="citation" data-cites="RN31">(<a href="#ref-RN31" role="doc-biblioref">63</a>)</span>. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older <span class="citation" data-cites="RN32">(<a href="#ref-RN32" role="doc-biblioref">64</a>)</span>. These findings indicate that, despite overall progress, the burden of BC among older adults remains a critical public health challenge.</p>
+<p>Consistent with prior studies, our analysis confirms that men experience BC burden rates approximately four times higher than women <span class="citation" data-cites="RN22">(<a href="#ref-RN22" role="doc-biblioref">21</a>)</span>. Age–period analyses across states revealed broadly similar age-related trajectories in both sexes, characterized by a sharp rise after age 60; however, women consistently exhibited lower absolute rates and a slower decline in mortality over time. Previous studies have shown that women are more likely to present with advanced disease and have poorer survival outcomes <span class="citation" data-cites="RN33 RN23 RN21">(<a href="#ref-RN23" role="doc-biblioref">22</a>,<a href="#ref-RN33" role="doc-biblioref">65</a>,<a href="#ref-RN21" role="doc-biblioref">66</a>)</span>. One contributing factor may be delayed evaluation of hematuria in women, as symptoms are more frequently attributed to urinary tract infections or gynecologic conditions <span class="citation" data-cites="RN33 RN34">(<a href="#ref-RN33" role="doc-biblioref">65</a>,<a href="#ref-RN34" role="doc-biblioref">67</a>)</span>. Addressing these disparities will require improved adherence to updated clinical guidelines, including the 2025 American Urological Association recommendations <span class="citation" data-cites="RN35">(<a href="#ref-RN35" role="doc-biblioref">68</a>)</span>, alongside the incorporation of validated biomarkers for risk stratification and the adoption of sex-aware diagnostic pathways in primary care settings.</p>
+<p>Beyond healthcare delivery factors, emerging evidence points to biological mechanisms underlying sex-based disparities in BC. Differences in immune surveillance, hormonal milieu, hormone receptor signaling, and genetic or epigenetic alterations have been implicated <span class="citation" data-cites="RN36">(<a href="#ref-RN36" role="doc-biblioref">69</a>)</span>. For example, androgen signaling may promote oncogenic pathways in men, whereas sex-specific immune responses may influence tumor behavior and progression in women <span class="citation" data-cites="RN37 RN38">(<a href="#ref-RN37" role="doc-biblioref">70</a>,<a href="#ref-RN38" role="doc-biblioref">71</a>)</span>. Importantly, these differences persist even after adjustment for known exposures such as smoking and occupational hazards <span class="citation" data-cites="RN8">(<a href="#ref-RN8" role="doc-biblioref">8</a>)</span>. Ongoing research into sex hormones, immune checkpoints, and tumor genomics may help clarify why men are disproportionately affected by BC and why women experience worse outcomes once diagnosed.</p>
+<p>Geographic disparities observed in this study align with previous reports demonstrating the highest BC incidence among men and in Northeastern states, including Maine, New Hampshire, and Vermont <span class="citation" data-cites="RN16">(<a href="#ref-RN16" role="doc-biblioref">16</a>)</span>. These patterns cannot be explained by smoking alone <span class="citation" data-cites="RN12">(<a href="#ref-RN12" role="doc-biblioref">12</a>)</span>. Environmental carcinogens, particularly arsenic contamination of drinking water from private domestic wells, have been implicated in elevated incidence in New England <span class="citation" data-cites="RN12 RN13">(<a href="#ref-RN12" role="doc-biblioref">12</a>,<a href="#ref-RN13" role="doc-biblioref">13</a>)</span>. Recent declines in incidence in some Northeastern states may reflect improvements in water treatment and broader public health interventions <span class="citation" data-cites="RN39">(<a href="#ref-RN39" role="doc-biblioref">72</a>)</span>. For example, professionally installed and maintained household arsenic treatment systems in Maine and New Jersey have achieved substantial reductions in exposure and associated cancer risk <span class="citation" data-cites="RN40">(<a href="#ref-RN40" role="doc-biblioref">73</a>)</span>, although incomplete effectiveness in a subset of systems highlights the need for continued monitoring and maintenance. Regulatory actions, such as New Hampshire’s adoption of a stricter arsenic standard for public drinking water in 2021 <span class="citation" data-cites="RN41">(<a href="#ref-RN41" role="doc-biblioref">74</a>)</span>, represent important steps toward long-term risk reduction, although the long latency of BC means that benefits may take decades to fully emerge. However, interstate comparisons within the Northeast should be interpreted cautiously. States such as New York differ substantially from more rural neighboring states in terms of population density, reliance on private domestic wells, and patterns of environmental exposure, which may partially explain observed differences in temporal trends independent of policy effectiveness.</p>
+<p>In contrast, several states in the South and West exhibit disproportionately high BC mortality despite more moderate incidence. Nevada and Southern states such as West Virginia, Kentucky, and Alabama demonstrated some of the highest age-standardized mortality rates, consistent with prior studies <span class="citation" data-cites="RN42 RN19">(<a href="#ref-RN19" role="doc-biblioref">19</a>,<a href="#ref-RN42" role="doc-biblioref">75</a>)</span>. Elevated mortality in these regions may reflect higher smoking-attributable cancer burdens <span class="citation" data-cites="RN43">(<a href="#ref-RN43" role="doc-biblioref">76</a>)</span>, greater rurality <span class="citation" data-cites="RN44 RN45">(<a href="#ref-RN44" role="doc-biblioref">77</a>,<a href="#ref-RN45" role="doc-biblioref">78</a>)</span>, and reduced access to timely diagnostic and treatment services <span class="citation" data-cites="RN45 RN46">(<a href="#ref-RN45" role="doc-biblioref">78</a>,<a href="#ref-RN46" role="doc-biblioref">79</a>)</span>. Lower insurance coverage and longer travel distances to specialized care centers may further contribute to delayed diagnosis and worse outcomes <span class="citation" data-cites="RN47">(<a href="#ref-RN47" role="doc-biblioref">80</a>)</span>. By contrast, the Northeast’s relatively low uninsured rates <span class="citation" data-cites="RN48">(<a href="#ref-RN48" role="doc-biblioref">81</a>)</span> may partially explain why states in this region experience high incidence but comparatively lower mortality, resulting in a clear regional mismatch between disease occurrence and survival.</p>
+<p>Hawaii represents a notable outlier, with consistently low BC incidence and mortality. Several factors likely contribute to this favorable profile, including a predominantly Asian and Pacific Islander population, which has historically lower BC risk compared with non-Hispanic White populations <span class="citation" data-cites="RN49">(<a href="#ref-RN49" role="doc-biblioref">82</a>)</span>, low adult smoking prevalence <span class="citation" data-cites="RN50">(<a href="#ref-RN50" role="doc-biblioref">83</a>)</span>, and strong tobacco control policies <span class="citation" data-cites="RN51">(<a href="#ref-RN51" role="doc-biblioref">84</a>)</span>. In addition, industrial and environmental carcinogen exposures are generally less prevalent, and access to healthcare and insurance coverage is relatively high <span class="citation" data-cites="RN52">(<a href="#ref-RN52" role="doc-biblioref">85</a>)</span>. Together, these demographic, behavioral, and structural factors likely explain Hawaii’s consistently low BC burden, underscoring the potential impact of comprehensive prevention and access-to-care strategies.</p>
+<p>The strengths of this study include the use of robust, population-based estimates to examine long-term temporal trends and state-level disparities in BC burden across the U.S. Nevertheless, several limitations merit consideration. GBD estimates rely on modeled data due to incomplete or heterogeneous primary data sources, which may introduce uncertainty, particularly in states with sparse reporting. Although advanced statistical methods are used to mitigate these limitations, some degree of imprecision is unavoidable. Additionally, the inherent lag in GBD data availability means that trends beyond 2021 are not captured. Finally, this analysis is primarily descriptive and does not directly evaluate individual-level risk factors or clinical characteristics, limiting causal inference regarding the drivers of observed patterns. Most of the trends reported in this study are age-standardized; therefore, discrepancies with surveillance systems that report crude or partially adjusted rates, such as some Centers for Disease Control and Prevention (CDC) summaries, likely reflect methodological differences rather than true epidemiological disagreement. Notably, Nevada remained among the states with persistently elevated mortality trends even after age standardization.</p>
 </section>
 <section id="conclusions" class="level1" data-number="6">
 <h1 data-number="6"><span class="header-section-number">6</span> Conclusions</h1>
-<p>Bladder cancer remains a major public health challenge in the U.S., characterized by pronounced geographic, demographic, and sex-based disparities. Although national trends indicate modest improvements in several burden measures, substantial heterogeneity persists across states, with disproportionate burden in regions affected by environmental exposures, population aging, and inequities in healthcare access. These findings underscore the need for region-specific prevention strategies, improved diagnostic equity, and strengthened surveillance systems. Prioritizing modifiable risk factor reduction alongside expanded access to timely detection and high-quality care will be essential to reducing disparities and mitigating the long-term burden of this costly and largely preventable disease. Future research should integrate health economic analyses to evaluate the cost-effectiveness of reallocating healthcare resources toward primary prevention and early detection, relative to the current emphasis on late-stage treatment. Such work could provide critical evidence to inform policy decisions aimed at optimizing healthcare spending while reducing the long-term burden of bladder cancer in the U.S.</p>
+<p>BC remains a major public health challenge in the U.S., characterized by pronounced geographic, demographic, and sex-based disparities. Although national trends indicate modest improvements in several burden measures, substantial heterogeneity persists across states, with disproportionate burden in regions affected by environmental exposures, population aging, and inequities in healthcare access. These findings underscore the need for region-specific prevention strategies, improved diagnostic equity, and strengthened surveillance systems. Prioritizing modifiable risk factor reduction alongside expanded access to timely detection and high-quality care will be essential to reducing disparities and mitigating the long-term burden of this costly and largely preventable disease. Future research should integrate health economic analyses to evaluate the cost-effectiveness of reallocating healthcare resources toward primary prevention and early detection, relative to the current emphasis on late-stage treatment. Such work could provide critical evidence to inform policy decisions aimed at optimizing healthcare spending while reducing the long-term burden of BC in the U.S.</p>
 </section>
 <section id="supporting-files" class="level1 unnumbered">
 <h1 class="unnumbered">Supporting Files</h1>
@@ -1884,34 +1858,34 @@ Line plots illustrating age- and sex-stratified bladder cancer burden across cal
 <h1 class="appendix" data-number="7"><span class="header-section-number">7</span> Statements</h1>
 <section id="contributions" class="level2 appendix" data-number="7.1">
 <h2 class="appendix anchored" data-number="7.1" data-anchor-id="contributions"><span class="header-section-number">7.1</span> Contributions</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> rmarkdown<span class="sc">::</span>metadata<span class="sc">$</span>author</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map_dfr</span>(authors, <span class="cf">function</span>(a) {</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> a<span class="sc">$</span>name,</span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">role =</span> <span class="fu">unlist</span>(a<span class="sc">$</span>roles)</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>      )</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>    })</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>role_order <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(role) <span class="sc">|&gt;</span></span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(role)</span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (r <span class="cf">in</span> role_order) {</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a>  people <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(role <span class="sc">==</span> r) <span class="sc">|&gt;</span></span>
-<span id="cb38-18"><a href="#cb38-18" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">pull</span>(name)</span>
-<span id="cb38-19"><a href="#cb38-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-20"><a href="#cb38-20" aria-hidden="true" tabindex="-1"></a>  role_label <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_to_sentence</span>(r)</span>
-<span id="cb38-21"><a href="#cb38-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-22"><a href="#cb38-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(</span>
-<span id="cb38-23"><a href="#cb38-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"**"</span>, role_label, <span class="st">":** "</span>,</span>
-<span id="cb38-24"><a href="#cb38-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(people, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
-<span id="cb38-25"><a href="#cb38-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"; "</span>,</span>
-<span id="cb38-26"><a href="#cb38-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">""</span></span>
-<span id="cb38-27"><a href="#cb38-27" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb38-28"><a href="#cb38-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>authors <span class="ot">&lt;-</span> rmarkdown<span class="sc">::</span>metadata<span class="sc">$</span>author</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  purrr<span class="sc">::</span><span class="fu">map_dfr</span>(authors, <span class="cf">function</span>(a) {</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">name =</span> a<span class="sc">$</span>name,</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">role =</span> <span class="fu">unlist</span>(a<span class="sc">$</span>roles)</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    })</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>role_order <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">distinct</span>(role) <span class="sc">|&gt;</span></span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">pull</span>(role)</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (r <span class="cf">in</span> role_order) {</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>  people <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">filter</span>(role <span class="sc">==</span> r) <span class="sc">|&gt;</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">pull</span>(name)</span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>  role_label <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_to_sentence</span>(r)</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cat</span>(</span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">"**"</span>, role_label, <span class="st">":** "</span>,</span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(people, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>    <span class="st">"; "</span>,</span>
+<span id="cb40-26"><a href="#cb40-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">sep =</span> <span class="st">""</span></span>
+<span id="cb40-27"><a href="#cb40-27" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb40-28"><a href="#cb40-28" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p><strong>Conceptualization:</strong> Alireza Sadeghi; <strong>Data curation:</strong> Alireza Sadeghi, Niloofar Dehdari Ebrahimi, Ehsan Taherifard; <strong>Formal analysis:</strong> Alireza Sadeghi; <strong>Investigation:</strong> Alireza Sadeghi, Fatemeh Nouri, Niloofar Dehdari Ebrahimi, Ehsan Taherifard, Wassim Kassouf; <strong>Methodology:</strong> Alireza Sadeghi; <strong>Software:</strong> Alireza Sadeghi; <strong>Visualization:</strong> Alireza Sadeghi; <strong>Writing – review &amp; editing:</strong> Alireza Sadeghi, Fatemeh Nouri, Niloofar Dehdari Ebrahimi, Ehsan Taherifard, Wassim Kassouf; <strong>Writing – original draft:</strong> Alireza Sadeghi, Fatemeh Nouri, Niloofar Dehdari Ebrahimi; <strong>Resources:</strong> Ehsan Taherifard; <strong>Supervision:</strong> Wassim Kassouf; <strong>Project administration:</strong> Wassim Kassouf;</p>
 </section>
 <section id="acknowledgments" class="level2 appendix" data-number="7.2">
@@ -1924,7 +1898,7 @@ Line plots illustrating age- and sex-stratified bladder cancer burden across cal
 </section>
 <section id="data-availability-statement" class="level2 appendix" data-number="7.4">
 <h2 class="appendix anchored" data-number="7.4" data-anchor-id="data-availability-statement"><span class="header-section-number">7.4</span> Data Availability Statement</h2>
-<p>All data used in this study are publicly available from the Global Burden of Disease (GBD) Study 2021 through the <a href="http://ghdx.healthdata.org/gbd-results-tool">GBD Results Tool</a>. The complete analytic workflow, including cleaned datasets and all code required to reproduce the analyses, figures, and tables presented in this manuscript, is available in the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer">GitHub repository</a>. Data are provided in R’s native binary format (RDS). Full reproducibility can be achieved by cloning the repository and rendering the project using the supplied scripts and documentation.</p>
+<p>All data are publicly available through the <a href="https://ghdx.healthdata.org/">Global Health Data Exchange (GHDx)</a>. The complete analytic workflow, including cleaned datasets and all code required to reproduce the analyses, figures, and tables presented in this manuscript, is available in the study’s <a href="https://github.com/alireza5969/gbd-bladder-cancer">GitHub repository</a>. Data are provided in R’s native binary format (RDS). Full reproducibility can be achieved by cloning the repository and rendering the project using the supplied scripts and documentation.</p>
 </section>
 <section id="conflicts-of-interest" class="level2 appendix" data-number="7.5">
 <h2 class="appendix anchored" data-number="7.5" data-anchor-id="conflicts-of-interest"><span class="header-section-number">7.5</span> Conflicts of Interest</h2>
