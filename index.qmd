@@ -1125,7 +1125,7 @@ red_change_txt <-
 ```
 
 A complementary quantitative summary of the trends shown in @fig-performance is provided in
-@tbl-percentchange, which presents the percentage change in age-standardized rates between 1980 and
+[Supporting Files](#sup-percentchange), which presents the percentage change in age-standardized rates between 1980 and
 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant
 reductions in DALYs (`r green_change_txt[3]`, `r green_change_txt[2]`,
 `r green_change_txt[1]`, and `r green_change_txt[4]`) and YLLs
@@ -1138,12 +1138,6 @@ significant declines in mortality (`r green_change_txt[7]`, `r green_change_txt[
 `r incidence_green_change_txt[1]`), changes in the U.S. were comparatively modest and statistically
 non-significant (`r incidence_green_change_txt[2]`).
 
-![Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively.](output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.svg){#tbl-percentchange}
-
-
-```         
-Abbreviations: `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`
-```
 
 As illustrated in @fig-pyramid, all burden measures in 2021 were consistently higher in men across
 all age groups. The highest age-specific rates for each burden metric were observed in 80+ and 75-79
@@ -1350,23 +1344,29 @@ Future research should integrate health economic analyses to evaluate the cost-e
 
 Supporting Files are provided as appendices to the manuscript and are also publicly accessible at the links below:
 
-1.  **Geographically faceted state-level trend plots**  
-    Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s
-    [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).[](){#sup-geofacet}
 
-2.  **State-level population pyramids (2021)**  
+
+1.  **Percentage change between 1980 and 2021**  
+    Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively. This table is available from the project’s
+    [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/blob/main/output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.pdf).[](){#sup-percentchange}
+
+2.  **Geographically faceted state-level trend plots**  
+    Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s
+    [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot). States are abbreviated as `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`.[](){#sup-geofacet}
+
+3.  **State-level population pyramids (2021)**  
     Population pyramid plots depicting age- and sex-stratified bladder cancer burden for each U.S. state in 2021 are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021).[](){#sup-pyramid2021}
 
-3.  **Animated population pyramids**  
+4.  **Animated population pyramids**  
     Animated population pyramid plots visualizing temporal changes in age- and sex-stratified bladder cancer burden for each U.S. state are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%20animated).[](){#sup-pyramidgif}
 
-4.  **State ranking bump plots**  
+5.  **State ranking bump plots**  
     Bump plots ranking U.S. states according to bladder cancer burden metrics in 1990, 2000, 2010, and 2021 are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Bump%20plot).[](){#sup-bump}
 
-5.  **Age–period trend plots**  
+6.  **Age–period trend plots**  
     Line plots illustrating age- and sex-stratified bladder cancer burden across calendar years for each U.S. state are available from the project’s
     [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201).[](){#sup-apc}
 
