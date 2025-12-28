@@ -680,6 +680,7 @@ pyramid_plot <-
       ) +
       scale_fill_manual(values = colors) +
       scale_color_manual(values = colors) +
+      scale_y_discrete(labels = function(x) str_remove(x, " years")) +
       
       theme_minimal() + 
       
@@ -748,6 +749,7 @@ apc_plot1 <-
       theme_minimal(base_size = 20) + 
       ylab(paste(measure_name, "(Rate)")) +
       scale_color_manual(values = colpal, name = "Year") + 
+      scale_y_discrete(labels = function(x) str_remove(x, " years")) +
       theme(
         axis.text.x = element_text(
           angle = 90,

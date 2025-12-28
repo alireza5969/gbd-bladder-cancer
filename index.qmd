@@ -1,7 +1,8 @@
 ---
-# commit message: apc plots improved
+# commit message: minor changes suggested via hypothesis and meeting with Prof. Kassouf 
+# except figure changes
 
-title: "Bladder Cancer in the United States: National Trends and State-Level Patterns from Global Burden of Disease (GBD), 1980-2021"
+title: "Bladder Cancer in the United States: National Trends and State-Level Patterns from Global Burden of Disease (GBD) Study, 1980-2021"
 subtitle: "Burden of Bladder Cancer in the United States"
 author: 
   - name: Alireza Sadeghi
@@ -57,7 +58,9 @@ keywords:
   - mortality
   - prevalence
 number-sections: true
-bibliography: bladder.bib
+bibliography: 
+  - bladder.bib
+  - grateful-refs.bib
 csl: vancouver.csl
 # format:
 #   docx:
@@ -729,6 +732,8 @@ if (!file.exists(file_name)) {
 
 ```
 
+::: {.content-visible when-format="docx"}
+
 **Authors contact**
 
 ```{r}
@@ -771,6 +776,8 @@ cat(
 )
 
 ```
+
+:::
 
 {{< pagebreak >}}
 
@@ -889,7 +896,7 @@ table_base_url <-
 **Aim:** This study aimed to characterize temporal trends in the burden of bladder cancer, including prevalence, incidence, mortality, disability-adjusted life years (DALYs), years lived with disability (YLDs), and years of life lost (YLLs), and to evaluate state-level disparities and potential long-term effects of health policies.  
 **Methodology:** Data were obtained from the Global Burden of Disease (GBD) 2021 study. Age- and sex-stratified trends were analyzed and visualized at both national and state levels across the study period. Burden estimates were additionally compared with those of other major health systems, including the European Union, countries with high socio-demographic index, and high-income settings.  
 **Results:** `r final_sentence`  
-**Conclusion:** Bladder cancer continues to impose a substantial and uneven burden across the U.S.. Reducing these disparities will require targeted public health strategies and region-specific policies that address modifiable risk factors, enhance diagnostic equity, and expand access to timely detection and appropriate care.
+**Conclusion:** Bladder cancer continues to impose a substantial and uneven burden across the U.S. Reducing these disparities will require targeted public health strategies and region-specific policies that address modifiable risk factors, enhance diagnostic equity, and expand access to timely detection and appropriate care.
 
 **Keywords:** *`r rmarkdown::metadata$keywords %>% paste0(collapse = "; ")`*
 
@@ -901,9 +908,9 @@ Bladder cancer (BC) is the sixth most common malignancy in the U.S. [@RN1]. Amon
 
 Beyond its epidemiological impact, BC imposes a substantial economic burden. Its management commonly requires lifelong surveillance and repeated therapeutic interventions, rendering it the most costly cancer to treat on a per-patient lifetime basis [@RN4; @RN5; @RN6]. In addition to direct healthcare expenditures, BC exerts profound effects on patients’ quality of life and significantly impacts the emotional, social, and practical well-being of caregivers and families [@RN7].
 
-Although cigarette smoking has historically been the predominant risk factor for BC [@RN8], accumulating evidence indicates that a broader spectrum of carcinogenic exposures contributes to its incidence. These include arsenic-contaminated drinking water, occupational and cosmetic chemicals (such as those found in hair dyes), dietary factors, and widespread environmental pollutants [@RN9]. Notably, despite a sustained decline in cigarette smoking prevalence since 1998 [@RN10] and the introduction of stricter regulations on aryl amines, BC incidence has not declined in parallel [@RN11]. This lack of concordance suggests that other environmental and occupational exposures may be driving contemporary disease patterns, particularly in regions with limited regulatory oversight. Elevated BC incidence in certain New England states, for example, has been partially attributed to environmental carcinogens such as arsenic contamination from private household wells [@RN12; @RN13]. The interaction of these exposures with persistent regional and socioeconomic disparities represents a critical yet incompletely characterized public health concern, warranting focused surveillance, research, and policy attention.
+<!-- Although cigarette smoking has historically been the predominant risk factor for BC [@RN8], accumulating evidence indicates that a broader spectrum of carcinogenic exposures contributes to its incidence. These include arsenic-contaminated drinking water, occupational and cosmetic chemicals (such as those found in hair dyes), dietary factors, and widespread environmental pollutants [@RN9]. Notably, despite a sustained decline in cigarette smoking prevalence since 1998 [@RN10] and the introduction of stricter regulations on aryl amines, BC incidence has not declined in parallel [@RN11]. This lack of concordance suggests that other environmental and occupational exposures may be driving contemporary disease patterns, particularly in regions with limited regulatory oversight. Elevated BC incidence in certain New England states, for example, has been partially attributed to environmental carcinogens such as arsenic contamination from private household wells [@RN12; @RN13]. The interaction of these exposures with persistent regional and socioeconomic disparities represents a critical yet incompletely characterized public health concern, warranting focused surveillance, research, and policy attention. -->
 
-Substantial geographic heterogeneity in BC incidence and outcomes has been documented across the U.S. [@RN14; @RN15; @RN16; @RN17]. For instance, Maine reported an age-standardized incidence rate of 26.7 during 2017–2021, nearly double that observed in Hawaii (13.4) [@RN18]. Such variation likely reflects differences in environmental exposures, socioeconomic conditions, access to care, and healthcare infrastructure. Incidence rates tend to be highest in northeastern states [@RN16], whereas mortality is disproportionately greater in Southern states [@RN19], where higher proportions of older adults, African Americans, and rural residents may experience delayed diagnosis and reduced access to high-quality treatment [@RN20].
+Substantial geographic heterogeneity in BC incidence and outcomes has been documented across the U.S. [@RN14; @RN15; @RN16; @RN17]. For instance, Maine reported an age-standardized incidence rate of 26.7 per 100,000 during 2017–2021, nearly double that observed in Hawaii (13.4) [@RN18]. Such variation likely reflects differences in environmental exposures, socioeconomic conditions, access to care, and healthcare infrastructure. Incidence rates tend to be highest in northeastern states [@RN16], whereas mortality is disproportionately greater in Southern states [@RN19], where higher proportions of older adults, African Americans, and rural residents may experience delayed diagnosis and reduced access to high-quality treatment [@RN20].
 <!-- Additionally, while men are more frequently diagnosed, women often experience worse -->
 <!-- outcomes, including higher stage at diagnosis and lower survival rates [@RN21]. -->
 
@@ -955,7 +962,8 @@ Age-standardized rates were calculated for each burden metric using the GBD 2021
 
 Uncertainty intervals reflect the GBD Bayesian modeling framework and are defined by the 2.5th and 97.5th percentiles of 500 posterior draws. These intervals account for multiple sources of uncertainty, including data sparsity, measurement error, and model specification [@naghavi2024].
 
-All analyses were conducted using R version 4.5.1 (2025-06-13 ucrt). A total of 28 R packages were used to support data acquisition, processing, visualization, analysis, and reproducibility [@allaire2024b; @allaire2024c; @atkins2025b; @attali2021a; @bååth2024a; @campitelli2025a; @chang2025a; @gohel2025a; @hafen2025; @hester2024; @hughes2022; @hvitfeldt2021; @müller2025; @pedersen2025; @richardson2025; @RJ-2021-048; @sievert2025; @sjoberg2020; @vaughan2022; @wickham2016; @wickham2019; @wickham2023; @wickham2025; @wilke2022; @xie2014a; @xie2015; @xie2018; @xie2020; @xie2025]. To enable full reproducibility, complete analytic code, data-processing workflows, and supporting files are available in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer). 
+`r grateful::cite_packages(output = "paragraph", out.dir = ".")`
+To enable full reproducibility, complete analytic code, data-processing workflows, and supporting files are available in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer). 
 
 
 # Results
@@ -1003,7 +1011,7 @@ incidence_death_compete_2021_txt <-
 
 ```
 
-In 2021, the age-standardized incidence rates in the U.S. were `r incidence_death_us_2021_txt[1]` and
+In 2021, the age-standardized incidence rates of BC in the U.S. were `r incidence_death_us_2021_txt[1]` and
 `r incidence_death_us_2021_txt[2]` for men and women, respectively, corresponding to mortality rates
 of `r incidence_death_us_2021_txt[3]` and `r incidence_death_us_2021_txt[4]`. In the same year,
 European Union, high-income, and high-SDI countries reported mortality rates of
@@ -1301,11 +1309,11 @@ Abbreviations: `r paste0(c(state_abbs), collapse = "; ")`
 
 # Discussion
 
-This study used GBD 2021 data to characterize long-term trends in BC incidence, mortality, YLLs, YLDs, and DALYs in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in early detection, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates [Supporting Files](@sup-geofacet). These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.
+This study used GBD 2021 data to characterize long-term trends in BC incidence, mortality, YLLs, YLDs, and DALYs in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in preventive strategies, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates [Supporting Files](#sup-geofacet). These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.
 
 Despite having one of the highest per-capita healthcare expenditures globally [@RN24], the U.S. continues to report comparatively high age-standardized incidence rates of BC relative to many high-income and high-SDI regions, consistent with prior reports [@RN3]. This pattern likely reflects the country’s advanced diagnostic capacity and widespread use of cystoscopy and imaging, which facilitate more complete case ascertainment rather than a true excess in underlying disease risk [@RN25; @RN26; @RN27]. At the same time, this discrepancy highlights a potential imbalance in healthcare priorities, with disproportionate emphasis on diagnosis and treatment relative to prevention and risk reduction [@RN28]. The persistently high incidence is particularly concerning given evidence that up to 80% of BC cases diagnosed over the past two decades may be attributable to preventable exposures [@RN29], whereas inherited genetic factors account for only a small proportion of cases in Western populations [@RN30]. Together, these findings underscore the importance of strengthening prevention-oriented public health strategies, including smoking cessation, occupational safety, and mitigation of environmental carcinogen exposure [@RN31].
 
-Age-specific analyses revealed a consistent increase in BC incidence, mortality, and DALYs with advancing age across all states, in line with prior literature [@RN3]. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the oldest age groups in several populous states, including California, Texas, and Connecticut [Supporting Files](@sup-apc). This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 [@RN31]. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older [@RN32]. These findings indicate that, despite overall progress, the burden of BC among older adults remains a critical public health challenge.
+Age-specific analyses revealed a consistent increase in BC incidence, mortality, and DALYs with advancing age across all states, in line with prior literature [@RN3]. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the oldest age groups in several populous states, including California, Texas, and Connecticut [Supporting Files](#sup-apc). This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 [@RN31]. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older [@RN32]. These findings indicate that, despite overall progress, the burden of BC among older adults remains a critical public health challenge.
 
 Consistent with prior studies, our analysis confirms that men experience BC burden rates approximately four times higher than women [@RN22]. Age–period analyses across states revealed broadly similar age-related trajectories in both sexes, characterized by a sharp rise after age 60; however, women consistently exhibited lower absolute rates and a slower decline in mortality over time. Previous studies have shown that women are more likely to present with advanced disease and have poorer survival outcomes [@RN33; @RN23; @RN21]. One contributing factor may be delayed evaluation of hematuria in women, as symptoms are more frequently attributed to urinary tract infections or gynecologic conditions [@RN33; @RN34]. Addressing these disparities will require improved adherence to updated clinical guidelines, including the 2025 American Urological Association recommendations [@RN35], alongside the incorporation of validated biomarkers for risk stratification and the adoption of sex-aware diagnostic pathways in primary care settings.
 
@@ -1406,7 +1414,7 @@ for (r in role_order) {
 
 ## Acknowledgments {.appendix}
 
-The authors declare no conflicts of interest.
+None.
 
 ## Transparency Statement {.appendix}
 
