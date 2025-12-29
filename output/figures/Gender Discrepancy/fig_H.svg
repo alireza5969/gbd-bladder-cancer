@@ -40,7 +40,7 @@
 <polyline points='37.13,117.92 1268.62,117.92 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,76.39 1268.62,76.39 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,34.86 1268.62,34.86 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
-<line x1='570.30' y1='275.69' x2='570.30' y2='31.57' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.50; stroke-linecap: butt;' />
+<line x1='570.30' y1='275.69' x2='570.30' y2='31.57' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.25; stroke-linecap: butt;' />
 <line x1='145.65' y1='229.38' x2='145.65' y2='164.15' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='570.30' y1='203.49' x2='570.30' y2='172.47' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='947.77' y1='218.52' x2='947.77' y2='130.04' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
@@ -160,7 +160,7 @@
 <polyline points='37.13,393.61 1268.62,393.61 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,352.08 1268.62,352.08 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,310.55 1268.62,310.55 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
-<line x1='570.30' y1='551.37' x2='570.30' y2='307.26' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.50; stroke-linecap: butt;' />
+<line x1='570.30' y1='551.37' x2='570.30' y2='307.26' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.25; stroke-linecap: butt;' />
 <line x1='782.63' y1='491.08' x2='782.63' y2='407.48' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='1065.73' y1='492.48' x2='1065.73' y2='405.58' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='1018.55' y1='485.90' x2='1018.55' y2='393.70' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
@@ -280,7 +280,7 @@
 <polyline points='37.13,669.30 1268.62,669.30 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,627.77 1268.62,627.77 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,586.24 1268.62,586.24 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
-<line x1='570.30' y1='827.06' x2='570.30' y2='582.95' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.50; stroke-linecap: butt;' />
+<line x1='570.30' y1='827.06' x2='570.30' y2='582.95' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.25; stroke-linecap: butt;' />
 <line x1='1112.91' y1='761.72' x2='1112.91' y2='669.91' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='1230.87' y1='747.78' x2='1230.87' y2='653.29' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='405.16' y1='773.99' x2='405.16' y2='691.89' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
@@ -400,7 +400,7 @@
 <polyline points='37.13,944.98 1268.62,944.98 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,903.45 1268.62,903.45 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,861.92 1268.62,861.92 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
-<line x1='570.30' y1='1102.75' x2='570.30' y2='858.63' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.50; stroke-linecap: butt;' />
+<line x1='570.30' y1='1102.75' x2='570.30' y2='858.63' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.25; stroke-linecap: butt;' />
 <line x1='570.30' y1='1028.37' x2='570.30' y2='1007.23' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='664.67' y1='1048.69' x2='664.67' y2='967.88' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='1065.73' y1='1042.92' x2='1065.73' y2='951.42' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
@@ -520,7 +520,7 @@
 <polyline points='37.13,1220.67 1268.62,1220.67 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,1179.14 1268.62,1179.14 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,1137.61 1268.62,1137.61 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
-<line x1='570.30' y1='1378.43' x2='570.30' y2='1134.32' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.50; stroke-linecap: butt;' />
+<line x1='570.30' y1='1378.43' x2='570.30' y2='1134.32' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.25; stroke-linecap: butt;' />
 <line x1='570.30' y1='1338.93' x2='570.30' y2='1226.44' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='287.20' y1='1350.20' x2='287.20' y2='1216.11' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='994.95' y1='1339.87' x2='994.95' y2='1184.01' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
@@ -640,7 +640,7 @@
 <polyline points='37.13,1496.36 1268.62,1496.36 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,1454.83 1268.62,1454.83 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <polyline points='37.13,1413.30 1268.62,1413.30 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
-<line x1='570.30' y1='1654.12' x2='570.30' y2='1410.01' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.50; stroke-linecap: butt;' />
+<line x1='570.30' y1='1654.12' x2='570.30' y2='1410.01' style='stroke-width: 3.20; stroke: #4D4D4D; stroke-opacity: 0.25; stroke-linecap: butt;' />
 <line x1='428.75' y1='1607.57' x2='428.75' y2='1523.56' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='287.20' y1='1609.79' x2='287.20' y2='1529.88' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
 <line x1='994.95' y1='1595.90' x2='994.95' y2='1510.17' style='stroke-width: 1.92; stroke: #6184D8; stroke-linecap: butt;' />
