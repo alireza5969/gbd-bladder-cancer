@@ -1,5 +1,42 @@
 
 
+# Difference Calculators --------------------------------------------------
+
+ratio_calc <- 
+  function(a1, l1, u1, a2, l2, u2) {
+    
+    z <- qnorm(0.975)
+    
+    ratio_est = a1 / a2
+    se1_log = (log(u1) - log(l1)) / (2 * z)
+    se2_log = (log(u2) - log(l2)) / (2 * z)
+    log_ratio = log(a1) - log(a2)
+    ratio_se_log = sqrt(se1_log^2 + se2_log^2)
+    ratio_l = exp(log_ratio - z * ratio_se_log)
+    ratio_u = exp(log_ratio + z * ratio_se_log)
+    
+    return(list(ratio = ratio_est, ratio_lower = ratio_l, ratio_upper = ratio_u))
+  }
+
+
+diff_calc <- 
+  function(a1, l1, u1, a2, l2, u2) {
+    
+    z <- qnorm(0.975)
+    
+    
+    se1 = (u1 - l1) / (2 * z)
+    se2 = (u2 - l2) / (2 * z)
+    diff_est = (a1 - a2)
+    diff_se  = sqrt(se1^2 + se2^2)
+    diff_l   = diff_est - z * diff_se
+    diff_u   = diff_est + z * diff_se
+    
+    return(list(diff = diff_est, diff_l = diff_l, diff_u = diff_u))
+    
+  }
+
+
 # Geofacet plot -----------------------------------------------------------
 
 
@@ -180,7 +217,6 @@ geofacet_state_plot <-
         values = c("USA" = "gray15")
       ) +
       
-      # Reset legend scales for new legend box
       new_scale("fill") +
       new_scale("color") +
       
@@ -724,8 +760,8 @@ apc_plot1 <-
     file_path <- 
       c("output/figures/APC plot 1/", file_name)
     
-    # if (file.exists(paste0(file_path, collapse = ""))) {return(NA)}
-    if (!str_detect(location_name, "United")) {return(NA)}
+    if (file.exists(paste0(file_path, collapse = ""))) {return(NA)}
+    # if (!str_detect(location_name, "United")) {return(NA)}
     
     colpal <- 
       c(
@@ -749,17 +785,17 @@ apc_plot1 <-
       theme_minimal(base_size = 20) + 
       ylab(paste(measure_name, "(Rate)")) +
       scale_color_manual(values = colpal, name = "Year") + 
-      scale_y_discrete(labels = function(x) str_remove(x, " years")) +
+      scale_x_discrete(labels = function(x) str_remove(x, " years")) +
       theme(
         axis.text.x = element_text(
           angle = 90,
           hjust = 1, 
-          size = 20
+          size = 30
         ),
         panel.grid = element_blank(),
-        strip.text = element_text(face = "bold", size = 30), 
+        strip.text = element_text(face = "bold", size = 35), 
         axis.title.x = element_blank(),
-        axis.title.y = element_text(size = 30, face = 'bold'), 
+        axis.title.y = element_text(size = 35, face = 'bold'), 
         legend.position = "top",
         legend.key.size = unit(2, "cm"), 
         legend.margin = margin(0, 0, -1, 0, "cm"),
@@ -926,6 +962,75 @@ apc_plot2 <-
     )
     
   }
+
+
+
+# Gender Discrepancy Plot ------------------------------------------------------
+
+
+gender_discrep_plot <- 
+  function(data) {
+    
+    plot <- 
+      data %>% 
+      ggplot(aes(x = fct_reorder(location_name, ratio), y = ratio)) +
+      
+      geom_vline(
+        xintercept = "USA", 
+        # linetype = "dashed",
+        color = "gray30",
+        size = 1.5, 
+        alpha = .5
+      ) +
+      
+      geom_linerange(
+        aes(ymin = ratio_lower, ymax = ratio_upper),
+        color = "#6184D8",
+        size = 0.9
+      ) +
+      
+      geom_point(
+        color = "#FF9F1C",   
+        size = 3
+      ) +
+      
+      facet_wrap(~measure_name, ncol = 1) +
+      
+      scale_y_continuous(
+        labels = scales::number_format(accuracy = 1),
+        expand = expansion(mult = c(0.05, 0.15))
+      ) +
+      
+      labs(
+        x = NULL,
+        y = "Rate ratio (Male / Female)",
+      ) +
+      
+      theme_minimal(base_size = 14) +
+      theme(
+        strip.text = element_text(face = "bold", size = 15),
+        axis.text.x = element_text(angle = 60, size = 15, vjust = 1, hjust = 1, color = "gray20"),
+        axis.text.y = element_text(color = "black", size = 12.5),
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        panel.grid.major.y = element_line(color = "gray90", size = 0.5),
+        axis.title.y = element_text(face = "bold", size = 15)
+      )
+    
+    
+    ggsave(
+      plot = plot, 
+      path = "output/figures/Gender Discrepancy/",
+      filename = "fig_H.svg", 
+      device = "svg",
+      width = 45, 
+      height = 60, 
+      units = "cm"
+    )
+    
+    
+  }
+
 
 
 
