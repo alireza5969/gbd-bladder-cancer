@@ -980,7 +980,7 @@ gender_discrep_plot <-
         # linetype = "dashed",
         color = "gray30",
         size = 1.5, 
-        alpha = .5
+        alpha = .25
       ) +
       
       geom_linerange(

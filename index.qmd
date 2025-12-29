@@ -1,5 +1,5 @@
 ---
-# commit message: image changes + Prof. Kassouf's comments
+# commit message: minor changes + forgotten author added
 
 title: "Bladder Cancer in the United States: National Trends and State-Level Patterns from Global Burden of Disease (GBD) Study, 1980-2021"
 subtitle: "Burden of Bladder Cancer in the United States"
@@ -25,7 +25,7 @@ author:
     corresponding: false
     email: niloofar.dehdari6021@gmail.com
     degrees: MD
-    roles: [writing – original draft, writing – review & editing, data curation, investigation]
+    roles: [writing – review & editing, data curation]
     affiliations:
       - ref: shiraz
   - name: Ehsan Taherifard
@@ -33,9 +33,17 @@ author:
     corresponding: false
     email: etaherim123@gmail.com
     degrees: MD
-    roles: [writing – review & editing, resources, data curation, investigation]
+    roles: [writing – review & editing, resources, data curation]
     affiliations:
       - ref: shiraz
+  - name: Amirabbas Tavakoli
+    orcid: 0009-0003-9363-7974
+    corresponding: false
+    email: amirtvk88@gmail.com
+    degrees: MD
+    roles: [writing – review & editing, resources, data curation]
+    affiliations:
+      - ref: germany
   - name: Wassim Kassouf
     corresponding: true
     orcid: 0000-0002-8350-0531
@@ -49,6 +57,8 @@ affiliations:
     name: Student Research Committee, Shiraz University of Medical Sciences, Shiraz, Iran
   - id: mcgill
     name: Division of Urology, McGill University Health Center, Montreal, QC
+  - id: germany
+    name: Independent researcher, Wildenfels, Sachsen, Germany
 keywords: 
   - bladder cancer
   - global burden of disease
@@ -1254,11 +1264,7 @@ red_change_txt <-
 
 A complementary quantitative summary of the trends shown in @fig-performance is provided in [Supporting Files](#sup-percentchange), which presents the percentage change in age-standardized rates between 1980 and 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant reductions in DALYs (`r green_change_txt[3]`, `r green_change_txt[2]`, `r green_change_txt[1]`, and `r green_change_txt[4]`) and YLLs (`r green_change_txt[10]`, `r green_change_txt[9]`, `r green_change_txt[8]`, and `r green_change_txt[11]`) across high-income and high-SDI countries, the European Union, and the U.S., respectively. By contrast, while high-income and high-SDI countries and the European Union achieved significant declines in mortality (`r green_change_txt[7]`, `r green_change_txt[6]`, and `r green_change_txt[5]`, respectively) and male incidence (`r incidence_green_change_txt[3]`, `r incidence_green_change_txt[4]`, `r incidence_green_change_txt[1]`), changes in the U.S. were comparatively modest and statistically non-significant (`r incidence_green_change_txt[2]`).
 
-As illustrated in @fig-pyramid, all burden measures in 2021 were consistently higher in men across all age groups. The highest age-specific rates for each burden metric were observed in 80+ and 75-79 age strata.
-
 ```{r}
-#| results: asis
-
 
 pyramid_results_data <- 
   pyramid_data %>% 
@@ -1283,13 +1289,15 @@ pyramid_results_data <-
 
 pyramid_results_txt <- 
   pyramid_results_data %>% 
-  glue_data(
-    "* {measure_name}: {number(val_Male, .1, big.mark = ',')} [{number(lower_Male, .1, big.mark = ',')}, {number(upper_Male, .1, big.mark = ',')}] in men and {number(val_Female, .1, big.mark = ',')} [{number(lower_Female, .1, big.mark = ',')}, {number(upper_Female, .1, big.mark = ',')}] in women in {age_name} age group.\n\n\n"
-  )
-
-cat(pyramid_results_txt)
+    glue_data(
+        "{measure_name}: {number(val_Male, .1, big.mark = ',')} [{number(lower_Male, .1, big.mark = ',')}, {number(upper_Male, .1, big.mark = ',')}] in men and {number(val_Female, .1, big.mark = ',')} [{number(lower_Female, .1, big.mark = ',')}, {number(upper_Female, .1, big.mark = ',')}] in women in {age_name} age group"
+    ) %>% knitr::combine_words(sep = "; ")
 
 ```
+
+
+As illustrated in @fig-pyramid, all burden measures in 2021 were consistently higher in men across all age groups. The highest age-specific rates for each burden metric were observed in 80+ and 75-79 age strata: `r pyramid_results_txt`
+
 
 <!-- ::: {#fig-pyramid layout-ncol="3"} -->
 
@@ -1401,7 +1409,10 @@ Supporting Files are provided as appendices to the manuscript and are also publi
     Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively. This table is available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/blob/main/output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.pdf).[ ](){#sup-percentchange}
 
 2.  **Geographically faceted state-level trend plots**\
-    Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot). States are abbreviated as `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`.[ ](){#sup-geofacet}
+    Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).     
+  ```
+  States are abbreviated as `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`.[ ](){#sup-geofacet}
+  ```
 
 3.  **State-level population pyramids (2021)**\
     Population pyramid plots depicting age- and sex-stratified bladder cancer burden for each U.S. state in 2021 are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021).[ ](){#sup-pyramid2021}
