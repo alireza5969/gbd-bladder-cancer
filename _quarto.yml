@@ -1,6 +1,6 @@
 project:
   type: manuscript
-  post-render: encrypt.r
+  #post-render: encrypt.r
 
 manuscript:
   article: index.qmd
