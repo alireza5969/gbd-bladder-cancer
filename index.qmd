@@ -93,7 +93,7 @@ editor:
 ---
 
 ```{css}
-#| echo: false
+/*| echo: false */
 .body-justified p {
   text-align: justify
 }
