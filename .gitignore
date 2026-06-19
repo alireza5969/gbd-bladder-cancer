@@ -15,3 +15,5 @@
 .Renviron
 
 **/*.quarto_ipynb
+
+submissions/*
