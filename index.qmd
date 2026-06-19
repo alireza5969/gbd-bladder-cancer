@@ -36,6 +36,14 @@ author:
     roles: [writing – review & editing, resources, data curation]
     affiliations:
       - ref: shiraz
+  - name: Amirabbas Tavakoli
+    orcid: 0009-0003-9363-7974
+    corresponding: false
+    email: amirtvk88@gmail.com
+    degrees: MD
+    roles: [writing – review & editing, resources, data curation]
+    affiliations:
+      - ref: shiraz
   - name: Mohammadreza Soltani
     corresponding: false
     email: soltani732003@yahoo.com
