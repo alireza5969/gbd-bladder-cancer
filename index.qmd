@@ -1069,7 +1069,7 @@ Uncertainty Intervals (UIs) reflect the GBD Bayesian modeling framework and are 
 
 ### Comparison of Rates Using UIs
 
-We calculated both absolute differences ([Supporting Files](#sup-percentchange)) and rate ratios (@fig-discrep) between male and female BC burden measures.
+We calculated both absolute differences ([Supporting Files 1](#sup-percentchange)) and rate ratios (@fig-discrep) between male and female BC burden measures.
 Since draw-level estimates were not available from the GBD study, uncertainty for derived quantities was approximated analytically using standard methods for independent estimates [@altman2003statistics; @rothman2008modern]. All calculations assumed approximate normality of the log-transformed rates, which is reasonable for age-standardized rates based on large population data [@cochran1977sampling].
 
 Let $a_1$ and $a_2$ represent two age-standardized rates with reported 95% UIs $[l_1, u_1]$ and $[l_2, u_2]$. Standard errors were derived from the reported bounds:
@@ -1270,7 +1270,7 @@ red_change_txt <-
 
 ```
 
-A complementary quantitative summary of the trends shown in @fig-performance is provided in [Supporting Files](#sup-percentchange), which presents the percentage change in age-standardized rates between 1980 and 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant reductions in DALYs (`r green_change_txt[3]`, `r green_change_txt[2]`, `r green_change_txt[1]`, and `r green_change_txt[4]`) and YLLs (`r green_change_txt[10]`, `r green_change_txt[9]`, `r green_change_txt[8]`, and `r green_change_txt[11]`) across high-income and high-SDI countries, the European Union, and the U.S., respectively. By contrast, while high-income and high-SDI countries and the European Union achieved significant declines in mortality (`r green_change_txt[7]`, `r green_change_txt[6]`, and `r green_change_txt[5]`, respectively) and male incidence (`r incidence_green_change_txt[3]`, `r incidence_green_change_txt[4]`, `r incidence_green_change_txt[1]`), changes in the U.S. were comparatively modest and statistically non-significant (`r incidence_green_change_txt[2]`).
+A complementary quantitative summary of the trends shown in @fig-performance is provided in [Supporting Files 1](#sup-percentchange), which presents the percentage change in age-standardized rates between 1980 and 2021 for all burden measures. Consistent with the visual trends, the table demonstrates significant reductions in DALYs (`r green_change_txt[3]`, `r green_change_txt[2]`, `r green_change_txt[1]`, and `r green_change_txt[4]`) and YLLs (`r green_change_txt[10]`, `r green_change_txt[9]`, `r green_change_txt[8]`, and `r green_change_txt[11]`) across high-income and high-SDI countries, the European Union, and the U.S., respectively. By contrast, while high-income and high-SDI countries and the European Union achieved significant declines in mortality (`r green_change_txt[7]`, `r green_change_txt[6]`, and `r green_change_txt[5]`, respectively) and male incidence (`r incidence_green_change_txt[3]`, `r incidence_green_change_txt[4]`, `r incidence_green_change_txt[1]`), changes in the U.S. were comparatively modest and statistically non-significant (`r incidence_green_change_txt[2]`).
 
 ```{r}
 
@@ -1339,9 +1339,9 @@ As illustrated in @fig-pyramid, all burden measures in 2021 were consistently hi
 Abbreviations: `r measure_abbs`
 ```
 
-State-level population pyramids depicting age-specific burden rates in 2021 are provided in [Supporting Files](#sup-pyramid2021) and in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021). Animated population pyramids illustrating temporal changes by year are also available for each state and for the U.S. overall in [Supporting Files](#sup-pyramidgif) and the [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%20animated).
+State-level population pyramids depicting age-specific burden rates in 2021 are provided in [Supporting Files 2](#sup-pyramid2021) and in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021). Animated population pyramids illustrating temporal changes by year are also available for each state and for the U.S. overall in [Supporting Files 3](#sup-pyramidgif) and the [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%20animated).
 
-In addition to age-specific snapshots, @fig-apc incorporates the temporal dimension by presenting burden rates across age groups over time. Comparable age–period visualizations for each state are available in [Supporting Files](#sup-apc) and on the study’s [GitHub page](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201).
+In addition to age-specific snapshots, @fig-apc incorporates the temporal dimension by presenting burden rates across age groups over time. Comparable age–period visualizations for each state are available in [Supporting Files 4](#sup-apc) and on the study’s [GitHub page](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201).
 
 <!-- ::: {#fig-apc layout-ncol="2"} -->
 
@@ -1369,7 +1369,7 @@ Abbreviations: `r measure_abbs`
 
 ## Bladder Cancer Burden Across the U.S.
 
-State-specific, sex-stratified temporal trends in age-standardized incidence rates are displayed in @fig-geofacet. Analogous geofaceted plots for age-standardized prevalence, mortality, DALYs, YLLs, and YLDs are provided in [Supporting Files](#sup-geofacet) and in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).
+State-specific, sex-stratified temporal trends in age-standardized incidence rates are displayed in @fig-geofacet. Analogous geofaceted plots for age-standardized prevalence, mortality, DALYs, YLLs, and YLDs are provided in [Supporting Files 5](#sup-geofacet) and in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).
 
 ![State-level historical trends in age-standardized prevalence rates across the U.S., stratified by sex. States are arranged to approximate their geographic location.](output/figures/Geofacet%20plot/fig_A_Incidence_Bladder%20cancer_Rate.svg){#fig-geofacet}
 
@@ -1385,13 +1385,15 @@ Abbreviations: `r paste0(c(state_abbs), collapse = "; ")`
 Abbreviations: `r paste0(c(state_abbs, measure_abbs), collapse = "; ")`
 ```
 
+Additionally, [Supporting Files 6](#sup-bump) presents a bump plot comparing the U.S. average, all states, and competing countries/regions across various burden measures over the decades.
+
 # Discussion
 
-This study used GBD 2021 data to characterize long-term trends in BC incidence, mortality, YLLs, YLDs, and DALYs in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in preventive strategies, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality—particularly among men—other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates [Supporting Files](#sup-geofacet). These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.
+This study used GBD 2021 data to characterize long-term trends in BC incidence, mortality, YLLs, YLDs, and DALYs in the U.S. from 1980 to 2021. At the national level, age-standardized incidence rates gradually declined beginning in the late 2010s, accompanied by a more modest decrease in age-standardized mortality rates. These improvements likely reflect advances in preventive strategies, evolving treatment strategies, and broader access to specialized care. However, national averages obscure substantial heterogeneity at the state level. While several Northeastern states experienced pronounced declines in both incidence and mortality-particularly among men-other states, including West Virginia, Kentucky, Delaware, and Nevada, showed persistently elevated or plateauing trends. Among states with consistently extreme values, Maine exhibited the highest age-standardized incidence rates throughout most of the study period, albeit with recent declines, whereas Hawaii consistently reported the lowest incidence and mortality rates [Supporting Files 5](#sup-geofacet). These contrasts likely reflect regional differences in environmental exposures, healthcare access, and the effectiveness of public health interventions.
 
 Despite having one of the highest per-capita healthcare expenditures globally [@RN24], the U.S. continues to report comparatively high age-standardized incidence rates of BC relative to many high-income and high-SDI regions, consistent with prior reports [@RN3]. This pattern likely reflects the country’s advanced diagnostic capacity and widespread use of cystoscopy and imaging, which facilitate more complete case ascertainment rather than a true excess in underlying disease risk [@RN25; @RN26; @RN27]. At the same time, this discrepancy highlights a potential imbalance in healthcare priorities, with disproportionate emphasis on diagnosis and treatment relative to prevention and risk reduction [@RN28]. The persistently high incidence is particularly concerning given evidence that up to 80% of BC cases diagnosed over the past two decades may be attributable to preventable exposures [@RN29], whereas inherited genetic factors account for only a small proportion of cases in Western populations [@RN30]. Together, these findings underscore the importance of strengthening prevention-oriented public health strategies, including smoking cessation, occupational safety, and mitigation of environmental carcinogen exposure [@RN31].
 
-Age-specific analyses revealed a consistent increase in BC incidence, mortality, and DALYs with advancing age across all states, in line with prior literature [@RN3]. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the 75-80+ age groups in several populous states, including California, Texas, and Connecticut [Supporting Files](#sup-apc). This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 [@RN31]. In addition, recent evidence suggests that the oldest adults—especially men aged 85 years and older—have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older [@RN32]. These findings indicate that, despite overall progress, the burden of BC among older adults remains a significant public health challenge.
+Age-specific analyses revealed a consistent increase in BC incidence, mortality, and DALYs with advancing age across all states, in line with prior literature [@RN3]. Although age-specific patterns remained largely stable over time, data from 2021 demonstrated particularly high incidence and mortality rates in the 75-80+ age groups in several populous states, including California, Texas, and Connecticut [Supporting Files 4](#sup-apc). This trend likely reflects demographic aging, as the U.S. population aged 65 years and older increased by 38.6% between 2010 and 2020 [@RN31]. In addition, recent evidence suggests that the oldest adults-especially men aged 85 years and older-have not experienced the same improvements in cancer mortality as younger seniors, with the largest relative increases observed in individuals aged 75–79 years and 80 years or older [@RN32]. These findings indicate that, despite overall progress, the burden of BC among older adults remains a significant public health challenge.
 
 Consistent with prior studies, our analysis confirms that men experience BC burden rates approximately four times higher than women [@RN22]. Age–period analyses across states revealed broadly similar age-related trajectories in both sexes, characterized by a sharp rise after age 60; however, women consistently exhibited lower absolute rates and a slower decline in mortality over time. Previous studies have shown that women are more likely to present with advanced disease and have poorer survival outcomes [@RN33; @RN23; @RN21]. One contributing factor may be delayed evaluation of hematuria in women, as symptoms are more frequently attributed to urinary tract infections or gynecologic conditions [@RN33; @RN34]. Addressing these disparities will require improved adherence to updated clinical guidelines, including the 2025 American Urological Association recommendations [@RN35], alongside the incorporation of validated biomarkers for risk stratification and the adoption of sex-aware diagnostic pathways, which account for different presentations and burden rates in both genders in primary care settings.
 
@@ -1414,29 +1416,101 @@ BC burden in the U.S. remains unevenly distributed, with persistent state-level 
 Supporting Files are provided as appendices to the manuscript and are also publicly accessible at the links below:
 
 1.  **Percentage change between 1980 and 2021**\
-    Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively. This table is available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/raw/refs/heads/main/output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.docx)[ ]{#sup-percentchange}
+    Percentage change in age-standardized rates between 1980 and 2021 in the U.S. compared with competing countries. Bars and error lines indicate mean percentage change and 95% confidence intervals. Green, yellow, and red denote significant decrease, non-significant change, and significant increase, respectively. This table is available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/raw/refs/heads/main/output/tables/Percent%20change%20since%201980%20in%20Bladder%20cancer%20measures.docx)[ ](){#sup-percentchange}
 
-2.  **Geographically faceted state-level trend plots**\
-    Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).     
-  ```
-  States are abbreviated as `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`.[ ](){#sup-geofacet}
-  ```
-
-3.  **State-level population pyramids (2021)**\
+2.  **State-level population pyramids (2021)**\
     Population pyramid plots depicting age- and sex-stratified bladder cancer burden for each U.S. state in 2021 are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%202021).[ ](){#sup-pyramid2021}
 
-4.  **Animated population pyramids**\
+3.  **Animated population pyramids**\
     Animated population pyramid plots visualizing temporal changes in age- and sex-stratified bladder cancer burden for each U.S. state are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Population%20pyramid%20-%20animated).[ ](){#sup-pyramidgif}
 
-5.  **State ranking bump plots**\
-    Bump plots ranking U.S. states according to bladder cancer burden metrics in 1990, 2000, 2010, and 2021 are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Bump%20plot).[ ](){#sup-bump}
-
-6.  **Age–period trend plots**\
+4.  **Age–period trend plots**\
     Line plots illustrating age- and sex-stratified bladder cancer burden across calendar years for each U.S. state are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/APC%20plot%201).[ ](){#sup-apc}
 
-# Statements {.appendix}
+5.  **Geographically faceted state-level trend plots**\
+    Geofacet plots illustrating historical age-standardized trends in bladder cancer burden measures across U.S. states are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Geofacet%20plot).[ ](){#sup-geofacet}  
+  ```
+  States are abbreviated as `r paste0(c(measure_abbs, country_abbs, state_abbs), collapse = "; ")`
+  ```
 
-## Contributions {.appendix}
+6.  **State ranking bump plots**\
+    Bump plots ranking U.S. states according to bladder cancer burden metrics in 1990, 2000, 2010, and 2021 are available from the project’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer/tree/main/output/figures/Bump%20plot).[ ](){#sup-bump}
+
+# List of abbreviations
+
+* BC  bladder cancer
+* SEER  Surveillance, Epidemiology, and End Results
+* GBD Global Burden of Disease
+* DALYs disability-adjusted life years
+* YLDs  years lived with disability
+* YLLs  years of life lost
+* GHDx  Global Health Data Exchange
+* SDI Socio-Demographic Index
+* UIs uncertainty intervals
+* SE  standard error
+*	AL	Alabama
+*	AK	Alaska
+*	AZ	Arizona
+*	AR	Arkansas
+*	CA	California
+*	CO	Colorado
+*	CT	Connecticut
+*	DE	Delaware
+*	DC	District of Columbia
+*	FL	Florida
+*	GA	Georgia
+*	HI	Hawaii
+*	ID	Idaho
+*	IL	Illinois
+*	IN	Indiana
+*	IA	Iowa
+*	KS	Kansas
+*	KY	Kentucky
+*	LA	Louisiana
+*	ME	Maine
+*	MD	Maryland
+*	MA	Massachusetts
+*	MI	Michigan
+*	MN	Minnesota
+*	MS	Mississippi
+*	MO	Missouri
+*	MT	Montana
+*	NE	Nebraska
+*	NV	Nevada
+*	NH	New Hampshire
+*	NJ	New Jersey
+*	NM	New Mexico
+*	NY	New York
+*	NC	North Carolina
+*	ND	North Dakota
+*	OH	Ohio
+*	OK	Oklahoma
+*	OR	Oregon
+*	PA	Pennsylvania
+*	RI	Rhode Island
+*	SC	South Carolina
+*	SD	South Dakota
+*	TN	Tennessee
+*	TX	Texas
+*	UT	Utah
+*	VT	Vermont
+*	VA	Virginia
+*	WA	Washington
+*	WV	West Virginia
+*	WI	Wisconsin
+*	WY	Wyoming
+
+# Declarations {.appendix}
+
+## Ethics approval and consent to participate
+
+This study utilized publicly available, de-identified data from the Global Burden of Disease (GBD) study. As the data do not involve direct human participation and are anonymized, institutional ethics approval and informed consent were not required. The study was conducted in accordance with the principles of the Declaration of Helsinki.
+
+## Consent for publication
+
+Not applicable.
+
+## Authors' contributions {.appendix}
 
 ```{r}
 #| label: contrib
@@ -1484,13 +1558,22 @@ None.
 
 The lead author, Alireza Sadeghi, affirms that this manuscript is an honest, accurate, and transparent account of the study being reported; that no important aspects of the study have been omitted; and that any discrepancies from the study as planned (and, if relevant, registered) have been explained.
 
-## Data Availability Statement {.appendix}
+## Availability of data and materials {.appendix}
 
 All data are publicly available through the [Global Health Data Exchange (GHDx)](https://ghdx.healthdata.org/). The complete analytic workflow, including cleaned datasets and all code required to reproduce the analyses, figures, and tables presented in this manuscript, is available in the study’s [GitHub repository](https://github.com/alireza5969/gbd-bladder-cancer). Data are provided in R’s native binary format (RDS). Full reproducibility can be achieved by cloning the repository and rendering the project using the supplied scripts and documentation.
 
-## Conflicts of Interest {.appendix}
+## Competing interests {.appendix}
 
 The authors declare no conflicts of interest.
+
+
+## Funding {.appendix}
+
+None.
+
+## Acknowledgements
+
+None.
 
 # References {.unnumbered}
 
