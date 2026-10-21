@@ -16,4 +16,4 @@
 
 **/*.quarto_ipynb
 
-submissions/*
+# submissions/*

@@ -1,0 +1,5 @@
+What does the study add?
+This study provides a comprehensive, state-level analysis of bladder cancer burden across the U.S. from 1980 to 2021, revealing persistent and significant geographic disparities. It confirms that while national rates show modest improvement, the U.S. continues to have higher incidence than comparable countries, with states like Maine and Hawaii representing extremes. Furthermore, it highlights that gender discrepancies are most pronounced in North and South Dakota and least in the District of Columbia, underscoring the need for targeted, region-specific interventions.
+
+Patient Summary
+In this report, we looked at the rates of bladder cancer cases, deaths, and disability across all U.S. states over 40 years. We found that the burden of bladder cancer varies widely by state and is consistently much higher in men than in women. Our findings suggest that public health efforts should focus on prevention and early detection, especially in states with the highest rates.
