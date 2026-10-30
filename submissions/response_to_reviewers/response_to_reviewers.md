@@ -1,4 +1,4 @@
-# Response to the reviewers 1
+# Response to the reviewers
 
 ## Reviewer 1
 
@@ -25,13 +25,13 @@ You are right, and the causes were errors in our code:
 
 > *“gradually declined beginning in the late 2010s,” “statistically non-significant,” “pronounced declines”… Either add a simple, pre-specified summary of change… or restrict the text to description of the plotted series and stop using inferential wording.*
 
-We did both. Section 3.3.1 now states that no trend model was fitted (no Joinpoint, APC/AAPC, or test of slope differences) and defines the fixed summaries used: percent change in the age-standardized rate for 1990–2021 and 2010–2021 (and 1980–2021 for deaths and YLLs, in Supporting File 1) for the U.S., the comparators and each jurisdiction, male:female ratios in 2021, and ranks by point estimate. We removed “significant/non-significant” and now state that GBD UIs are not frequentist confidence intervals and that “the UI includes zero” is a description of an interval, not a test. The phrases “gradually declined beginning in the late 2010s” and “pronounced declines” were removed. In their place, the peak year of the U.S. series is computed from the data, and statements about states give the point-estimate change and the number of jurisdictions whose approximate UI lies below zero, above zero, or includes zero (Section 4.3).
+We did both. Section 3.3.1 now states that no trend model was fitted (no Joinpoint, APC/AAPC, or test of slope differences) and defines the fixed summaries used: percent change in the age-standardized rate for 1990–2021 and 2010–2021 (and 1980–2021 for deaths and YLLs, in Supporting Info 1) for the U.S., the comparators and each jurisdiction, male:female ratios in 2021, and ranks by point estimate. We removed “significant/non-significant” and now state that GBD UIs are not frequentist confidence intervals and that “the UI includes zero” is a description of an interval, not a test. The phrases “gradually declined beginning in the late 2010s” and “pronounced declines” were removed. In their place, the peak year of the U.S. series is computed from the data, and statements about states give the point-estimate change and the number of jurisdictions whose approximate UI lies below zero, above zero, or includes zero (Section 4.3).
 
 ### Major comment 4
 
 > *The uncertainty method assumes independence of the two sex-specific GBD estimates and approximate normality on the log-rate scale. Those estimates share models, covariates, and often input data, so the reported ratio UIs are likely too narrow. … “not available from the GBD study” needs to be justified against what GHDx actually releases… Recompute the ratios from posterior draws if they can be obtained. If they cannot, state that the ratio UIs are approximate, do not treat non-overlap of those intervals as a formal state-to-state test, and avoid ranking District of Columbia versus the Dakotas as a principal Abstract result.*
 
-We agree that the assumption is a limitation and that draw-based intervals are preferable. The GHDx GBD Results Tool download for U.S. locations that we used returns point estimates with lower and upper UI bounds, not posterior draws. We have corrected the wording from “not available from the GBD study” to “not part of the public download we used” (Section 3.1), and have not recomputed the ratios from draws. *[AUTHORS: confirm here whether draws were requested from IHME; if obtained, replace the approximations and delete this sentence.]*
+We agree that the assumption is a limitation and that draw-based intervals are preferable. The GHDx GBD Results Tool download for U.S. locations that we used returns point estimates with lower and upper UI bounds, not posterior draws. We have corrected the wording from “not available from the GBD study” to “not part of the public download we used” (Section 3.1), and have not recomputed the ratios from draws.
 
 Regarding the direction of bias, we think it cannot be determined from published summaries. If the male and female estimates are positively correlated, the independence assumption makes the intervals too wide. If they are negatively correlated (for example, through a shared sex-combined constraint), it makes them too narrow. We therefore did not assert a direction. Section 3.3.2 now states (i) the independence and log-symmetry assumptions, (ii) that the direction of any bias is unknown, (iii) that the intervals are labelled “approximate”, and (iv) that overlap or non-overlap of two jurisdictions’ intervals is not a test of a difference between them. We also corrected the description of the log-scale standard errors: they are a direct back-calculation from the bounds, not a delta-method approximation. The Abstract no longer names or ranks the lowest and highest jurisdictions; it reports the range of point estimates and whether the lowest and highest intervals overlap. Section 4.3 names the extreme jurisdictions only as point estimates, together with the share of jurisdiction pairs whose *published* UIs overlap.
 
@@ -40,7 +40,7 @@ Regarding the direction of bias, we think it cannot be determined from published
 > *The paragraph that introduces Figure 4 refers to “age-standardized incidence rates,” but the Figure 4 caption describes prevalence. Figure 3 and Supporting Files 4 are labeled “APC” plots, yet no age–period–cohort model is specified. The age-standardized-rate formula in section 3.2 is incomplete… Reference 56 is used both for bladder-cancer etiology and for the claim that the U.S. population aged 65 years and older rose 38.6%…*
 
 - **Figure 4** shows *incidence* (the plotted file is the incidence geofacet plot); the caption now says so and the text is aligned.
-- **“APC” plots** are now called “age-by-period” plots (Figure 3, Supporting File 6), described as a descriptive display of age-specific rates in four calendar years, with the statement that no age–period–cohort model was fitted. The repository folder keeps its old name and this is noted.
+- **“APC” plots** are now called “age-by-period” plots (Figure 3, Supporting Info 6), described as a descriptive display of age-specific rates in four calendar years, with the statement that no age–period–cohort model was fitted. The repository folder keeps its old name and this is noted.
 - **Standardisation formula.** The formula was inside a definition-list item, where it did not render completely. It now stands alone as display math with all terms defined (Section 3.2). We also corrected the definition: $a_i$ is the age-specific rate per person-year, so that the factor 100,000 is applied once, and we state that ASRs were taken directly from the GBD Results Tool and not recalculated by us.
 - **Citations.** The 38.6% growth in the population aged 65 and older is now cited to the U.S. Census Bureau (2020 Census release) [Census 2023] in Section 5.3, and the Cureus review is no longer cited for it.
 - Every caption and in-text call-out was checked against the metric plotted. Figure 5 and Table 1 captions state that the intervals are approximate.
@@ -55,7 +55,7 @@ The Abstract now opens with a BC question, leads with the national 2021 rates an
 
 > Title and Methods cover 1980–2021; the Abstract compares 2021 with 1990. Use one primary contrast throughout and, if 1990 is retained, justify it (GBD reporting convention versus the 1980 state series).
 
-One primary contrast (1990–2021) is used in the title, Abstract, Methods, tables and supporting files. 1990 is justified in Section 3.1 by being the first year for which all six measures exist. The 1980–2021 change for deaths and YLLs, the only measures with a 1980 series, is given in Supporting File 1 now.
+One primary contrast (1990–2021) is used in the title, Abstract, Methods, tables and supporting files. 1990 is justified in Section 3.1 by being the first year for which all six measures exist. The 1980–2021 change for deaths and YLLs, the only measures with a 1980 series, is given in Supporting Info 1 now.
 
 ### Minor comment 3
 
@@ -74,8 +74,7 @@ The citation for the ICD codes was wrong (a GBD 2019 stroke paper) and has been 
 
 > GATHER is cited, but no completed checklist with page numbers is provided. Include it. The GitHub repository is appropriate; add the commit or release identifier used for the submitted figures.
 
-The completed checklist is in Supporting File 10 now, with manuscript locations (page numbers to be filled in from the typeset proof). The repository commit used for the submitted figures and a Zenodo DOI are reported in Section 3.4, the Supporting Files and the Availability statement. The commit is read automatically from `git` when the document is rendered using GitHub Actions and pushed onto the `gh-pages` branch. An appropriate README.md will be added to the GitHub repo upon receiving a DOI from the journal and publisher.
-
+The completed checklist is in Supporting Info 10 now, with manuscript locations (without page numbers because the manuscript was rendered from Quarto source code). The repository commit used for the submitted figures and a Zenodo DOI are reported in Section 3.4, the Supporting Info and the Availability statement. The commit is read automatically from `git` when the document is rendered using GitHub Actions and pushed onto the `gh-pages` branch. An appropriate README.md will be added to the GitHub repo upon receiving a DOI from the journal and publisher.
 
 ### Minor comment 6
 
@@ -99,27 +98,28 @@ The duplicate “Acknowledgements” heading was removed. ORCID iD for Stephen B
 
 This was mentioned by Reviewer #1 as well. Your reading is correct: the direction words were swapped, and only the labels were wrong, not the magnitudes. The cause is described in our response to Reviewer 1, Major comment 2. We now report signed values with explicit [lower, upper] order and add “per 100,000”. The Results quote the same values as Table 1, with the measure and region stated in each sentence, so the ambiguity about whether the U.S. value referred to mortality or male incidence no longer exists.
 
-Regarding the difficulty reconciling the percent changes with Figure 1 (e.g., EU male YLLs, −6.7%): the former text used *sex-specific* values (men, women) while Figure 1 shows *both sexes*, and the values were assigned to regions by position in a list from which rows had been removed. Table 1 now reports both-sex values that correspond to the series in Figure 1; sex-specific values are in Supporting File 1. Because all numbers are generated programmatically from the same table, the text can no longer diverge from it.
+Regarding the difficulty reconciling the percent changes with Figure 1 (e.g., EU male YLLs, −6.7%): the former text used *sex-specific* values (men, women) while Figure 1 shows *both sexes*, and the values were assigned to regions by position in a list from which rows had been removed. Table 1 now reports both-sex values that correspond to the series in Figure 1; sex-specific values are in Supporting Info 1. Because all numbers are generated programmatically from the same table, the text can no longer diverge from it.
 
 ### Major comment 2
 
 > The title, Methods and Supporting File 1 refer to 1980-2021, but GBD non-fatal estimates (incidence, prevalence, YLDs and therefore DALYs) start in 1990, as Figure 1 itself shows (only deaths and YLLs start in 1980), and the Abstract compares 2021 with 1990. Please harmonise the period across title, Abstract, Methods, figures and Supporting File 1, and state which measures are available for which years. Percentage changes "between 1980 and 2021" cannot exist for DALYs, YLDs, incidence or prevalence.
 
-This, too, was mentioned by Reviewer #1 as well. The title, Abstract, Methods and Supporting Files now use 1990–2021 as the primary period. Section 3.1 states that deaths and YLLs are available for 1980–2021 while incidence, prevalence, YLDs and DALYs begin in 1990, and that figures show all available years. Percent changes for 1980–2021 are given only for deaths and YLLs (Supporting File 1). Supporting File 1 is renamed accordingly.
+This, too, was mentioned by Reviewer #1 as well. The title, Abstract, Methods and Supporting Info now use 1990–2021 as the primary period. Section 3.1 states that deaths and YLLs are available for 1980–2021 while incidence, prevalence, YLDs and DALYs begin in 1990, and that figures show all available years. Percent changes for 1980–2021 are given only for deaths and YLLs (Supporting Info 1). Supporting Info 1 is renamed accordingly.
 
 ### Major comment 3
 
 > Comparator groups are not independent of the U.S.
 In the GBD location hierarchy the U.S. is part of the high-income super-region and of the high-SDI quintile, and it contributes a large share of their population. Comparing the U.S. with aggregates that contain it attenuates any difference and makes the "convergence" described in Results 4.1 partly mechanical. I would suggest using comparators that exclude the U.S. (e.g., Western Europe, or a set of named peer countries such as Canada, the United Kingdom, Germany, France, Australia and Japan), or at minimum acknowledging this overlap. "Competing countries" would also read better as "comparator countries/regions".
 
-We agree that the U.S. is part of the high-income and high-SDI aggregates and that comparisons are attenuated, and that “convergence” is partly mechanical. We replaced “competing countries” with “comparator regions”; stated the overlap in Section 3.2, in the Table 1 caption and in Section 5.2; removed the statement that comparators “converged” toward U.S. levels; and listed the overlap as a limitation (Section 5.6). The European Union is the only comparator that excludes the U.S. We did not add U.S.-excluded comparators (Western Europe or named peer countries), because this requires a new GHDx extraction and regeneration of the comparator figures with possibly missing values. We consider that an important extension and have listed it as a limitation. 
+We agree that the U.S. is part of the high-income and high-SDI aggregates and that comparisons are attenuated, and that “convergence” is partly mechanical. We replaced “competing countries” with “comparator regions”; stated the overlap in Section 3.2, in the Table 1 caption and in Section 5.2; removed the statement that comparators “converged” toward U.S. levels; and listed the overlap as a limitation (Section 5.6). The European Union is the only comparator that excludes the U.S. We did not add U.S.-excluded comparators (Western Europe or named peer countries), because this requires a new GHDx extraction and regeneration of the comparator figures with possibly missing values. We consider that an important extension and have listed it as a limitation.
 
 ### Major comment 4
 
 > Uncertainty for derived quantities and interpretation of state rankings.
+>
 > - The GBD Results Tool reports percentage change between years with draw-based UIs. Using these directly would avoid the approximations for temporal change. The Methods describe how UIs were derived for differences and ratios but not for the percentage changes in Supporting File 1; please clarify.
 
-The percent-change intervals in the original Supporting File 1 were approximations, and, as noted above, they had also been miscalculated. They are now calculated on the log scale from the published bounds (Section 3.3.2), labelled “approximate”, and the method is described in the Methods. The GBD Results Tool can provide percent changes with draw-based UIs; these were not part of our extracted data. We agree these would be preferable, and say so in Section 3.3.2 and the Limitations.
+The percent-change intervals in the original Supporting Info 1 were approximations, and, as noted above, they had also been miscalculated. They are now calculated on the log scale from the published bounds (Section 3.3.2), labelled “approximate”, and the method is described in the Methods. The GBD Results Tool can provide percent changes with draw-based UIs; these were not part of our extracted data. We agree these would be preferable, and say so in Section 3.3.2 and the Limitations.
 
 > - The approximation assumes symmetric UIs and independence between male and female estimates. GBD UIs are often asymmetric (e.g., U.S. female incidence 7.1 [6.3, 7.4]) and male and female estimates share models and covariates. Please discuss how this affects the ratio UIs. Also, the log-bound formula is a direct back-calculation rather than a delta-method approximation.
 
@@ -131,10 +131,9 @@ In the Abstract and Results the “lowest” and “highest” statements are pr
 
 > - In GBD, cancer incidence is derived from mortality via mortality-to-incidence ratios, and prevalence and YLDs are derived from incidence and survival. Near-identical sex ratios across the six measures (e.g., 2.4-2.5 in DC for all of them) are therefore largely expected by construction, and listing six ratios per state in the Abstract adds little independent information. Please acknowledge this and consider reporting one or two measures.
 
-This is stated in Sections 3.1 and 4.3. The Abstract and text now describe incidence and mortality; ratios for all measures remain in Figure 5 and Supporting File 2.
+This is stated in Sections 3.1 and 4.3. The Abstract and text now describe incidence and mortality; ratios for all measures remain in Figure 5 and Supporting Info 2.
 
 ### Major comment 5
-
 
 > Interpretation beyond the data.
 
@@ -148,7 +147,7 @@ You are right that age-standardized and age-specific rates are by design not aff
 
 > - Several state-specific statements in the Discussion (Nevada, West Virginia, Kentucky, Alabama and Delaware mortality; Maine highest and Hawaii lowest incidence) are not presented in the Results. A table of 2021 state-level age-standardised rates by sex, with percentage change since 1990 and UIs, would let readers verify these claims; the authors already hold these data.
 
-Table 2 now shows 2021 age-standardized incidence and mortality rates, ranks and percent changes since 1990 for every jurisdiction, and Supporting File 1 contains all measures by sex. The Discussion statements about specific states (Nevada, West Virginia, Kentucky, Alabama, Delaware; Maine; Hawaii) were replaced with statements generated from the data (highest and lowest point estimates, largest and smallest changes) together with the literature context in a hypothesis-theme.
+Table 2 now shows 2021 age-standardized incidence and mortality rates, ranks and percent changes since 1990 for every jurisdiction, and Supporting Info 1 contains all measures by sex. The Discussion statements about specific states (Nevada, West Virginia, Kentucky, Alabama, Delaware; Maine; Hawaii) were replaced with statements generated from the data (highest and lowest point estimates, largest and smallest changes) together with the literature context in a hypothesis-theme.
 
 > - Discussion, paragraph 2 attributes higher U.S. incidence to greater diagnostic intensity, then reads it as evidence of under-investment in prevention. These two explanations pull in different directions; please reconcile them. Similarly, the Hawaii explanation based on racial composition cannot be assessed with GBD state estimates that are not race-stratified.
 
@@ -156,7 +155,7 @@ We agree that the two explanations pulled in different directions. The “under-
 
 > - GBD 2023 estimates have now been published. Please briefly justify the use of GBD 2021 or note this as a limitation.
 
-GBD 2023 estimates, including for cancer [GBD 2023 Cancer Collaborators 2025], are now noted as a limitation; this analysis used GBD 2021 because the extraction and pipeline were built on that release, and the scripted pipeline can be re-run on the newer release (Sections 3.1 and 5.6) on later studies. [COMMENT FOR ME: WRITE THIS AS A SUGGESTION IN CONCLUSION]
+GBD 2023 estimates, including for cancer [GBD 2023 Cancer Collaborators 2025], are now noted as a limitation; this analysis used GBD 2021 because the extraction and pipeline were built on that release, and the scripted pipeline can be re-run on the newer release (Sections 3.1 and 5.6) on later studies.
 
 ### Minor comment 1
 
@@ -166,11 +165,11 @@ Corrected to incidence.
 
 >Supporting File 1 is presented as a table of percentage changes but shows only bars without numeric values or an axis scale. A numeric table would be more useful. The Supporting Files numbering also needs fixing (1, 1, 2, 3, 4, 6), and the GitHub repository URL (ideally with an archived DOI, e.g., Zenodo) is not given anywhere in the manuscript.
 
-It is now a numeric CSV table (rates at start and end, percent change with approximate UI; all jurisdictions, sexes and measures). The graphical table is now Supporting File 3. Supporting Files are numbered 1–10 consecutively. The GitHub URL is given in the Methods (Section 3.4), the Supporting Files and the Availability statement, together with the commit and a placeholder for the archived DOI.
+It is now a numeric CSV table (rates at start and end, percent change with approximate UI; all jurisdictions, sexes and measures). The graphical table is now Supporting Info 3. Supporting Info are numbered 1–10 consecutively. The GitHub URL is given in the Methods (Section 3.4), the Supporting Info and the Availability statement, together with the commit and an archived DOI.
 
 > The manuscript states adherence to GATHER, but I could not find the checklist among the submitted files. It would help to include it with page references.
 
-The checklist is Supporting File 10.
+The checklist is Supporting Info 10.
 
 > Methods 3.2-3.3 imply that age-standardised rates were calculated by the authors. If they were downloaded from the GBD Results Tool, please say so.
 
@@ -185,14 +184,14 @@ Sections 3.2–3.3 now state that age-standardized rates were downloaded from th
 - Ref 76 (colorectal and cervical cancer care) for BC travel distance: the text now says that studies of other cancers have linked longer travel distance to worse care.
 - Ref 48 as support for the approximation: it is cited only for the statement that draw-based UIs are the GBD standard; the approximation is cited to Altman and Rothman.
 - Ref 2 (Cancer Statistics, 2020): replaced by ACS *Cancer Facts & Figures 2026* and the SEER Cancer Stat Facts page.
-   
+
 > Discussion, paragraph 1 says national incidence declined "beginning in the late 2010s", while Figure 1 shows a peak in 2011 followed by a decline.
-   
+
 The statement was removed. The incidence peak year is now computed from the data (it was previously hard-coded) and the Discussion reports 2010–2021 and 1990–2021 percent changes.
 
 > I'd suggest consistent decimal precision in UIs (e.g., "4.6 [4.1, 4.893]"), "sex" rather than "gender" for biological male:female comparisons, noting that DC is not a state, and removing the duplicated Acknowledgments sections (8.4 and 8.9). The long list of R package citations (including beepr) could move to the Supporting Information.
 
-Rates and percent changes are reported to one decimal and counts to the unit, with consistent [lower, upper] formatting. We use “sex” for male:female comparisons and describe DC as a federal district, not a state (“jurisdictions” when pooled). The duplicated Acknowledgments section was removed. The package citations were moved out of the Methods; the Methods report the R version and Supporting File 9 lists package versions (`beepr`, which was only used for an audible alert and is no longer called, is no longer used).
+Rates and percent changes are reported to one decimal and counts to the unit, with consistent [lower, upper] formatting. We use “sex” for male:female comparisons and describe DC as a federal district, not a state (“jurisdictions” when pooled). The duplicated Acknowledgments section was removed. The package citations were moved out of the Methods; the Methods report the R version and Supporting Info 9 lists package versions (`beepr`, which was only used for an audible alert and is no longer called, is no longer used).
 
 ---
 
