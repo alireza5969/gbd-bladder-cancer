@@ -1,4 +1,4 @@
-# Response to the reviewers 1
+# Response to the reviewers
 
 ## Reviewer 1
 
@@ -76,7 +76,6 @@ The citation for the ICD codes was wrong (a GBD 2019 stroke paper) and has been 
 
 The completed checklist is in Supporting Info 10 now, with manuscript locations (without page numbers because the manuscript was rendered from Quarto source code). The repository commit used for the submitted figures and a Zenodo DOI are reported in Section 3.4, the Supporting Info and the Availability statement. The commit is read automatically from `git` when the document is rendered using GitHub Actions and pushed onto the `gh-pages` branch. An appropriate README.md will be added to the GitHub repo upon receiving a DOI from the journal and publisher.
 
-
 ### Minor comment 6
 
 > Reference 2 is Cancer Statistics, 2020 while the Introduction uses SEER projections for 2026. Cite the SEER stat-facts page actually used and a current ACS or NAACCR source for ranking statements.
@@ -112,11 +111,12 @@ This, too, was mentioned by Reviewer #1 as well. The title, Abstract, Methods an
 > Comparator groups are not independent of the U.S.
 In the GBD location hierarchy the U.S. is part of the high-income super-region and of the high-SDI quintile, and it contributes a large share of their population. Comparing the U.S. with aggregates that contain it attenuates any difference and makes the "convergence" described in Results 4.1 partly mechanical. I would suggest using comparators that exclude the U.S. (e.g., Western Europe, or a set of named peer countries such as Canada, the United Kingdom, Germany, France, Australia and Japan), or at minimum acknowledging this overlap. "Competing countries" would also read better as "comparator countries/regions".
 
-We agree that the U.S. is part of the high-income and high-SDI aggregates and that comparisons are attenuated, and that “convergence” is partly mechanical. We replaced “competing countries” with “comparator regions”; stated the overlap in Section 3.2, in the Table 1 caption and in Section 5.2; removed the statement that comparators “converged” toward U.S. levels; and listed the overlap as a limitation (Section 5.6). The European Union is the only comparator that excludes the U.S. We did not add U.S.-excluded comparators (Western Europe or named peer countries), because this requires a new GHDx extraction and regeneration of the comparator figures with possibly missing values. We consider that an important extension and have listed it as a limitation. 
+We agree that the U.S. is part of the high-income and high-SDI aggregates and that comparisons are attenuated, and that “convergence” is partly mechanical. We replaced “competing countries” with “comparator regions”; stated the overlap in Section 3.2, in the Table 1 caption and in Section 5.2; removed the statement that comparators “converged” toward U.S. levels; and listed the overlap as a limitation (Section 5.6). The European Union is the only comparator that excludes the U.S. We did not add U.S.-excluded comparators (Western Europe or named peer countries), because this requires a new GHDx extraction and regeneration of the comparator figures with possibly missing values. We consider that an important extension and have listed it as a limitation.
 
 ### Major comment 4
 
 > Uncertainty for derived quantities and interpretation of state rankings.
+>
 > - The GBD Results Tool reports percentage change between years with draw-based UIs. Using these directly would avoid the approximations for temporal change. The Methods describe how UIs were derived for differences and ratios but not for the percentage changes in Supporting File 1; please clarify.
 
 The percent-change intervals in the original Supporting Info 1 were approximations, and, as noted above, they had also been miscalculated. They are now calculated on the log scale from the published bounds (Section 3.3.2), labelled “approximate”, and the method is described in the Methods. The GBD Results Tool can provide percent changes with draw-based UIs; these were not part of our extracted data. We agree these would be preferable, and say so in Section 3.3.2 and the Limitations.
@@ -134,7 +134,6 @@ In the Abstract and Results the “lowest” and “highest” statements are pr
 This is stated in Sections 3.1 and 4.3. The Abstract and text now describe incidence and mortality; ratios for all measures remain in Figure 5 and Supporting Info 2.
 
 ### Major comment 5
-
 
 > Interpretation beyond the data.
 
@@ -185,9 +184,9 @@ Sections 3.2–3.3 now state that age-standardized rates were downloaded from th
 - Ref 76 (colorectal and cervical cancer care) for BC travel distance: the text now says that studies of other cancers have linked longer travel distance to worse care.
 - Ref 48 as support for the approximation: it is cited only for the statement that draw-based UIs are the GBD standard; the approximation is cited to Altman and Rothman.
 - Ref 2 (Cancer Statistics, 2020): replaced by ACS *Cancer Facts & Figures 2026* and the SEER Cancer Stat Facts page.
-   
+
 > Discussion, paragraph 1 says national incidence declined "beginning in the late 2010s", while Figure 1 shows a peak in 2011 followed by a decline.
-   
+
 The statement was removed. The incidence peak year is now computed from the data (it was previously hard-coded) and the Discussion reports 2010–2021 and 1990–2021 percent changes.
 
 > I'd suggest consistent decimal precision in UIs (e.g., "4.6 [4.1, 4.893]"), "sex" rather than "gender" for biological male:female comparisons, noting that DC is not a state, and removing the duplicated Acknowledgments sections (8.4 and 8.9). The long list of R package citations (including beepr) could move to the Supporting Information.
