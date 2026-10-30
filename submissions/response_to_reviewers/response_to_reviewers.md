@@ -75,6 +75,10 @@ The citation for the ICD codes was wrong (a GBD 2019 stroke paper) and has been 
 > GATHER is cited, but no completed checklist with page numbers is provided. Include it. The GitHub repository is appropriate; add the commit or release identifier used for the submitted figures.
 
 The completed checklist is in Supporting Info 10 now, with manuscript locations (without page numbers because the manuscript was rendered from Quarto source code). The repository commit used for the submitted figures and a Zenodo DOI are reported in Section 3.4, the Supporting Info and the Availability statement. The commit is read automatically from `git` when the document is rendered using GitHub Actions and pushed onto the `gh-pages` branch. An appropriate README.md will be added to the GitHub repo upon receiving a DOI from the journal and publisher.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3e1420da77085a5b1051b8d2dcdeb5e8a81e0446
 
 ### Minor comment 6
 

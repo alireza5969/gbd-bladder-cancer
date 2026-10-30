@@ -1278,6 +1278,8 @@ ft <- ft %>%
   autofit() %>% 
   fit_to_width(max_width = 6.5)
 
+ft %>% flextable::save_as_docx(path = "output/tables/table1.docx")
+
 ft
 ```
 
@@ -1379,9 +1381,10 @@ state_table <-
   arrange(location_id != us_id, Jurisdiction) %>% 
   select(-location_id)
 
-flextable(
-  state_table, 
-  col_keys = c("Jurisdiction", "inc_rate", "inc_rank", "inc_chg", "mor_rate", "mor_rank", "mor_chg")
+f2 <- 
+  flextable(
+    state_table, 
+    col_keys = c("Jurisdiction", "inc_rate", "inc_rank", "inc_chg", "mor_rate", "mor_rank", "mor_chg")
   ) %>% 
   set_header_labels(
     inc_rate = "2021 rate", inc_rank = "Rank", inc_chg = "% change 1990–2021",
@@ -1395,6 +1398,10 @@ flextable(
   color(~ ((sign(pct_lower.y) == sign(pct_upper.y)) & sign(pct_lower.y) < 0), ~ mor_chg, color = "darkgreen") %>%
   autofit() %>% 
   fit_to_width(max_width = 6.5)
+
+f2 %>% flextable::save_as_docx(path = "output/tables/table2.docx")
+
+f2
 ```
 
 @fig-discrep displays male-to-female rate ratios of ASRs in 2021 for each jurisdiction and measure.
