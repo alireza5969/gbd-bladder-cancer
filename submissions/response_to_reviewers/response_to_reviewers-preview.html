@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+    <meta charset="utf-8">
+    <meta name="generator" content="quarto-1.11.9">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+    <title>response_to_reviewers</title>
+    <style>
+      /* Default styles provided by pandoc.
+      ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+      */
+      span.smallcaps{font-variant: small-caps;}
+      div.columns{display: flex; gap: 1.5em;}
+      div.column{flex: auto;}
+      @media screen {
+      div.columns{gap: min(4vw, 1.5em);}
+      div.column{overflow-x: auto;}
+      }
+      div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+      ul.task-list{list-style: none;}
+      ul.task-list li input[type="checkbox"] {
+        width: 0.8em;
+        margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+        vertical-align: middle;
+      }
+    </style>
+
+    <style>
+      body.hypothesis-enabled #quarto-embed-header {
+        padding-right: 36px;
+      }
+
+      #quarto-embed-header {
+        height: 3em;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px;
+      }
+
+      #quarto-embed-header h6 {
+        font-size: 1.1em;
+        padding-top: 0.6em;
+        margin-left: 1em;
+        margin-right: 1em;
+        font-weight: 400;
+      }
+
+      #quarto-embed-header a.quarto-back-link,
+      #quarto-embed-header a.quarto-download-embed {
+        font-size: 0.8em;
+        margin-top: 1em;
+        margin-bottom: 1em;
+        margin-left: 1em;
+        margin-right: 1em;
+      }
+
+      .quarto-back-container {
+        padding-left: 0.5em;
+        display: flex;
+      }
+
+      .headroom {
+          will-change: transform;
+          transition: transform 200ms linear;
+      }
+
+      .headroom--pinned {
+          transform: translateY(0%);
+      }
+
+      .headroom--unpinned {
+          transform: translateY(-100%);
+      }      
+    </style>
+
+    <script>
+    window.document.addEventListener("DOMContentLoaded", function () {
+
+      var header = window.document.querySelector("#quarto-embed-header");
+      // Inside the site header, the site navigation offsets the content
+      // and manages headroom
+      const inSiteHeader = header.parentElement.id === "quarto-header";
+      if (!inSiteHeader) {
+        const titleBannerEl = window.document.querySelector("body > #title-block-header");
+        if (titleBannerEl) {
+          titleBannerEl.style.paddingTop = header.clientHeight + "px";
+        }
+        const contentEl = window.document.getElementById('quarto-content');
+        for (const child of contentEl.children) {
+          child.style.paddingTop = header.clientHeight + "px";
+          child.style.marginTop = "1em";
+        }
+      }
+
+      // Use the article root if the `back` call doesn't work. This isn't perfect
+      // but should typically work
+      window.quartoBackToArticle = () => {
+        var currentUrl = window.location.href;
+        window.history.back();
+        setTimeout(() => {
+            // if location was not changed in 100 ms, then there is no history back
+            if(currentUrl === window.location.href){              
+                // redirect to site root
+                window.location.href = "../../index.html";
+            }
+        }, 100);
+      }
+
+      if (!inSiteHeader) {
+        const headroom = new window.Headroom(header, {
+          tolerance: 5,
+          onPin: function () {
+          },
+          onUnpin: function () {
+          },
+        });
+        headroom.init();
+      }
+    });
+    </script>
+
+    
+<script src="../../site_libs/manuscript-notebook/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-447070a7029fa3f619f6aa40f0a02c6f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-39fffaf25d7de9b31243b4560af97599.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-447070a7029fa3f619f6aa40f0a02c6f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+     <script type="application/json" class="js-hypothesis-config">
+{
+  "theme": "clean",
+  "openSidebar": false,
+  "showHighlights": "always"
+}
+</script>
+<script async="" src="https://hypothes.is/embed.js"></script>
+<script>
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    document.body.classList.add('hypothesis-enabled');
+  });
+</script>  <!-- popup.html -->
+
+
+
+  <meta charset="UTF-8">
+  <!-- Bootstrap CSS (via CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ENjdO4Dr2bkBIFxQpeoG6VZ+Bi1FG4b6V6Lc5HC3lYk3G8hLZz0xFQ5xMvoEH3Q9" crossorigin="anonymous">
+</head>
+<body class="quarto-notebook quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+  <!-- Modal HTML -->
+  <div class="modal fade" id="announcementModal" tabindex="-1" aria-labelledby="announcementModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="announcementModalLabel">Announcement</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Hey folks! Alireza here🖐️<br>
+		  Please don't hesitate to comment on <strong>any</strong> part of the manuscript.<br>
+		  Please review the manuscript for all types of mistakes, including, but not limited to, grammar, analysis, and structure.<br>
+		  I really need your help to make it better.
+		  </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="modalDismissBtn">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS (via CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-qQ2V2MuVoM1GxQ2bpsK2e7FTRJOrMycf9UUQqYvMc6E0V7nK6HgRWBmW6yR8NQjQ" crossorigin="anonymous"></script>
+
+  <script>
+    (function() {
+      const STORAGE_KEY = 'announcementDismissed';
+
+      function showModal() {
+        const modal = new bootstrap.Modal(document.getElementById('announcementModal'));
+        modal.show();
+        document.getElementById('modalDismissBtn').addEventListener('click', () => {
+          localStorage.setItem(STORAGE_KEY, 'true');
+          modal.hide();
+        });
+      }
+
+      // On page load: show modal only if not dismissed yet
+      document.addEventListener('DOMContentLoaded', () => {
+        if (!localStorage.getItem(STORAGE_KEY)) {
+          showModal();
+        }
+      });
+    })();
+  </script>
+
+
+  <style type="text/css">
+.quarto-reader-toggle .bi::before, .quarto-color-scheme-toggle .bi::before {
+height: 5rem;
+width: 5rem;
+background-size: 3.5rem 3.5rem;
+}
+</style>   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script> 
+      
+
+  
+    <nav id="quarto-embed-header" class="headroom fixed-top bg-primary" aria-labelledby="quarto-embed-title">
+
+      <a href="../../index.html" onclick="window.quartoBackToArticle(); return false;" class="btn btn-primary quarto-back-link"><i class="bi bi-caret-left"></i> Back to Article</a>
+      <h6 id="quarto-embed-title"><i class="bi bi-journal-code"></i> Response to the reviewers 1</h6>
+
+            <a href="../../submissions/response_to_reviewers/response_to_reviewers.md" class="btn btn-primary quarto-download-embed" download="response_to_reviewers.md">Download Notebook</a>
+          </nav>
+
+     <div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#response-to-the-reviewers-1" id="toc-response-to-the-reviewers-1" class="nav-link active" data-scroll-target="#response-to-the-reviewers-1">Response to the reviewers 1</a>
+  <ul class="collapse">
+  <li><a href="#reviewer-1" id="toc-reviewer-1" class="nav-link" data-scroll-target="#reviewer-1">Reviewer 1</a>
+  <ul class="collapse">
+  <li><a href="#major-comment-1" id="toc-major-comment-1" class="nav-link" data-scroll-target="#major-comment-1">Major comment 1</a></li>
+  <li><a href="#major-comment-2" id="toc-major-comment-2" class="nav-link" data-scroll-target="#major-comment-2">Major comment 2</a></li>
+  <li><a href="#major-comment-3" id="toc-major-comment-3" class="nav-link" data-scroll-target="#major-comment-3">Major comment 3</a></li>
+  <li><a href="#major-comment-4" id="toc-major-comment-4" class="nav-link" data-scroll-target="#major-comment-4">Major comment 4</a></li>
+  <li><a href="#major-comment-5" id="toc-major-comment-5" class="nav-link" data-scroll-target="#major-comment-5">Major comment 5</a></li>
+  <li><a href="#minor-comment-1" id="toc-minor-comment-1" class="nav-link" data-scroll-target="#minor-comment-1">Minor comment 1</a></li>
+  <li><a href="#minor-comment-2" id="toc-minor-comment-2" class="nav-link" data-scroll-target="#minor-comment-2">Minor comment 2</a></li>
+  <li><a href="#minor-comment-3" id="toc-minor-comment-3" class="nav-link" data-scroll-target="#minor-comment-3">Minor comment 3</a></li>
+  <li><a href="#minor-comment-4" id="toc-minor-comment-4" class="nav-link" data-scroll-target="#minor-comment-4">Minor comment 4</a></li>
+  <li><a href="#minor-comment-5" id="toc-minor-comment-5" class="nav-link" data-scroll-target="#minor-comment-5">Minor comment 5</a></li>
+  <li><a href="#minor-comment-6" id="toc-minor-comment-6" class="nav-link" data-scroll-target="#minor-comment-6">Minor comment 6</a></li>
+  <li><a href="#minor-comment-7" id="toc-minor-comment-7" class="nav-link" data-scroll-target="#minor-comment-7">Minor comment 7</a></li>
+  </ul></li>
+  <li><a href="#reviewer-2" id="toc-reviewer-2" class="nav-link" data-scroll-target="#reviewer-2">Reviewer 2</a>
+  <ul class="collapse">
+  <li><a href="#major-comment-1-1" id="toc-major-comment-1-1" class="nav-link" data-scroll-target="#major-comment-1-1">Major comment 1</a></li>
+  <li><a href="#major-comment-2-1" id="toc-major-comment-2-1" class="nav-link" data-scroll-target="#major-comment-2-1">Major comment 2</a></li>
+  <li><a href="#major-comment-3-1" id="toc-major-comment-3-1" class="nav-link" data-scroll-target="#major-comment-3-1">Major comment 3</a></li>
+  <li><a href="#major-comment-4-1" id="toc-major-comment-4-1" class="nav-link" data-scroll-target="#major-comment-4-1">Major comment 4</a></li>
+  <li><a href="#major-comment-5-1" id="toc-major-comment-5-1" class="nav-link" data-scroll-target="#major-comment-5-1">Major comment 5</a></li>
+  <li><a href="#minor-comment-1-1" id="toc-minor-comment-1-1" class="nav-link" data-scroll-target="#minor-comment-1-1">Minor comment 1</a></li>
+  </ul></li>
+  <li><a href="#additional-corrections-made-during-revision" id="toc-additional-corrections-made-during-revision" class="nav-link" data-scroll-target="#additional-corrections-made-during-revision">Additional corrections made during revision</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content quarto-banner-title-block" id="quarto-document-content" tabindex="-1">        <section id="response-to-the-reviewers-1" class="level1">
+<h1>Response to the reviewers 1</h1>
+<section id="reviewer-1" class="level2">
+<h2 class="anchored" data-anchor-id="reviewer-1">Reviewer 1</h2>
+<section id="major-comment-1" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-1">Major comment 1</h3>
+<blockquote class="blockquote">
+<p><em>The stated aim includes “potential long-term effects of health policies,” and the Abstract and Conclusion attribute state patterns to environmental exposures, aging, healthcare access, and a need to shift spending from late-stage treatment to prevention. No policy variable, exposure series, insurance measure, or economic analysis is in the Methods… Recast the aim, Abstract conclusion, and final paragraph as a description of estimated burden and sex and geographic variation… Remove recommendations on cost-effectiveness and on adopting the 2025 AUA hematuria guideline.</em></p>
+</blockquote>
+<p>We agree. The aim in the Abstract and the final paragraph of the Introduction now describe estimated burden, change over time, age and sex patterns, and geographic variation, and state that the analysis does not evaluate policies, exposures or their effects. The Abstract conclusion and Section 6 (Conclusions) are rewritten as descriptions of estimates, and state that causes and policy effects cannot be determined from these data. The recommendations on cost-effectiveness, reallocation of spending from treatment to prevention, and the 2025 AUA hematuria guideline were removed (Sections 5.4 and 6). The discussion of environmental exposures, access and biology (Sections 5.2, 5.4, 5.5) is now framed as hypotheses from other studies, each sentence indicating that it was not tested here. We also removed the unsupported statements that recent declines in Northeastern states reflect water-treatment improvements and regulatory actions, and the explanation of Hawaii’s ranking by racial composition and tobacco policy.</p>
+</section>
+<section id="major-comment-2" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-2">Major comment 2</h3>
+<blockquote class="blockquote">
+<p><em>The Abstract compares 2021 with 1990 and reports mortality 0.11 higher, YLLs 6.75 higher, and DALYs 6.42 higher, whereas the Discussion describes a modest decrease… the international-comparison paragraph lists four successive parenthetical percentage changes… without naming which region is which… “0.4% <span class="math inline">\(1.5%, 0.7%\)</span>” whose interval does not contain the point estimate and is written in reverse order. Units are omitted… Rewrite the Abstract around a small set of both-sex and sex-specific 2021 rates plus one clearly labeled change interval… present one labeled row or sentence per region and metric, with percentage change and 95% UI in a consistent order, and make that table the source of truth for the text.</em></p>
+</blockquote>
+<p>You are right, and the causes were errors in our code:</p>
+<ul>
+<li><strong>Inverted direction words.</strong> The code computed the 2021–1990 difference and labelled a positive difference “lower” and a negative one “higher”. The magnitudes were correct but the direction words were reversed, so the Abstract contradicted the Discussion and Figure 1.</li>
+<li><strong>Lost signs and reversed bounds.</strong> The percent-change text used the absolute value of the point estimate and both bounds, which dropped minus signs and swapped lower and upper bounds, producing intervals that did not contain their estimates.</li>
+<li><strong>Unlabelled regions.</strong> Values were placed in sentences by position in a filtered list, and the filter (rows with an interval below zero) removed some regions, so positions did not correspond to the regions named in the text.</li>
+<li><strong>Percent-change intervals.</strong> The intervals for percent change had been calculated from deviations from the point estimate rather than from the interval bounds and were therefore not valid. They have been recalculated (Section 3.3.2).</li>
+</ul>
+<p><strong>Changes.</strong> (i) The Abstract now opens with the BC question and reports the 2021 U.S. age-standardized incidence, mortality and DALY rates per 100,000, both-sex and sex-specific, followed by one contrast (1990–2021) as percent change with approximate 95% UI in a fixed [lower, upper] order and with explicit signs. The state-level sex ratios are reduced to one sentence reporting a range and the overlap of intervals, without naming jurisdictions. (ii) Section 4.1 is rebuilt around Table 1, with one row per measure and region (U.S., European Union, high-income, high-SDI), giving the 1990 and 2021 rates and the percent change for 1990–2021 and 2010–2021. The text quotes the same values by named lookup, in the order U.S., EU, high-income, high-SDI, with each region labelled. (iii) Units (“per 100,000”) are given in the Abstract and Results. (iv) The Discussion’s description of national change (Section 5.1) is generated from the same table, so the Abstract, Results and Discussion cannot diverge.</p>
+</section>
+<section id="major-comment-3" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-3">Major comment 3</h3>
+<blockquote class="blockquote">
+<p><em>“gradually declined beginning in the late 2010s,” “statistically non-significant,” “pronounced declines”… Either add a simple, pre-specified summary of change… or restrict the text to description of the plotted series and stop using inferential wording.</em></p>
+</blockquote>
+<p>We did both. Section 3.3.1 now states that no trend model was fitted (no Joinpoint, APC/AAPC, or test of slope differences) and defines the fixed summaries used: percent change in the age-standardized rate for 1990–2021 and 2010–2021 (and 1980–2021 for deaths and YLLs, in Supporting Info 1) for the U.S., the comparators and each jurisdiction, male:female ratios in 2021, and ranks by point estimate. We removed “significant/non-significant” and now state that GBD UIs are not frequentist confidence intervals and that “the UI includes zero” is a description of an interval, not a test. The phrases “gradually declined beginning in the late 2010s” and “pronounced declines” were removed. In their place, the peak year of the U.S. series is computed from the data, and statements about states give the point-estimate change and the number of jurisdictions whose approximate UI lies below zero, above zero, or includes zero (Section 4.3).</p>
+</section>
+<section id="major-comment-4" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-4">Major comment 4</h3>
+<blockquote class="blockquote">
+<p><em>The uncertainty method assumes independence of the two sex-specific GBD estimates and approximate normality on the log-rate scale. Those estimates share models, covariates, and often input data, so the reported ratio UIs are likely too narrow. … “not available from the GBD study” needs to be justified against what GHDx actually releases… Recompute the ratios from posterior draws if they can be obtained. If they cannot, state that the ratio UIs are approximate, do not treat non-overlap of those intervals as a formal state-to-state test, and avoid ranking District of Columbia versus the Dakotas as a principal Abstract result.</em></p>
+</blockquote>
+<p>We agree that the assumption is a limitation and that draw-based intervals are preferable. The GHDx GBD Results Tool download for U.S. locations that we used returns point estimates with lower and upper UI bounds, not posterior draws. We have corrected the wording from “not available from the GBD study” to “not part of the public download we used” (Section 3.1), and have not recomputed the ratios from draws.</p>
+<p>Regarding the direction of bias, we think it cannot be determined from published summaries. If the male and female estimates are positively correlated, the independence assumption makes the intervals too wide. If they are negatively correlated (for example, through a shared sex-combined constraint), it makes them too narrow. We therefore did not assert a direction. Section 3.3.2 now states (i) the independence and log-symmetry assumptions, (ii) that the direction of any bias is unknown, (iii) that the intervals are labelled “approximate”, and (iv) that overlap or non-overlap of two jurisdictions’ intervals is not a test of a difference between them. We also corrected the description of the log-scale standard errors: they are a direct back-calculation from the bounds, not a delta-method approximation. The Abstract no longer names or ranks the lowest and highest jurisdictions; it reports the range of point estimates and whether the lowest and highest intervals overlap. Section 4.3 names the extreme jurisdictions only as point estimates, together with the share of jurisdiction pairs whose <em>published</em> UIs overlap.</p>
+</section>
+<section id="major-comment-5" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-5">Major comment 5</h3>
+<blockquote class="blockquote">
+<p><em>The paragraph that introduces Figure 4 refers to “age-standardized incidence rates,” but the Figure 4 caption describes prevalence. Figure 3 and Supporting Files 4 are labeled “APC” plots, yet no age–period–cohort model is specified. The age-standardized-rate formula in section 3.2 is incomplete… Reference 56 is used both for bladder-cancer etiology and for the claim that the U.S. population aged 65 years and older rose 38.6%…</em></p>
+</blockquote>
+<ul>
+<li><strong>Figure 4</strong> shows <em>incidence</em> (the plotted file is the incidence geofacet plot); the caption now says so and the text is aligned.</li>
+<li><strong>“APC” plots</strong> are now called “age-by-period” plots (Figure 3, Supporting Info 6), described as a descriptive display of age-specific rates in four calendar years, with the statement that no age–period–cohort model was fitted. The repository folder keeps its old name and this is noted.</li>
+<li><strong>Standardisation formula.</strong> The formula was inside a definition-list item, where it did not render completely. It now stands alone as display math with all terms defined (Section 3.2). We also corrected the definition: <span class="math inline">\(a_i\)</span> is the age-specific rate per person-year, so that the factor 100,000 is applied once, and we state that ASRs were taken directly from the GBD Results Tool and not recalculated by us.</li>
+<li><strong>Citations.</strong> The 38.6% growth in the population aged 65 and older is now cited to the U.S. Census Bureau (2020 Census release) [Census 2023] in Section 5.3, and the Cureus review is no longer cited for it.</li>
+<li>Every caption and in-text call-out was checked against the metric plotted. Figure 5 and Table 1 captions state that the intervals are approximate.</li>
+</ul>
+</section>
+<section id="minor-comment-1" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-1">Minor comment 1</h3>
+<blockquote class="blockquote">
+<p>The Abstract opens with U.S. healthcare expenditure rather than with the bladder-cancer question, then gives most of its space to 2021 sex ratios in three jurisdictions. Lead with the national 2021 rates and the direction of change, and move state sex ratios to a single sentence.</p>
+</blockquote>
+<p>The Abstract now opens with a BC question, leads with the national 2021 rates and the direction of change and reduces state sex ratios to just 1 sentence.</p>
+</section>
+<section id="minor-comment-2" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-2">Minor comment 2</h3>
+<blockquote class="blockquote">
+<p>Title and Methods cover 1980–2021; the Abstract compares 2021 with 1990. Use one primary contrast throughout and, if 1990 is retained, justify it (GBD reporting convention versus the 1980 state series).</p>
+</blockquote>
+<p>One primary contrast (1990–2021) is used in the title, Abstract, Methods, tables and supporting files. 1990 is justified in Section 3.1 by being the first year for which all six measures exist. The 1980–2021 change for deaths and YLLs, the only measures with a 1980 series, is given in Supporting Info 1 now.</p>
+</section>
+<section id="minor-comment-3" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-3">Minor comment 3</h3>
+<blockquote class="blockquote">
+<p>“Competing countries” is not standard. Use “comparator regions” and state once that high-income and high-SDI aggregates overlap the United States, so those contrasts are not independent country-to-country tests.</p>
+</blockquote>
+<p>We agree. In fact, we had a feeling about it but we didn’t manage to come up with a more suitable wording.<br>
+Now, it’s replaced throughout with “comparator regions”. Section 3.2 states once that the high-income and high-SDI aggregates contain the U.S., so contrasts with them are not independent country-to-country comparisons.</p>
+</section>
+<section id="minor-comment-4" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-4">Minor comment 4</h3>
+<blockquote class="blockquote">
+<p>The case definition lists ICD-9 V10.51, V16.52, and V76.3 (history and screening codes) beside C67/188. Confirm that this list is the official GBD 2021 cause map rather than an expanded author list, and cite the GBD cause-mapping appendix directly.</p>
+</blockquote>
+<p>The citation for the ICD codes was wrong (a GBD 2019 stroke paper) and has been replaced with the GBD 2021 cause list and mapping appendices [Naghavi 2024; Ferrari 2024]. The revised text says the code list is reproduced from the GBD cause mapping and was not modified by the authors.</p>
+</section>
+<section id="minor-comment-5" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-5">Minor comment 5</h3>
+<blockquote class="blockquote">
+<p>GATHER is cited, but no completed checklist with page numbers is provided. Include it. The GitHub repository is appropriate; add the commit or release identifier used for the submitted figures.</p>
+</blockquote>
+<p>The completed checklist is in Supporting Info 10 now, with manuscript locations (without page numbers because the manuscript was rendered from Quarto source code). The repository commit used for the submitted figures and a Zenodo DOI are reported in Section 3.4, the Supporting Info and the Availability statement. The commit is read automatically from <code>git</code> when the document is rendered using GitHub Actions and pushed onto the <code>gh-pages</code> branch. An appropriate README.md will be added to the GitHub repo upon receiving a DOI from the journal and publisher.</p>
+</section>
+<section id="minor-comment-6" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-6">Minor comment 6</h3>
+<blockquote class="blockquote">
+<p>Reference 2 is Cancer Statistics, 2020 while the Introduction uses SEER projections for 2026. Cite the SEER stat-facts page actually used and a current ACS or NAACCR source for ranking statements.</p>
+</blockquote>
+<p>The 2026 case and death projections are now cited to the American Cancer Society <em>Cancer Facts &amp; Figures 2026</em>, and the SEER Cancer Stat Facts page is cited for SEER statements. We removed the ranking statements that relied on <em>Cancer Statistics, 2020</em>.</p>
+</section>
+<section id="minor-comment-7" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-7">Minor comment 7</h3>
+<blockquote class="blockquote">
+<p>Duplicate headings appear under Declarations (“Acknowledgments” / “Acknowledgements”). Mohammadreza Soltani and Stephen B. Williams lack ORCID in the author block. Define ASR at first use and report all rates as “per 100,000” in the Abstract.</p>
+</blockquote>
+<p>The duplicate “Acknowledgements” heading was removed. ORCID iD for Stephen B. Williams will be added to the author block at resubmission. Dr.&nbsp;Mohammadreza Soltani does not have an ORCID account.</p>
+<hr>
+</section>
+</section>
+<section id="reviewer-2" class="level2">
+<h2 class="anchored" data-anchor-id="reviewer-2">Reviewer 2</h2>
+<section id="major-comment-1-1" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-1-1">Major comment 1</h3>
+<blockquote class="blockquote">
+<p><em>Direction of change reported in the Abstract appears inverted, and minus signs seem to be missing elsewhere.</em></p>
+</blockquote>
+<p>This was mentioned by Reviewer #1 as well. Your reading is correct: the direction words were swapped, and only the labels were wrong, not the magnitudes. The cause is described in our response to Reviewer 1, Major comment 2. We now report signed values with explicit [lower, upper] order and add “per 100,000”. The Results quote the same values as Table 1, with the measure and region stated in each sentence, so the ambiguity about whether the U.S. value referred to mortality or male incidence no longer exists.</p>
+<p>Regarding the difficulty reconciling the percent changes with Figure 1 (e.g., EU male YLLs, −6.7%): the former text used <em>sex-specific</em> values (men, women) while Figure 1 shows <em>both sexes</em>, and the values were assigned to regions by position in a list from which rows had been removed. Table 1 now reports both-sex values that correspond to the series in Figure 1; sex-specific values are in Supporting Info 1. Because all numbers are generated programmatically from the same table, the text can no longer diverge from it.</p>
+</section>
+<section id="major-comment-2-1" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-2-1">Major comment 2</h3>
+<blockquote class="blockquote">
+<p>The title, Methods and Supporting File 1 refer to 1980-2021, but GBD non-fatal estimates (incidence, prevalence, YLDs and therefore DALYs) start in 1990, as Figure 1 itself shows (only deaths and YLLs start in 1980), and the Abstract compares 2021 with 1990. Please harmonise the period across title, Abstract, Methods, figures and Supporting File 1, and state which measures are available for which years. Percentage changes “between 1980 and 2021” cannot exist for DALYs, YLDs, incidence or prevalence.</p>
+</blockquote>
+<p>This, too, was mentioned by Reviewer #1 as well. The title, Abstract, Methods and Supporting Info now use 1990–2021 as the primary period. Section 3.1 states that deaths and YLLs are available for 1980–2021 while incidence, prevalence, YLDs and DALYs begin in 1990, and that figures show all available years. Percent changes for 1980–2021 are given only for deaths and YLLs (Supporting Info 1). Supporting Info 1 is renamed accordingly.</p>
+</section>
+<section id="major-comment-3-1" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-3-1">Major comment 3</h3>
+<blockquote class="blockquote">
+<p>Comparator groups are not independent of the U.S. In the GBD location hierarchy the U.S. is part of the high-income super-region and of the high-SDI quintile, and it contributes a large share of their population. Comparing the U.S. with aggregates that contain it attenuates any difference and makes the “convergence” described in Results 4.1 partly mechanical. I would suggest using comparators that exclude the U.S. (e.g., Western Europe, or a set of named peer countries such as Canada, the United Kingdom, Germany, France, Australia and Japan), or at minimum acknowledging this overlap. “Competing countries” would also read better as “comparator countries/regions”.</p>
+</blockquote>
+<p>We agree that the U.S. is part of the high-income and high-SDI aggregates and that comparisons are attenuated, and that “convergence” is partly mechanical. We replaced “competing countries” with “comparator regions”; stated the overlap in Section 3.2, in the Table 1 caption and in Section 5.2; removed the statement that comparators “converged” toward U.S. levels; and listed the overlap as a limitation (Section 5.6). The European Union is the only comparator that excludes the U.S. We did not add U.S.-excluded comparators (Western Europe or named peer countries), because this requires a new GHDx extraction and regeneration of the comparator figures with possibly missing values. We consider that an important extension and have listed it as a limitation.</p>
+</section>
+<section id="major-comment-4-1" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-4-1">Major comment 4</h3>
+<blockquote class="blockquote">
+<p>Uncertainty for derived quantities and interpretation of state rankings. - The GBD Results Tool reports percentage change between years with draw-based UIs. Using these directly would avoid the approximations for temporal change. The Methods describe how UIs were derived for differences and ratios but not for the percentage changes in Supporting File 1; please clarify.</p>
+</blockquote>
+<p>The percent-change intervals in the original Supporting Info 1 were approximations, and, as noted above, they had also been miscalculated. They are now calculated on the log scale from the published bounds (Section 3.3.2), labelled “approximate”, and the method is described in the Methods. The GBD Results Tool can provide percent changes with draw-based UIs; these were not part of our extracted data. We agree these would be preferable, and say so in Section 3.3.2 and the Limitations.</p>
+<blockquote class="blockquote">
+<ul>
+<li>The approximation assumes symmetric UIs and independence between male and female estimates. GBD UIs are often asymmetric (e.g., U.S. female incidence 7.1 [6.3, 7.4]) and male and female estimates share models and covariates. Please discuss how this affects the ratio UIs. Also, the log-bound formula is a direct back-calculation rather than a delta-method approximation.</li>
+</ul>
+</blockquote>
+<p>We now state that the standard errors are back-calculated from the bounds assuming log-symmetry (not a delta-method approximation), that GBD UIs may be asymmetric, and that the male and female (and year-to-year) estimates are not independent. We state that the direction of the resulting bias cannot be established from published summaries (see our response to Reviewer 1, Major comment 4).</p>
+<blockquote class="blockquote">
+<ul>
+<li>In Figure 5 almost all state UIs overlap (e.g., DC 2.4 [1.7, 3.2] vs ND 3.9 [3.0, 5.2] for DALYs, with most states in between). The “lowest” and “highest” statements in the Abstract and Results should be framed as point-estimate rankings with substantial uncertainty.</li>
+</ul>
+</blockquote>
+<p>In the Abstract and Results the “lowest” and “highest” statements are presented as point-estimate rankings. We report the share of jurisdiction pairs whose <em>published</em> 2021 UIs overlap (incidence and mortality) and state that rankings are uncertain. Table 2 gives rates, ranks and percent changes with UIs for all jurisdictions.</p>
+<blockquote class="blockquote">
+<ul>
+<li>In GBD, cancer incidence is derived from mortality via mortality-to-incidence ratios, and prevalence and YLDs are derived from incidence and survival. Near-identical sex ratios across the six measures (e.g., 2.4-2.5 in DC for all of them) are therefore largely expected by construction, and listing six ratios per state in the Abstract adds little independent information. Please acknowledge this and consider reporting one or two measures.</li>
+</ul>
+</blockquote>
+<p>This is stated in Sections 3.1 and 4.3. The Abstract and text now describe incidence and mortality; ratios for all measures remain in Figure 5 and Supporting Info 2.</p>
+</section>
+<section id="major-comment-5-1" class="level3">
+<h3 class="anchored" data-anchor-id="major-comment-5-1">Major comment 5</h3>
+<blockquote class="blockquote">
+<p>Interpretation beyond the data.</p>
+</blockquote>
+<blockquote class="blockquote">
+<ul>
+<li>The Aim includes evaluating “potential long-term effects of health policies”, and the Conclusion states that disparities are “driven by environmental factors, aging populations, and healthcare access gaps”. None of these factors was analysed. I’d suggest rephrasing these as hypotheses and removing the policy-evaluation aim, or adding an analysis that addresses it.</li>
+</ul>
+</blockquote>
+<p>The policy-evaluation aim was removed and the statements about environmental factors, ageing and access to care in the Conclusions are removed or reframed as hypotheses (see Reviewer 1, Major comment 1).</p>
+<blockquote class="blockquote">
+<ul>
+<li>Age-standardised and age-specific rates are by design not affected by population ageing. The explanation of high age-specific rates in CA, TX and CT by U.S. population ageing (Discussion, paragraph 3) and the mention of “aging populations” in the Conclusion therefore need revision. Ageing explains growth in case counts, which the manuscript does not report. Reporting absolute numbers alongside rates would be a useful addition.</li>
+</ul>
+</blockquote>
+<p>You are right that age-standardized and age-specific rates are by design not affected by population ageing. The explanation of high age-specific rates in California, Texas and Connecticut by ageing, and the mention of “aging populations” in the Conclusion, were removed. Section 5.3 now explains that ageing affects case counts, cites Census data for the growth of the 65+ population, and reports estimated case and death counts if the “Number” metric is in the extracted data.</p>
+<blockquote class="blockquote">
+<ul>
+<li>Several state-specific statements in the Discussion (Nevada, West Virginia, Kentucky, Alabama and Delaware mortality; Maine highest and Hawaii lowest incidence) are not presented in the Results. A table of 2021 state-level age-standardised rates by sex, with percentage change since 1990 and UIs, would let readers verify these claims; the authors already hold these data.</li>
+</ul>
+</blockquote>
+<p>Table 2 now shows 2021 age-standardized incidence and mortality rates, ranks and percent changes since 1990 for every jurisdiction, and Supporting Info 1 contains all measures by sex. The Discussion statements about specific states (Nevada, West Virginia, Kentucky, Alabama, Delaware; Maine; Hawaii) were replaced with statements generated from the data (highest and lowest point estimates, largest and smallest changes) together with the literature context in a hypothesis-theme.</p>
+<blockquote class="blockquote">
+<ul>
+<li>Discussion, paragraph 2 attributes higher U.S. incidence to greater diagnostic intensity, then reads it as evidence of under-investment in prevention. These two explanations pull in different directions; please reconcile them. Similarly, the Hawaii explanation based on racial composition cannot be assessed with GBD state estimates that are not race-stratified.</li>
+</ul>
+</blockquote>
+<p>We agree that the two explanations pulled in different directions. The “under-investment in prevention” argument was removed. Section 5.2 presents detection/ascertainment and differences in underlying risk as non-exclusive hypotheses that this study cannot separate. The Hawaii explanation based on racial composition was removed; Section 5.5 states that GBD state estimates are not race-stratified.</p>
+<blockquote class="blockquote">
+<ul>
+<li>GBD 2023 estimates have now been published. Please briefly justify the use of GBD 2021 or note this as a limitation.</li>
+</ul>
+</blockquote>
+<p>GBD 2023 estimates, including for cancer [GBD 2023 Cancer Collaborators 2025], are now noted as a limitation; this analysis used GBD 2021 because the extraction and pipeline were built on that release, and the scripted pipeline can be re-run on the newer release (Sections 3.1 and 5.6) on later studies.</p>
+</section>
+<section id="minor-comment-1-1" class="level3">
+<h3 class="anchored" data-anchor-id="minor-comment-1-1">Minor comment 1</h3>
+<blockquote class="blockquote">
+<p>Figure 4: the caption says “prevalence”, whereas the y-axis and the text refer to incidence.</p>
+</blockquote>
+<p>Corrected to incidence.</p>
+<blockquote class="blockquote">
+<p>Supporting File 1 is presented as a table of percentage changes but shows only bars without numeric values or an axis scale. A numeric table would be more useful. The Supporting Files numbering also needs fixing (1, 1, 2, 3, 4, 6), and the GitHub repository URL (ideally with an archived DOI, e.g., Zenodo) is not given anywhere in the manuscript.</p>
+</blockquote>
+<p>It is now a numeric CSV table (rates at start and end, percent change with approximate UI; all jurisdictions, sexes and measures). The graphical table is now Supporting Info 3. Supporting Info are numbered 1–10 consecutively. The GitHub URL is given in the Methods (Section 3.4), the Supporting Info and the Availability statement, together with the commit and an archived DOI.</p>
+<blockquote class="blockquote">
+<p>The manuscript states adherence to GATHER, but I could not find the checklist among the submitted files. It would help to include it with page references.</p>
+</blockquote>
+<p>The checklist is Supporting Info 10.</p>
+<blockquote class="blockquote">
+<p>Methods 3.2-3.3 imply that age-standardised rates were calculated by the authors. If they were downloaded from the GBD Results Tool, please say so.</p>
+</blockquote>
+<p>Sections 3.2–3.3 now state that age-standardized rates were downloaded from the GBD Results Tool and not calculated by us.</p>
+<blockquote class="blockquote">
+<p>Some references do not appear to support the statements they are attached to; please verify: ref 19 (GBD 2019 stroke) for BC ICD codes; refs 63-64 (porcine bladder smooth muscle PPAR mRNA; PTEN/PPAR-gamma) for androgen signalling and sex-specific immune responses; ref 56 (a Cureus review) for the 38.6% growth in the population aged 65+ (Census Bureau data would be the primary source); ref 57 (2009) introduced as “recent evidence”; ref 76 (colorectal and cervical cancer care) for BC travel distance; ref 48 as support for the analytic approximation. Ref 2 (Cancer statistics, 2020) could be updated to the current edition.</p>
+</blockquote>
+<ul>
+<li>Ref 19 (GBD 2019 stroke) for the ICD codes: replaced with the GBD 2021 cause list and mapping appendices.</li>
+<li>Refs 63–64 (porcine bladder smooth muscle; PTEN/PPAR-γ) for androgen signalling and sex-specific immune response: the sentence was removed; the general statement on biological differences cites only the review (ref 62).</li>
+<li>Ref 56 (Cureus review) for the 38.6% growth in the 65+ population: replaced with the U.S. Census Bureau release. This reference is no longer used for etiology or prevention claims.</li>
+<li>Ref 57 (2009) introduced as “recent evidence”: now described as an earlier analysis.</li>
+<li>Ref 76 (colorectal and cervical cancer care) for BC travel distance: the text now says that studies of other cancers have linked longer travel distance to worse care.</li>
+<li>Ref 48 as support for the approximation: it is cited only for the statement that draw-based UIs are the GBD standard; the approximation is cited to Altman and Rothman.</li>
+<li>Ref 2 (Cancer Statistics, 2020): replaced by ACS <em>Cancer Facts &amp; Figures 2026</em> and the SEER Cancer Stat Facts page.</li>
+</ul>
+<blockquote class="blockquote">
+<p>Discussion, paragraph 1 says national incidence declined “beginning in the late 2010s”, while Figure 1 shows a peak in 2011 followed by a decline.</p>
+</blockquote>
+<p>The statement was removed. The incidence peak year is now computed from the data (it was previously hard-coded) and the Discussion reports 2010–2021 and 1990–2021 percent changes.</p>
+<blockquote class="blockquote">
+<p>I’d suggest consistent decimal precision in UIs (e.g., “4.6 [4.1, 4.893]”), “sex” rather than “gender” for biological male:female comparisons, noting that DC is not a state, and removing the duplicated Acknowledgments sections (8.4 and 8.9). The long list of R package citations (including beepr) could move to the Supporting Information.</p>
+</blockquote>
+<p>Rates and percent changes are reported to one decimal and counts to the unit, with consistent [lower, upper] formatting. We use “sex” for male:female comparisons and describe DC as a federal district, not a state (“jurisdictions” when pooled). The duplicated Acknowledgments section was removed. The package citations were moved out of the Methods; the Methods report the R version and Supporting Info 9 lists package versions (<code>beepr</code>, which was only used for an audible alert and is no longer called, is no longer used).</p>
+<hr>
+</section>
+</section>
+<section id="additional-corrections-made-during-revision" class="level2">
+<h2 class="anchored" data-anchor-id="additional-corrections-made-during-revision">Additional corrections made during revision</h2>
+<p>While addressing the comments we also fixed the following in the source code (<code>index.qmd</code>):</p>
+<ul>
+<li>Replaced the calls to <code>ratio_calc()</code> (lower and upper bounds were passed in swapped order) and <code>diff_calc()</code> (deviations passed instead of bounds) with a single, documented log-ratio function used for both percent changes and sex ratios.</li>
+<li>Replaced positional column selection (<code>select(1:6, 9, 10, 13:16, 18)</code>) with named columns, and the <code>purrr::as_vector()</code> call used to obtain state IDs with <code>pull()</code>.</li>
+<li>Removed vestigial multi-cancer filters (prostate/testicular/kidney cause IDs) and an unused URL-building chunk with missing path separators.</li>
+<li>Added global <code>echo: false</code> chunk options so code is never printed in the manuscript.</li>
+<li>Removed dead, commented-out figure layouts and an HTML-commented paragraph of the Introduction.</li>
+</ul>
+</section>
+</section>
+     </main>
+<!-- /main column -->  <script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>  </div> <!-- /content --> 
+  
+</body></html>
