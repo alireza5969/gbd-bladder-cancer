@@ -975,8 +975,8 @@ This is a descriptive analysis of modelled estimates; it does not test causes or
 (UIs) from GBD 2021 for the U.S., the 50 states and the District of Columbia, and for the European
 Union, high-income and high-SDI aggregates (which include the U.S.). Series cover 1990–2021 (deaths
 and YLLs also 1980–2021). Percent changes (1990–2021) and male:female rate ratios (2021) were
-derived from published point estimates and UIs under approximating assumptions.The final version and
-code of this study are also available from [www.bladder-cancer.ir](https://bladder-cancer.ir/).\
+derived from published point estimates and UIs under approximating assumptions. The final version and
+code of this study are also available from [bladder-cancer.ir](https://bladder-cancer.ir/).\
 **Results:** In 2021, the U.S. ASR of BC incidence was `r inc_b` per 100,000 (men `r inc_m`; women
 `r inc_f`) and the ASR of mortality was `r mor_b` per 100,000 (men `r mor_m`; women `r mor_f`);
 DALYs were `r daly_b` per 100,000. Compared with 1990, the 2021 ASR changed by `r chg_inc_us90` for

@@ -4,10 +4,10 @@ project:
 
 manuscript:
   article: index.qmd
-  
+
   # resources:
   #   - supplementary/
-  #   
+  #
   # code-links:
   #   - text: ""
   #     icon: file-pdf
@@ -15,16 +15,16 @@ manuscript:
 
 format:
   html:
-    include-in-header:
-      - file: popup.html
-      - text: |
-          <style type="text/css">
-          .quarto-reader-toggle .bi::before, .quarto-color-scheme-toggle .bi::before {
-          height: 5rem;
-          width: 5rem;
-          background-size: 3.5rem 3.5rem;
-          }
-          </style>
+    #     include-in-header:
+    #       - file: popup.html
+    #       - text: |
+    #           <style type="text/css">
+    #           .quarto-reader-toggle .bi::before, .quarto-color-scheme-toggle .bi::before {
+    #           height: 5rem;
+    #           width: 5rem;
+    #           background-size: 3.5rem 3.5rem;
+    #           }
+    #           </style>
     sidebar:
       search: true
       style: docked
@@ -32,22 +32,18 @@ format:
       light: flatly
       dark: darkly
     comments:
-      hypothesis: 
+      hypothesis:
         theme: clean
         openSidebar: false
         showHighlights: always
-  docx: 
+  docx:
     reference-doc: reference_style.docx
     filters: [authors-block]
     notebook-links: false
   # jats: default
   # pdf: default
 
-
 execute:
   freeze: auto
   warning: false
   message: false
-
-
-
